@@ -235,6 +235,46 @@ function initA11yStatement() {
   });
 }
 
+// ═══ BACK TO TOP (feature 5) ═══
+function initBackToTop() {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ═══ PRIVACY MODAL (feature 15) ═══
+function initPrivacyModal() {
+  const backdrop = document.getElementById('privacyBackdrop');
+  const openBtn = document.getElementById('privacyBtn');
+  const closeBtn = document.getElementById('privacyClose');
+  if (!backdrop || !openBtn) return;
+  openBtn.addEventListener('click', () => {
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  const closePrivacy = () => {
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  closeBtn.addEventListener('click', closePrivacy);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closePrivacy(); });
+}
+
+// ═══ HERO BLUR-UP (feature 7) ═══
+function initHeroBlurUp() {
+  const img = document.getElementById('heroImg');
+  const placeholder = document.getElementById('heroBluePlaceholder');
+  if (!img || !placeholder) return;
+  const hide = () => placeholder.classList.add('loaded');
+  if (img.complete && img.naturalWidth > 0) { hide(); }
+  else { img.addEventListener('load', hide); }
+}
+
 // ═══ INIT ═══
 document.addEventListener('DOMContentLoaded', () => {
   renderCards();
@@ -242,4 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initParallax();
   initAccessibility();
   initA11yStatement();
+  initBackToTop();
+  initPrivacyModal();
+  initHeroBlurUp();
 });

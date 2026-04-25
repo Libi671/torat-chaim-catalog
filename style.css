@@ -97,20 +97,15 @@ body {
   object-fit: contain;
 }
 
-/* TC logo has transparent bg with colored text — show as-is on dark navbar */
-.navbar-logo-tc {
-  height: 44px;
-  /* use drop-shadow to make the dark blue text visible on dark bg */
-  filter: brightness(0) invert(1);
-}
-
+/* Both logos sit inside a white-background pill for consistency */
+.navbar-logo-tc,
 .navbar-logo-amit {
   height: 40px;
-  /* Amit logo has white bg — remove bg to blend, show colors */
-  filter: drop-shadow(0 0 0 transparent);
-  background: white;
-  border-radius: 6px;
-  padding: 2px 4px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 8px;
+  padding: 3px 8px;
+  object-fit: contain;
+  filter: none;
 }
 
 .navbar-divider {
@@ -369,6 +364,7 @@ body {
 .card-img {
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
   transition: transform 0.4s ease;
 }
@@ -1121,5 +1117,135 @@ body.a11y-no-animations *::after {
   .hero { height: 55vh; min-height: 280px; }
   .hero-title-main { font-size: 1.3rem; }
   .a11y-panel { left: 10px; right: 10px; width: auto; }
+  .whatsapp-btn span { display: none; }
+  .whatsapp-btn { padding: 11px 14px; border-radius: 50%; }
 }
 
+/* ─── WAVE SECTION DIVIDER (feature 12) ─── */
+.wave-divider-section {
+  line-height: 0;
+  overflow: hidden;
+  margin-bottom: -2px;
+}
+.wave-divider-section svg {
+  display: block;
+  width: 100%;
+  height: 48px;
+}
+
+/* ─── HERO BLUR PLACEHOLDER (feature 7) ─── */
+.hero-blur-placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #002d56 0%, #1a6fab 60%, #00aeef 100%);
+  transition: opacity 0.6s ease;
+  z-index: 0;
+}
+.hero-blur-placeholder.loaded { opacity: 0; pointer-events: none; }
+
+/* ─── WHATSAPP BUTTON (feature 2) ─── */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 82px;
+  left: 20px;
+  z-index: 140;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
+  color: #fff;
+  border-radius: 30px;
+  padding: 11px 18px 11px 14px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(37,211,102,0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.whatsapp-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 8px 28px rgba(37,211,102,0.55);
+}
+
+/* ─── BACK TO TOP (feature 5) ─── */
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 140;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--blue-dark);
+  color: var(--white);
+  border: 2px solid rgba(255,255,255,0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,45,86,0.4);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.back-to-top.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+.back-to-top:hover { background: var(--blue-mid); }
+
+/* ─── PRIVACY MODAL (feature 15) ─── */
+.privacy-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,20,50,0.75);
+  backdrop-filter: blur(6px);
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.privacy-backdrop.open { opacity: 1; pointer-events: all; }
+.privacy-modal {
+  background: var(--white);
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 40px 36px 32px;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,45,86,0.35);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.privacy-backdrop.open .privacy-modal { transform: translateY(0) scale(1); }
+.privacy-close {
+  position: absolute; top: 14px; left: 14px;
+  background: var(--gray-light); border: none; color: var(--text-dark);
+  width: 34px; height: 34px; border-radius: 50%; font-size: 1rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.privacy-close:hover { background: var(--gray-mid); }
+.privacy-modal h2 { font-size: 1.4rem; font-weight: 900; color: var(--blue-dark); margin-bottom: 20px; }
+.privacy-content h3 { font-size: 1rem; font-weight: 800; color: var(--blue-dark); margin: 18px 0 6px; }
+.privacy-content p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+.privacy-content a { color: var(--blue-mid); }
+
+/* ─── FOOTER LINKS ─── */
+.footer-links {
+  margin-top: 10px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; font-size: 0.78rem; color: rgba(255,255,255,0.45);
+}
+.footer-links a, .footer-link-btn {
+  color: rgba(255,255,255,0.5); text-decoration: underline;
+  background: none; border: none; font-family: 'Heebo', sans-serif;
+  font-size: 0.78rem; cursor: pointer; padding: 0;
+}
+.footer-links a:hover, .footer-link-btn:hover { color: var(--lime); }
