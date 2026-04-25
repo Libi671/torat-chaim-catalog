@@ -92,15 +92,32 @@ body {
 }
 
 .navbar-logo {
-  height: 38px;
+  height: 44px;
   width: auto;
   object-fit: contain;
+}
+
+/* TC logo has transparent bg with colored text — show as-is on dark navbar */
+.navbar-logo-tc {
+  height: 44px;
+  /* use drop-shadow to make the dark blue text visible on dark bg */
   filter: brightness(0) invert(1);
 }
 
 .navbar-logo-amit {
-  height: 32px;
-  opacity: 0.85;
+  height: 40px;
+  /* Amit logo has white bg — remove bg to blend, show colors */
+  filter: drop-shadow(0 0 0 transparent);
+  background: white;
+  border-radius: 6px;
+  padding: 2px 4px;
+}
+
+.navbar-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255,255,255,0.3);
+  flex-shrink: 0;
 }
 
 /* ─── HERO ─── */
@@ -280,7 +297,7 @@ body {
 
 /* ─── CATALOG SECTION ─── */
 .catalog-section {
-  padding: 80px 40px;
+  padding: 40px 40px 80px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -742,8 +759,7 @@ footer strong { color: var(--white); }
   height: 44px;
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: 0.7;
+  opacity: 0.8;
 }
 .footer-a11y {
   margin-top: 10px;
@@ -754,62 +770,137 @@ footer strong { color: var(--white); }
   text-decoration: underline;
 }
 
-/* ─── COMPASS VALUES ─── */
-.compass-section {
-  background: var(--gray-light);
-  padding: 40px 40px 32px;
-  border-top: 1px solid var(--gray-mid);
+/* ─── CATALOG INTRO ─── */
+.catalog-intro {
+  text-align: center;
+  padding: 0 24px 32px;
+  margin-bottom: 0;
 }
-.compass-inner {
-  max-width: 900px;
-  margin: 0 auto;
-}
-.compass-title {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--blue-dark);
-  margin-bottom: 14px;
-}
-.compass-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 24px;
-}
-.compass-item {
-  font-size: 0.8rem;
+.catalog-intro-text {
+  display: inline-block;
+  font-size: 0.9rem;
   color: var(--text-muted);
-  line-height: 1.7;
-  flex: 1 1 calc(50% - 12px);
-  min-width: 260px;
-}
-.compass-item strong {
-  color: var(--blue-dark);
-  font-weight: 700;
+  background: var(--white);
+  border: 1px solid var(--gray-mid);
+  border-radius: 30px;
+  padding: 8px 22px;
+  line-height: 1.6;
 }
 
-/* ─── ACCESSIBILITY STATEMENT ─── */
+/* ─── COMPASS VALUES ─── */
+.compass-section {
+  background: linear-gradient(135deg, #f8fafb 0%, #eef3f8 100%);
+  padding: 56px 40px;
+  border-top: 3px solid var(--lime);
+}
+.compass-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+.compass-logo-col {
+  flex-shrink: 0;
+  text-align: center;
+  width: 160px;
+}
+.compass-logo {
+  width: 130px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+.compass-tagline {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.compass-text-col {
+  flex: 1;
+}
+.compass-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--blue-dark);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--lime);
+  display: inline-block;
+}
+.compass-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.compass-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 12px rgba(0,45,86,0.07);
+  border-right: 3px solid var(--lime);
+}
+.compass-card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+.compass-card strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--blue-dark);
+  margin-bottom: 4px;
+}
+.compass-card p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ─── A11Y STATEMENT ─── */
 .a11y-statement-section {
   background: #f0f2f5;
-  padding: 32px 40px;
+  padding: 16px 40px;
   border-top: 1px solid var(--gray-mid);
 }
 .a11y-statement-inner {
   max-width: 800px;
   margin: 0 auto;
 }
-.a11y-statement-inner h3 {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--blue-dark);
-  margin-bottom: 10px;
-}
-.a11y-statement-inner p {
+.a11y-statement-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Heebo', sans-serif;
   font-size: 0.82rem;
+  color: var(--text-muted);
+  padding: 8px 0;
+  transition: color 0.2s;
+}
+.a11y-statement-toggle:hover {
+  color: var(--blue-mid);
+}
+.a11y-chevron {
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+.a11y-statement-toggle[aria-expanded="true"] .a11y-chevron {
+  transform: rotate(180deg);
+}
+.a11y-statement-content {
+  padding: 12px 0 16px;
+}
+.a11y-statement-content p {
+  font-size: 0.8rem;
   color: var(--text-muted);
   line-height: 1.7;
   margin-bottom: 8px;
 }
-.a11y-statement-inner a {
+.a11y-statement-content a {
   color: var(--blue-mid);
 }
 
@@ -1002,10 +1093,12 @@ body.a11y-no-animations *::after {
 /* ─── RESPONSIVE ─── */
 @media (max-width: 768px) {
   .navbar { padding: 0 16px; }
-  .navbar-logo { height: 28px; }
-  .navbar-logo-amit { height: 24px; }
+  .navbar-logo { height: 30px; }
+  .navbar-logo-tc { height: 30px; }
+  .navbar-logo-amit { height: 28px; }
   .hero { height: 45vh; min-height: 300px; }
-  .catalog-section { padding: 50px 16px; }
+  .catalog-section { padding: 36px 16px; }
+  .catalog-intro { padding: 0 16px 24px; }
   .program-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
   .modal { grid-template-columns: 1fr; max-height: 95vh; }
   .modal-flyer-side { border-radius: 20px 20px 0 0; min-height: 320px; }
@@ -1013,9 +1106,12 @@ body.a11y-no-animations *::after {
   .form-row { grid-template-columns: 1fr; }
   .reg-section { padding: 60px 16px; }
   .reg-form-box { padding: 24px 16px; }
-  .compass-section { padding: 28px 16px; }
-  .compass-content { flex-direction: column; }
-  .a11y-statement-section { padding: 24px 16px; }
+  .compass-section { padding: 36px 16px; }
+  .compass-inner { flex-direction: column; gap: 20px; }
+  .compass-logo-col { width: 100%; display: flex; align-items: center; gap: 16px; }
+  .compass-logo { width: 80px; margin-bottom: 0; }
+  .compass-grid { grid-template-columns: 1fr; }
+  .a11y-statement-section { padding: 12px 16px; }
   .hero-logos { top: 10px; right: 14px; gap: 10px; }
   .hero-logo-img { height: 40px; }
 }

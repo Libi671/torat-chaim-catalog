@@ -219,10 +219,27 @@ function initAccessibility() {
   });
 }
 
+// ═══ A11Y STATEMENT TOGGLE ═══
+function initA11yStatement() {
+  const btn = document.getElementById('a11yStatementToggle');
+  const content = document.getElementById('a11yStatementContent');
+  if (!btn || !content) return;
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !expanded);
+    if (expanded) {
+      content.setAttribute('hidden', '');
+    } else {
+      content.removeAttribute('hidden');
+    }
+  });
+}
+
 // ═══ INIT ═══
 document.addEventListener('DOMContentLoaded', () => {
   renderCards();
   observeReveal();
   initParallax();
   initAccessibility();
+  initA11yStatement();
 });

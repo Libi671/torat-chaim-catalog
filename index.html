@@ -31,10 +31,10 @@
 
 <!-- ═══ ACCESSIBILITY BUTTON ═══ -->
 <button class="a11y-toggle" id="a11yToggle" aria-label="תפריט נגישות" title="נגישות">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <circle cx="12" cy="4.5" r="2.5"/>
-    <path d="M12 7.5v5m0 0l-3 5m3-5l3 5"/>
-    <path d="M7 10.5h10"/>
+  <!-- Universal Access icon -->
+  <svg width="26" height="26" viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="32" cy="8" r="7"/>
+    <path d="M52 20H12a2 2 0 000 4h16l-4 14-8 14a2 2 0 003.5 2l7.5-13 5 0 5 13a2 2 0 003.5-2l-8-14-4-14h16a2 2 0 000-4z"/>
   </svg>
 </button>
 
@@ -72,11 +72,8 @@
 <!-- ═══ NAVBAR ═══ -->
 <nav class="navbar" role="navigation" aria-label="ניווט ראשי">
   <div class="navbar-brand">
-    <img src="torat-chaim-logo.png" alt="לוגו תורת חיים" class="navbar-logo" />
-    <div>
-      <div class="brand-title">תורת חיים</div>
-      <div class="brand-sub">רשת אמית</div>
-    </div>
+    <img src="torat-chaim-logo2.png" alt="לוגו תורת חיים באמית" class="navbar-logo navbar-logo-tc" />
+    <div class="navbar-divider"></div>
     <img src="amit-logo.png" alt="לוגו רשת אמית" class="navbar-logo navbar-logo-amit" />
   </div>
   <button class="navbar-cta" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
@@ -110,8 +107,6 @@
       <span class="hero-title-sub">בית המדרש ההיברידי לתורת חיים באמית מציג:</span>
       <span class="hero-title-main">תוכניות שמחברות את הלב לשורשים</span>
     </h1>
-    <div class="hero-slogan">תורה ✦ השראה ✦ כלים</div>
-    <div class="hero-verse">״ונתתי לכם לב חדש ורוח חדשה״</div>
     <a href="#catalog" class="hero-scroll-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
       לקטלוג התוכניות
@@ -121,8 +116,8 @@
 
 <!-- ═══ CATALOG ═══ -->
 <section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
-  <div class="section-header reveal">
-    <p class="section-subtitle" id="catalog-title">לחצו על כל תוכנית לפרטים מלאים והרשמה. כל תוכנית כוללת חומרים מוכנים, הדרכה למורים וליווי מקצועי.</p>
+  <div class="catalog-intro reveal">
+    <p class="catalog-intro-text">לחצו על כל תוכנית לפרטים מלאים והרשמה · כל תוכנית כוללת חומרים מוכנים, הדרכה למורים וליווי מקצועי</p>
   </div>
   <div class="program-grid" id="programGrid"></div>
 </section>
@@ -201,19 +196,33 @@
 <!-- ═══ AMIT COMPASS VALUES ═══ -->
 <section class="compass-section" id="compass" aria-labelledby="compass-title">
   <div class="compass-inner">
-    <h3 class="compass-title" id="compass-title">ערכי מצפן באמית:</h3>
-    <div class="compass-content">
-      <div class="compass-item">
-        <strong>תפיסה אמונית מעמיקה</strong> – מימוש עצמי מתוך חיבור פנימי אמוני.
-      </div>
-      <div class="compass-item">
-        <strong>אהבת ה׳</strong> ובחירה מתוך מחויבות עמוקה. מחויבות למצוות מתוך בחירה.
-      </div>
-      <div class="compass-item">
-        <strong>החינוך לחיים ראויים ובעלי משמעות</strong> – גילוי קדושה בכל אדם ובכל מצב. מחויבות אישית וקהילתית לדרכה של התורה.
-      </div>
-      <div class="compass-item">
-        <strong>שרשרת הדורות</strong> · ציונות · חיבור ואהבת הארץ לשרשרת הדורות · חיבור לתרבות יהודית ישראלית · צמיחה והגשמה אישית · יושרה · התמדה · האחריות לעתיד משותף · שירות משמעותי – תרומה לחברה · הקשבה · ערבות הדדית
+    <div class="compass-logo-col">
+      <img src="amit-logo.png" alt="לוגו רשת אמית" class="compass-logo" />
+      <div class="compass-tagline">חינוך שרואה רחוק</div>
+    </div>
+    <div class="compass-text-col">
+      <h3 class="compass-title" id="compass-title">ערכי מצפן באמית</h3>
+      <div class="compass-grid">
+        <div class="compass-card">
+          <div class="compass-card-icon">🕊️</div>
+          <strong>תפיסה אמונית מעמיקה</strong>
+          <p>מימוש עצמי מתוך חיבור פנימי אמוני. אהבת ה׳ ובחירה מתוך מחויבות עמוקה.</p>
+        </div>
+        <div class="compass-card">
+          <div class="compass-card-icon">📖</div>
+          <strong>מחויבות לתורה ולמצוות</strong>
+          <p>מחויבות למצוות מתוך בחירה. חינוך לחיים ראויים – גילוי קדושה בכל אדם ובכל מצב.</p>
+        </div>
+        <div class="compass-card">
+          <div class="compass-card-icon">🌿</div>
+          <strong>שרשרת הדורות וציונות</strong>
+          <p>חיבור ואהבת הארץ · תרבות יהודית ישראלית · צמיחה והגשמה אישית · יושרה · התמדה.</p>
+        </div>
+        <div class="compass-card">
+          <div class="compass-card-icon">🤝</div>
+          <strong>אחריות ותרומה לחברה</strong>
+          <p>האחריות לעתיד משותף · שירות משמעותי · הקשבה · ערבות הדדית.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -234,18 +243,17 @@
 </footer>
 
 <!-- ═══ ACCESSIBILITY STATEMENT ═══ -->
-<section class="a11y-statement-section" id="a11y-statement" aria-labelledby="a11y-statement-title">
+<section class="a11y-statement-section" id="a11y-statement">
   <div class="a11y-statement-inner">
-    <h3 id="a11y-statement-title">הצהרת נגישות</h3>
-    <p>
-      אתר בית המדרש ההיברידי לתורת חיים באמית מחויב להנגשת תכניו לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.
-    </p>
-    <p>
-      האתר עומד בדרישות תקנות הנגישות ברמת AA של תקן WCAG 2.1. האתר כולל כפתור נגישות המאפשר התאמות כגון: הגדלת/הקטנת גופן, ניגודיות גבוהה, הדגשת קישורים, החלפה לגופן קריא ועצירת אנימציות.
-    </p>
-    <p>
-      נעשו מאמצים רבים להנגיש את האתר בצורה מיטבית. אם נתקלתם בבעיית נגישות כלשהי, אנא פנו אלינו בטלפון <a href="tel:0507953162">050-795-3162</a> ונשמח לסייע.
-    </p>
+    <button class="a11y-statement-toggle" id="a11yStatementToggle" aria-expanded="false" aria-controls="a11yStatementContent">
+      <span>הצהרת נגישות</span>
+      <svg class="a11y-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="a11y-statement-content" id="a11yStatementContent" hidden>
+      <p>אתר בית המדרש ההיברידי לתורת חיים באמית מחויב להנגשת תכניו לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.</p>
+      <p>האתר עומד בדרישות תקנות הנגישות ברמת AA של תקן WCAG 2.1. האתר כולל כפתור נגישות המאפשר התאמות כגון: הגדלת/הקטנת גופן, ניגודיות גבוהה, הדגשת קישורים, החלפה לגופן קריא ועצירת אנימציות.</p>
+      <p>נעשו מאמצים רבים להנגיש את האתר בצורה מיטבית. אם נתקלתם בבעיית נגישות כלשהי, אנא פנו אלינו בטלפון <a href="tel:0507953162">050-795-3162</a> ונשמח לסייע.</p>
+    </div>
   </div>
 </section>
 
