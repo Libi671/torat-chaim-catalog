@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>קטלוג תוכניות | תורת חיים – רשת אמית</title>
+  <meta name="description" content="קטלוג תוכניות הלימוד של תורת חיים ברשת אמית. תוכניות שמחברות את הלב לשורשים למנהלים ולמורים." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div>
+      <div class="brand-title">תורת חיים</div>
+      <div class="brand-sub">רשת אמית</div>
+    </div>
+    <span class="amit-badge">AMIT</span>
+  </div>
+  <button class="navbar-cta" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
+    הירשמו לתוכנית
+  </button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="home">
+  <img
+    src="hero.png"
+    alt="תורת חיים – לימוד חיוני ומשמעותי"
+    class="hero-img"
+    onerror="this.style.display='none'"
+  />
+  <div class="hero-overlay"></div>
+
+  <!-- Logos -->
+  <div class="hero-logos">
+    <img src="amit-logo.png" alt="לוגו רשת אמית" class="hero-logo-img" id="logo-amit" />
+    <div class="hero-logo-divider"></div>
+    <img src="torat-chaim-logo.png" alt="לוגו תורת חיים" class="hero-logo-img" id="logo-tc"
+      onerror="this.style.display='none'" />
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-pain">מחפשים תוכניות שיעוררו מוטיבציה ויעניקו כלים למורים?</div>
+    <h1 class="hero-title">
+      תוכניות לימוד שמחברות את<br />
+      <span>הלב לשורשים</span>
+    </h1>
+    <a href="#catalog" class="hero-scroll-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      לקטלוג התוכניות
+    </a>
+  </div>
+</section>
+
+<!-- ═══ CATALOG ═══ -->
+<section class="catalog-section" id="catalog">
+  <div class="section-header reveal">
+    <div class="section-tag">קטלוג תוכניות תשפ"ו</div>
+    <h2 class="section-title">כל התוכניות שלנו במקום אחד</h2>
+    <p class="section-subtitle">לחצו על כל תוכנית לפרטים מלאים והרשמה. כל תוכנית כוללת חומרים מוכנים, הדרכה למורים וליווי מקצועי.</p>
+  </div>
+  <div class="program-grid" id="programGrid"></div>
+</section>
+
+<!-- ═══ REGISTRATION ═══ -->
+<section class="reg-section" id="register">
+  <div class="reg-inner">
+    <div class="reg-header reveal">
+      <div class="section-tag">הירשמו עכשיו</div>
+      <h2 class="section-title">מעוניינים לשמוע עוד?</h2>
+      <p class="section-subtitle">השאירו פרטים ונחזור אליכם עם כל המידע על התוכניות המתאימות לבית הספר שלכם</p>
+    </div>
+    <div class="reg-form-box reveal">
+      <form id="mainRegForm" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="main_name">שם מלא <span class="req">*</span></label>
+            <input class="form-input" type="text" id="main_name" name="name" placeholder="ישראל ישראלי" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="main_role">תפקיד <span class="req">*</span></label>
+            <select class="form-select" id="main_role" name="role" required>
+              <option value="">בחר/י תפקיד</option>
+              <option>מנהל/ת בית ספר</option>
+              <option>סגן/ית מנהל</option>
+              <option>מורה</option>
+              <option>רכז/ת תחום</option>
+              <option>אחר</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="main_school">שם בית הספר <span class="req">*</span></label>
+          <input class="form-input" type="text" id="main_school" name="school" placeholder="בית ספר ..." required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="main_phone">טלפון <span class="req">*</span></label>
+            <input class="form-input" type="tel" id="main_phone" name="phone" placeholder="050-0000000" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="main_email">דוא"ל</label>
+            <input class="form-input" type="email" id="main_email" name="email" placeholder="me@example.com" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="main_program">תוכנית שמעניינת אתכם</label>
+          <select class="form-select" id="main_program" name="program">
+            <option value="">כל התוכניות / לא בטוח/ה</option>
+            <option>אירועי תורת חיים תשפ"ו</option>
+            <option>אירועים שנתיים תשפ"ו</option>
+            <option>אמון ואמונה</option>
+            <option>תוכנית בר/בת מצווה</option>
+            <option>הישיבה הקהילתית – בנים</option>
+            <option>מסע זהות יהודית – הרב זקס</option>
+            <option>מושגי יסוד ביהדות</option>
+            <option>בבאסאלי</option>
+            <option>תפילה – תשפ"ו</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="main_msg">הערות / שאלות</label>
+          <textarea class="form-textarea" id="main_msg" name="message" placeholder="כתבו כאן..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">שלחו פרטים ונחזור אליכם ✓</button>
+        <div class="form-success" id="mainSuccess">
+          <div class="success-icon">🎉</div>
+          <h3>תודה! קיבלנו את הפרטים</h3>
+          <p>נחזור אליכם בהקדם עם כל המידע.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <strong>תורת חיים באמית</strong> | רשת אמית – חינוך שראייה רחוקה<br />
+  לפרטים: <a href="tel:0507953162">050-795-3162</a> | <a href="tel:054435089">054-435-0895</a><br />
+  <small>© 2025 כל הזכויות שמורות לרשת אמית</small>
+</footer>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+  <div class="modal" id="modalBox">
+    <div class="modal-flyer-side">
+      <button class="modal-close" id="modalClose" aria-label="סגור">✕</button>
+      <img src="" alt="פלייר תוכנית" class="modal-flyer-img" id="modalFlyerImg" />
+    </div>
+    <div class="modal-form-side">
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-subtitle">מלאו את הפרטים ונחזור אליכם עם כל המידע על התוכנית</p>
+      <form id="modalForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="m_name">שם מלא <span class="req">*</span></label>
+          <input class="form-input" type="text" id="m_name" name="name" placeholder="ישראל ישראלי" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="m_role">תפקיד <span class="req">*</span></label>
+          <select class="form-select" id="m_role" name="role" required>
+            <option value="">בחר/י תפקיד</option>
+            <option>מנהל/ת בית ספר</option>
+            <option>סגן/ית מנהל</option>
+            <option>מורה</option>
+            <option>רכז/ת תחום</option>
+            <option>אחר</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="m_school">שם בית הספר <span class="req">*</span></label>
+          <input class="form-input" type="text" id="m_school" name="school" placeholder="בית ספר ..." required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="m_phone">טלפון <span class="req">*</span></label>
+            <input class="form-input" type="tel" id="m_phone" name="phone" placeholder="050-0000000" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="m_email">דוא"ל</label>
+            <input class="form-input" type="email" id="m_email" name="email" placeholder="me@example.com" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="m_msg">הערות</label>
+          <textarea class="form-textarea" id="m_msg" name="message" placeholder="שאלות, הערות..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">שלח הרשמה ✓</button>
+        <div class="form-success" id="modalSuccess">
+          <div class="success-icon">🎉</div>
+          <h3>תודה! קיבלנו את הפרטים</h3>
+          <p>נחזור אליכם בהקדם.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
