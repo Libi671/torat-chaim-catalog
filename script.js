@@ -219,20 +219,17 @@ function initAccessibility() {
   });
 }
 
-// ═══ A11Y STATEMENT TOGGLE ═══
+// ═══ A11Y STATEMENT MODAL ═══
 function initA11yStatement() {
-  const btn = document.getElementById('a11yStatementToggle');
-  const content = document.getElementById('a11yStatementContent');
-  if (!btn || !content) return;
-  btn.addEventListener('click', () => {
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', !expanded);
-    if (expanded) {
-      content.setAttribute('hidden', '');
-    } else {
-      content.removeAttribute('hidden');
-    }
-  });
+  const backdrop = document.getElementById('a11yStatementBackdrop');
+  const openBtn = document.getElementById('a11yStatementBtn');
+  const closeBtn = document.getElementById('a11yStatementClose');
+  if (!backdrop || !openBtn) return;
+  const open = () => { backdrop.classList.add('open'); document.body.style.overflow = 'hidden'; };
+  const close = () => { backdrop.classList.remove('open'); document.body.style.overflow = ''; };
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) close(); });
 }
 
 // ═══ BACK TO TOP (feature 5) ═══

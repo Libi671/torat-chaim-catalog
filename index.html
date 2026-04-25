@@ -238,26 +238,36 @@
   לפרטים: <a href="tel:0507953162">050-795-3162</a> | <a href="tel:054435089">054-435-0895</a><br />
   <small>© 2025 כל הזכויות שמורות לרשת אמית</small>
   <div class="footer-links">
-    <a href="#a11y-statement">הצהרת נגישות</a>
+    <button class="footer-link-btn" id="a11yStatementBtn">הצהרת נגישות</button>
     <span>·</span>
     <button class="footer-link-btn" id="privacyBtn">מדיניות פרטיות</button>
   </div>
 </footer>
 
-<!-- ═══ ACCESSIBILITY STATEMENT ═══ -->
-<section class="a11y-statement-section" id="a11y-statement">
-  <div class="a11y-statement-inner">
-    <button class="a11y-statement-toggle" id="a11yStatementToggle" aria-expanded="false" aria-controls="a11yStatementContent">
-      <span>הצהרת נגישות</span>
-      <svg class="a11y-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-    </button>
-    <div class="a11y-statement-content" id="a11yStatementContent" hidden>
+
+<!-- ═══ A11Y STATEMENT MODAL ═══ -->
+<div class="privacy-backdrop" id="a11yStatementBackdrop" role="dialog" aria-modal="true" aria-labelledby="a11yStatementModalTitle">
+  <div class="privacy-modal">
+    <button class="privacy-close" id="a11yStatementClose" aria-label="סגור">✕</button>
+    <h2 id="a11yStatementModalTitle">הצהרת נגישות</h2>
+    <div class="privacy-content">
       <p>אתר בית המדרש ההיברידי לתורת חיים באמית מחויב להנגשת תכניו לכלל הציבור, לרבות אנשים עם מוגבלויות, בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.</p>
-      <p>האתר עומד בדרישות תקנות הנגישות ברמת AA של תקן WCAG 2.1. האתר כולל כפתור נגישות המאפשר התאמות כגון: הגדלת/הקטנת גופן, ניגודיות גבוהה, הדגשת קישורים, החלפה לגופן קריא ועצירת אנימציות.</p>
-      <p>נעשו מאמצים רבים להנגיש את האתר בצורה מיטבית. אם נתקלתם בבעיית נגישות כלשהי, אנא פנו אלינו בטלפון <a href="tel:0507953162">050-795-3162</a> ונשמח לסייע.</p>
+      <h3>רמת הנגישות</h3>
+      <p>האתר עומד בדרישות תקנות הנגישות ברמת AA של תקן WCAG 2.1.</p>
+      <h3>התאמות הזמינות בכפתור הנגישות</h3>
+      <p>האתר כולל כפתור נגישות צף שמאל-תחתון המאפשר התאמות כגון:</p>
+      <ul style="font-size:0.88rem;color:#5a6a7a;padding-right:1.2rem;line-height:1.8">
+        <li>הגדלת / הקטנת גופן</li>
+        <li>ניגודיות גבוהה</li>
+        <li>הדגשת קישורים</li>
+        <li>החלפה לגופן קריא</li>
+        <li>עצירת אנימציות</li>
+      </ul>
+      <h3>פנייה בענייני נגישות</h3>
+      <p>נעשו מאמצים רבים להנגיש את האתר בצורה מיטבית. אם נתקלתם בבעיית נגישות כלשהי, אנא פנו אלינו: <a href="tel:0507953162">050-795-3162</a>.</p>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══ PRIVACY POLICY MODAL (feature 15) ═══ -->
 <div class="privacy-backdrop" id="privacyBackdrop" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
