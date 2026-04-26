@@ -83,7 +83,7 @@
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <div class="hero-pain">תורת חיים באמית תשפז</div>
+    <div class="hero-pain">תורת חיים באמית תשפ"ז</div>
     <h1 class="hero-title">
       <span class="hero-title-main">מגוון הכשרות ותוכניות</span>
     </h1>
@@ -137,64 +137,9 @@
     </div>
     <div class="reg-form-box reveal">
       <div class="program-card-clamp form-clamp"></div>
-      <form id="mainRegForm" novalidate>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="main_name">שם מלא <span class="req">*</span></label>
-            <input class="form-input" type="text" id="main_name" name="name" placeholder="ישראל ישראלי" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="main_role">תפקיד <span class="req">*</span></label>
-            <select class="form-select" id="main_role" name="role" required>
-              <option value="">בחר/י תפקיד</option>
-              <option>מנהל/ת בית ספר</option>
-              <option>סגן/ית מנהל</option>
-              <option>מורה</option>
-              <option>רכז/ת תחום</option>
-              <option>אחר</option>
-            </select>
-          </div>
+        <div style="text-align: center; padding: 20px 0;">
+          <button class="btn-submit gform-open-btn" style="max-width: 300px; margin: 0 auto; display: block; font-size: 1.2rem; padding: 16px;">להרשמה</button>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="main_school">שם בית הספר <span class="req">*</span></label>
-          <input class="form-input" type="text" id="main_school" name="school" placeholder="בית ספר ..." required />
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="main_phone">טלפון <span class="req">*</span></label>
-            <input class="form-input" type="tel" id="main_phone" name="phone" placeholder="050-0000000" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="main_email">דוא"ל</label>
-            <input class="form-input" type="email" id="main_email" name="email" placeholder="me@example.com" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="main_program">תוכנית שמעניינת אתכם</label>
-          <select class="form-select" id="main_program" name="program">
-            <option value="">כל התוכניות / לא בטוח/ה</option>
-            <option>אירועי תורת חיים תשפ"ו</option>
-            <option>אירועים שנתיים תשפ"ו</option>
-            <option>אמון ואמונה</option>
-            <option>תוכנית בר/בת מצווה</option>
-            <option>הישיבה הקהילתית – בנים</option>
-            <option>מסע זהות יהודית – הרב זקס</option>
-            <option>מושגי יסוד ביהדות</option>
-            <option>בבאסאלי</option>
-            <option>תפילה – תשפ"ו</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="main_msg">הערות / שאלות</label>
-          <textarea class="form-textarea" id="main_msg" name="message" placeholder="כתבו כאן..."></textarea>
-        </div>
-        <button type="submit" class="btn-submit">שלחו פרטים ונחזור אליכם בהקדם ✓</button>
-        <div class="form-success" id="mainSuccess">
-          <div class="success-icon">🎉</div>
-          <h3>תודה! קיבלנו את הפרטים</h3>
-          <p>נחזור אליכם בהקדם עם כל המידע.</p>
-        </div>
-      </form>
     </div>
   </div>
 </section>
@@ -284,48 +229,18 @@
       <div class="program-card-clamp form-clamp" style="top: -10px;"></div>
       <h2 class="modal-title" id="modalTitle"></h2>
       <p class="modal-subtitle">מלאו את הפרטים ונחזור אליכם עם כל המידע על התוכנית</p>
-      <form id="modalForm" novalidate>
-        <div class="form-group">
-          <label class="form-label" for="m_name">שם מלא <span class="req">*</span></label>
-          <input class="form-input" type="text" id="m_name" name="name" placeholder="ישראל ישראלי" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="m_role">תפקיד <span class="req">*</span></label>
-          <select class="form-select" id="m_role" name="role" required>
-            <option value="">בחר/י תפקיד</option>
-            <option>מנהל/ת בית ספר</option>
-            <option>סגן/ית מנהל</option>
-            <option>מורה</option>
-            <option>רכז/ת תחום</option>
-            <option>אחר</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="m_school">שם בית הספר <span class="req">*</span></label>
-          <input class="form-input" type="text" id="m_school" name="school" placeholder="בית ספר ..." required />
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="m_phone">טלפון <span class="req">*</span></label>
-            <input class="form-input" type="tel" id="m_phone" name="phone" placeholder="050-0000000" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="m_email">דוא"ל</label>
-            <input class="form-input" type="email" id="m_email" name="email" placeholder="me@example.com" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="m_msg">הערות</label>
-          <textarea class="form-textarea" id="m_msg" name="message" placeholder="שאלות, הערות..."></textarea>
-        </div>
-        <button type="submit" class="btn-submit">שלח הרשמה ✓</button>
-        <div class="form-success" id="modalSuccess">
-          <div class="success-icon">🎉</div>
-          <h3>תודה! קיבלנו את הפרטים</h3>
-          <p>נחזור אליכם בהקדם.</p>
-        </div>
-      </form>
+      <div style="flex: 1; display: flex; align-items: flex-end; justify-content: center; padding-top: 40px;">
+        <button class="btn-submit gform-open-btn" style="width: 100%; font-size: 1.2rem; padding: 14px;">הרשמה</button>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══ GOOGLE FORM MODAL ═══ -->
+<div class="modal-backdrop" id="gformBackdrop" role="dialog" aria-modal="true" style="display: none; align-items: center; justify-content: center; z-index: 10000;">
+  <div class="modal" id="gformBox" style="width: 95%; max-width: 680px; background: #fff; border-radius: 20px; position: relative; overflow: hidden; display: flex; flex-direction: column;">
+    <button class="modal-close" id="gformClose" aria-label="סגור" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.08); color: #333; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; z-index: 10;">✕</button>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSceVsqVnHOM4DCCqVCWMO4dzDYKdJBMC-AJ0QZ-Q9B3_xYdDQ/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0" style="border: none;">בטעינה…</iframe>
   </div>
 </div>
 

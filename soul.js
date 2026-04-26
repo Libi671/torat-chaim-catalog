@@ -100,8 +100,6 @@ const backdrop = document.getElementById('modalBackdrop');
 const modalClose = document.getElementById('modalClose');
 const modalFlyerImg = document.getElementById('modalFlyerImg');
 const modalTitle = document.getElementById('modalTitle');
-const modalForm = document.getElementById('modalForm');
-const modalSuccess = document.getElementById('modalSuccess');
 const modalEnlargeBtn = document.getElementById('modalEnlargeBtn');
 
 function openModal(id) {
@@ -110,9 +108,6 @@ function openModal(id) {
   modalFlyerImg.src = p.file;
   modalFlyerImg.alt = p.title;
   modalTitle.textContent = p.title;
-  modalForm.reset();
-  modalSuccess.style.display = 'none';
-  modalForm.style.display = 'block';
   backdrop.classList.add('open');
   document.body.style.overflow = 'hidden';
   backdrop.dataset.program = p.title;
@@ -149,43 +144,35 @@ function closeLightbox() {
 lightboxClose.addEventListener('click', closeLightbox);
 lightboxBackdrop.addEventListener('click', e => { if (e.target === lightboxBackdrop) closeLightbox(); });
 
-// ═══ MODAL FORM ═══
-modalForm.addEventListener('submit', e => {
-  e.preventDefault();
-  if (!validateForm(modalForm)) return;
-  modalForm.style.display = 'none';
-  modalSuccess.style.display = 'block';
-});
+// ═══ GOOGLE FORM MODAL ═══
+const gformBackdrop = document.getElementById('gformBackdrop');
+const gformClose = document.getElementById('gformClose');
+const gformOpenBtns = document.querySelectorAll('.gform-open-btn');
 
-// ═══ MAIN FORM ═══
-const mainRegForm = document.getElementById('mainRegForm');
-const mainSuccess = document.getElementById('mainSuccess');
-
-mainRegForm.addEventListener('submit', e => {
-  e.preventDefault();
-  if (!validateForm(mainRegForm)) return;
-  mainRegForm.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
-  mainSuccess.style.display = 'block';
-  mainSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-
-// ═══ VALIDATION ═══
-function validateForm(form) {
-  let valid = true;
-  form.querySelectorAll('[required]').forEach(el => {
-    el.style.borderColor = '';
-    if (!el.value.trim()) {
-      el.style.borderColor = '#e74c3c';
-      el.style.boxShadow = '0 0 0 3px rgba(231,76,60,0.15)';
-      if (valid) el.focus();
-      valid = false;
-    } else {
-      el.style.borderColor = '';
-      el.style.boxShadow = '';
-    }
-  });
-  return valid;
+function openGoogleForm() {
+  gformBackdrop.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
 }
+
+function closeGoogleForm() {
+  gformBackdrop.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+gformOpenBtns.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openGoogleForm();
+  });
+});
+
+gformClose.addEventListener('click', closeGoogleForm);
+gformBackdrop.addEventListener('click', e => {
+  if (e.target === gformBackdrop) closeGoogleForm();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeGoogleForm();
+});
 
 // ═══ SCROLL REVEAL ═══
 function observeReveal() {
