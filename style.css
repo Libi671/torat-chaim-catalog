@@ -228,6 +228,16 @@ body {
   color: var(--lime);
 }
 
+.hero-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 16px auto 32px;
+  max-width: 600px;
+  animation: fadeInUp 0.8s ease 0.2s both;
+}
+
 .hero-slogan {
   color: rgba(255,255,255,0.85);
   font-size: clamp(0.85rem, 1.5vw, 1.05rem);
@@ -827,13 +837,11 @@ footer strong { color: var(--white); }
 }
 .catalog-intro-text {
   display: inline-block;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  background: var(--white);
-  border: 1px solid var(--gray-mid);
-  border-radius: 30px;
-  padding: 8px 22px;
+  font-size: 1.05rem;
+  color: var(--blue-dark);
+  font-weight: 600;
   line-height: 1.6;
+  margin-bottom: 0;
 }
 
 /* ─── COMPASS VALUES ─── */
