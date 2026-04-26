@@ -70,7 +70,7 @@
     <img src="amit-logo.png" alt="לוגו רשת אמית" class="navbar-logo navbar-logo-amit" />
   </div>
   <button class="navbar-cta" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
-    לפרטים והרשמה <span style="font-size: 1.1em; margin-right: 6px;">🎨</span>
+    <span class="hide-mobile">לפרטים ו</span>הרשמה <span style="font-size: 1.1em; margin-right: 6px;">🎨</span>
   </button>
 </nav>
 
@@ -95,9 +95,12 @@
       <span class="hero-title-sub">בית המדרש ההיברידי לתורת חיים באמית מציג:</span>
       <span class="hero-title-main">מציירים את מה שהנשמה שלהם מרגישה</span>
     </h1>
-    <a href="#catalog" class="hero-scroll-btn">
+    <a href="#catalog" class="hero-scroll-btn desktop-scroll-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
       לקטלוג התוכניות: גלו את הצבעים שלכם
+    </a>
+    <a href="#catalog" class="hero-scroll-btn mobile-scroll-btn" aria-label="גלול מטה לקטלוג">
+      <span class="paint-drop-scroll"></span>
     </a>
   </div>
 </section>

@@ -564,7 +564,7 @@ h1, h2, h3, h4, h5, h6,
 .card-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 14px;
 }
 
@@ -1269,10 +1269,56 @@ body.a11y-no-animations *::after {
 }
 @media (max-width: 480px) {
   .program-grid { grid-template-columns: 1fr; }
-  .modal-flyer-side { min-height: 280px; }
+  .modal-flyer-side { min-height: 400px; height: auto; aspect-ratio: 1 / 1.414; }
   .hero { height: 55vh; min-height: 280px; }
   .hero-title-main { font-size: 1.3rem; }
   .a11y-panel { left: 10px; right: 10px; width: auto; }
+  
+  .hide-mobile { display: none; }
+  .desktop-scroll-btn { display: none !important; }
+  .mobile-scroll-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 46px;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    margin: 15px auto 0;
+    text-decoration: none;
+  }
+  .paint-drop-scroll {
+    width: 4px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 2px;
+    animation: dropFall 1.5s infinite ease-in-out;
+  }
+  
+  .floating-palette {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  .floating-palette::after { display: none !important; }
+  .floating-palette .whatsapp-btn,
+  .floating-palette .a11y-toggle,
+  .back-to-top {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
+  }
+  .back-to-top {
+    background: var(--blue-dark) !important;
+    padding: 0 !important;
+    width: 44px !important;
+    height: 44px !important;
+  }
+  .back-to-top svg { margin: 0 !important; padding: 0 !important; width: 20px !important; height: 20px !important; }
+}
+
+@keyframes dropFall {
+  0% { transform: translateY(-8px); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
 }
 
 /* ─── WAVE SECTION DIVIDER (feature 12) ─── */

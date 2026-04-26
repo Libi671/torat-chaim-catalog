@@ -77,7 +77,7 @@
     <img src="amit-logo.png" alt="לוגו רשת אמית" class="navbar-logo navbar-logo-amit" />
   </div>
   <button class="navbar-cta" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
-    הירשמו לתוכנית
+    <span class="hide-mobile">הירשמו לתוכנית</span><span class="show-mobile">להרשמה</span>
   </button>
 </nav>
 
@@ -103,9 +103,12 @@
       <span class="hero-title-main">תוכניות שמחברות את הלב לשורשים</span>
     </h1>
     <p class="hero-subtitle">כל תוכנית כוללת חומרים מוכנים, הדרכה למורים וליווי מקצועי</p>
-    <a href="#catalog" class="hero-scroll-btn">
+    <a href="#catalog" class="hero-scroll-btn desktop-scroll-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
       לקטלוג התוכניות
+    </a>
+    <a href="#catalog" class="hero-scroll-btn mobile-scroll-btn" aria-label="גלול מטה לקטלוג">
+      <span class="classic-scroll-indicator"></span>
     </a>
   </div>
 </section>
