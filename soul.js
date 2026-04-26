@@ -99,7 +99,6 @@ function initFilter() {
 const backdrop = document.getElementById('modalBackdrop');
 const modalClose = document.getElementById('modalClose');
 const modalFlyerImg = document.getElementById('modalFlyerImg');
-const modalTitle = document.getElementById('modalTitle');
 const modalEnlargeBtn = document.getElementById('modalEnlargeBtn');
 
 function openModal(id) {
@@ -107,7 +106,6 @@ function openModal(id) {
   if (!p) return;
   modalFlyerImg.src = p.file;
   modalFlyerImg.alt = p.title;
-  modalTitle.textContent = p.title;
   backdrop.classList.add('open');
   document.body.style.overflow = 'hidden';
   backdrop.dataset.program = p.title;
