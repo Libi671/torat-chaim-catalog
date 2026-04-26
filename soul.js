@@ -144,35 +144,6 @@ function closeLightbox() {
 lightboxClose.addEventListener('click', closeLightbox);
 lightboxBackdrop.addEventListener('click', e => { if (e.target === lightboxBackdrop) closeLightbox(); });
 
-// ═══ GOOGLE FORM MODAL ═══
-const gformBackdrop = document.getElementById('gformBackdrop');
-const gformClose = document.getElementById('gformClose');
-const gformOpenBtns = document.querySelectorAll('.gform-open-btn');
-
-function openGoogleForm() {
-  gformBackdrop.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeGoogleForm() {
-  gformBackdrop.style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-gformOpenBtns.forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    openGoogleForm();
-  });
-});
-
-gformClose.addEventListener('click', closeGoogleForm);
-gformBackdrop.addEventListener('click', e => {
-  if (e.target === gformBackdrop) closeGoogleForm();
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeGoogleForm();
-});
 
 // ═══ SCROLL REVEAL ═══
 function observeReveal() {
