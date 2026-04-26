@@ -151,6 +151,13 @@ h1, h2, h3, h4, h5, h6,
   will-change: transform;
 }
 
+.hero-slider {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .hero-img {
   position: absolute;
   inset: 0;
@@ -158,6 +165,12 @@ h1, h2, h3, h4, h5, h6,
   object-fit: cover;
   object-position: center;
   will-change: transform;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.hero-img.active {
+  opacity: 1;
 }
 
 .hero-overlay {
@@ -381,6 +394,11 @@ h1, h2, h3, h4, h5, h6,
   border-radius: 50%;
   margin-left: 6px;
   box-shadow: 0 0 0 2px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.15);
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.filter-btn:not(.active) .color-dot {
+  background: var(--gray-mid) !important;
 }
 
 .filter-btn.active {
@@ -534,6 +552,7 @@ h1, h2, h3, h4, h5, h6,
 .card-body {
   padding: 18px 20px 20px;
   border-top: 3px solid var(--lime);
+  text-align: center;
 }
 
 .card-badge {
@@ -661,12 +680,21 @@ h1, h2, h3, h4, h5, h6,
   min-height: 550px;
 }
 
-.modal-enlarge-btn {
+.modal-top-actions {
   position: absolute;
-  bottom: 14px;
+  top: 14px;
   left: 14px;
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.3);
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-close, .modal-enlarge-btn {
+  position: static;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: var(--white);
   padding: 8px 16px;
   border-radius: 8px;
@@ -678,11 +706,18 @@ h1, h2, h3, h4, h5, h6,
   align-items: center;
   gap: 6px;
   transition: background 0.2s;
-  z-index: 5;
 }
 
-.modal-enlarge-btn:hover {
-  background: rgba(255,255,255,0.35);
+.modal-close {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 1.2rem;
+  justify-content: center;
+}
+
+.modal-close:hover, .modal-enlarge-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .modal-flyer-img {
@@ -690,7 +725,7 @@ h1, h2, h3, h4, h5, h6,
   height: 100%;
   object-fit: contain;
   display: block;
-  padding: 16px;
+  padding: 60px 16px 16px;
 }
 
 .modal-form-side {
@@ -699,24 +734,6 @@ h1, h2, h3, h4, h5, h6,
   flex-direction: column;
   gap: 0;
 }
-
-.modal-close {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  background: rgba(255,255,255,0.15);
-  border: none;
-  color: var(--white);
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s;
-  z-index: 5;
-}
-
-.modal-close:hover { background: rgba(255,255,255,0.3); }
 
 .modal-title {
   font-size: 1.5rem;

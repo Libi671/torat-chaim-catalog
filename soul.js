@@ -9,7 +9,7 @@ const programs = [
   { id: 4, title: 'תוכנית בר/בת מצווה', desc: 'מסלול מקיף ומרתק לקראת בר ובת מצווה – חוויות, ספר לימוד, ליווי אישי ואירועי שיא.', badge: 'בר/בת מצווה', file: 'P/בר מצווה פלייר.jpg',
     cats: ['ימי שיא', 'תוכניות לתלמידים'] },
   { id: 5, title: 'הישיבה הקהילתית – בנים', desc: 'חוויית לימוד ישיבתית אותנטית בתוך בית הספר – לימוד עמוק, מפגש בין-גילאי וקהילה.', badge: 'לימוד מעמיק', file: 'P/הישיבה הקהילתית בנים פלייר.jpg',
-    cats: ['ימי שיא', 'תוכניות לתלמידים'] },
+    cats: ['בית מדרש'] },
   { id: 6, title: 'מסע זהות יהודית – הרב זקס', desc: 'מסלול דיגיטלי עשיר על פי משנתו של הרב יונתן זקס – מסע לזהות היהודית הייחודית ביותר.', badge: 'זהות יהודית', file: 'P/הרב זקס פלייר תשפו.jpg',
     cats: ['תוכניות לתלמידים', 'הכשרת צוותים'] },
   { id: 7, title: 'מושגי יסוד ביהדות', desc: 'יחידות ללימוד חווייתי ומעמיק של מושגי יסוד – שמע ישראל, מצוות, קידוש ועוד.', badge: 'יחידות לימוד', file: 'P/מושגי יסוד יהדות פלייר.jpg',
@@ -20,8 +20,8 @@ const programs = [
     cats: ['תוכניות לתלמידים', 'הכשרת צוותים'] },
 ];
 
-// Active filter categories (all active by default)
-let activeFilters = new Set(['ימי שיא', 'תוכניות לתלמידים', 'הכשרת צוותים']);
+// Active filter categories (default to first)
+let activeFilters = new Set(['ימי שיא']);
 
 // ═══ RENDER CARDS ═══
 function getColorForCategory(cat) {
@@ -75,21 +75,35 @@ function initFilter() {
       const cat = btn.dataset.cat;
       const isActive = activeFilters.has(cat);
 
-      // Don't allow deactivating if it would leave nothing active
-      if (isActive && activeFilters.size === 1) return;
+      if (isActive) return; // Single select: ignore if already active
 
-      if (isActive) {
-        activeFilters.delete(cat);
-        btn.classList.remove('active');
-        btn.setAttribute('aria-pressed', 'false');
-      } else {
-        activeFilters.add(cat);
-        btn.classList.add('active');
-        btn.setAttribute('aria-pressed', 'true');
-      }
+      // Clear all
+      activeFilters.clear();
+      btns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+
+      // Set clicked
+      activeFilters.add(cat);
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+
       renderCards();
     });
   });
+}
+
+// ═══ HERO SLIDER ═══
+function initHeroSlider() {
+  const images = document.querySelectorAll('.hero-slider .hero-img');
+  if(images.length < 2) return;
+  let currentIndex = 0;
+  setInterval(() => {
+    images[currentIndex].classList.remove('active');
+    currentIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].classList.add('active');
+  }, 4000); // switch every 4s
 }
 
 // ═══ MODAL ═══
@@ -411,4 +425,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initPrivacyModal();
   initHeroBlurUp();
   initHandwriting();
+  initHeroSlider();
 });
