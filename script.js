@@ -1,20 +1,33 @@
 // ═══ PROGRAM DATA ═══
 const programs = [
-  { id: 1, title: 'אירועי תורת חיים תשפ"ו', desc: 'אירועים קהילתיים ורוחניים לכלל תלמידי הרשת – חוויות שמחברות ומחזקות זהות יהודית.', badge: 'אירועים', file: 'P/אירועי תורת חיים תשפו (1).jpeg' },
-  { id: 2, title: 'אירועים שנתיים תשפ"ו', desc: 'לוח האירועים השנתי של תורת חיים – מפגשים, ימי עיון ואירועי שיא לאורך כל השנה.', badge: 'לוח שנה', file: 'P/אירועים שנתיים תשפו פלייר.jpg' },
-  { id: 3, title: 'אמון ואמונה', desc: 'תוכנית חווייתית לפיתוח חוסן אמוני לתלמידים – דרך העמקה ב-8 עקרונות רוחניים.', badge: 'חוסן אמוני', file: 'P/אמון ואמונה פלייר תשפו.jpg' },
-  { id: 4, title: 'תוכנית בר/בת מצווה', desc: 'מסלול מקיף ומרתק לקראת בר ובת מצווה – חוויות, ספר לימוד, ליווי אישי ואירועי שיא.', badge: 'בר/בת מצווה', file: 'P/בר מצווה פלייר.jpg' },
-  { id: 5, title: 'הישיבה הקהילתית – בנים', desc: 'חוויית לימוד ישיבתית אותנטית בתוך בית הספר – לימוד עמוק, מפגש בין-גילאי וקהילה.', badge: 'לימוד מעמיק', file: 'P/הישיבה הקהילתית בנים פלייר.jpg' },
-  { id: 6, title: 'מסע זהות יהודית – הרב זקס', desc: 'מסלול דיגיטלי עשיר על פי משנתו של הרב יונתן זקס – מסע לזהות היהודית הייחודית ביותר.', badge: 'זהות יהודית', file: 'P/הרב זקס פלייר תשפו.jpg' },
-  { id: 7, title: 'מושגי יסוד ביהדות', desc: 'יחידות ללימוד חווייתי ומעמיק של מושגי יסוד – שמע ישראל, מצוות, קידוש ועוד.', badge: 'יחידות לימוד', file: 'P/מושגי יסוד יהדות פלייר.jpg' },
-  { id: 8, title: 'בבאסאלי', desc: 'תוכנית ייחודית שמחברת בין מסורת לחיים המודרניים – דרך עולם הגסטרונומיה היהודית.', badge: 'תרבות יהודית', file: 'P/פלייר בבאסאלי.jpg' },
-  { id: 9, title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/פלייר תפילה תשפו.jpg' }
+  { id: 1, title: 'אירועי תורת חיים תשפ"ו', desc: 'אירועים קהילתיים ורוחניים לכלל תלמידי הרשת – חוויות שמחברות ומחזקות זהות יהודית.', badge: 'אירועים', file: 'P/אירועי תורת חיים תשפו (1).jpeg',
+    cats: ['ימי שיא'] },
+  { id: 2, title: 'אירועים שנתיים תשפ"ו', desc: 'לוח האירועים השנתי של תורת חיים – מפגשים, ימי עיון ואירועי שיא לאורך כל השנה.', badge: 'לוח שנה', file: 'P/אירועים שנתיים תשפו פלייר.jpg',
+    cats: ['ימי שיא', 'הכשרת צוותים'] },
+  { id: 3, title: 'אמון ואמונה', desc: 'תוכנית חווייתית לפיתוח חוסן אמוני לתלמידים – דרך העמקה ב-8 עקרונות רוחניים.', badge: 'חוסן אמוני', file: 'P/אמון ואמונה פלייר תשפו.jpg',
+    cats: ['תוכניות לתלמידים', 'הכשרת צוותים'] },
+  { id: 4, title: 'תוכנית בר/בת מצווה', desc: 'מסלול מקיף ומרתק לקראת בר ובת מצווה – חוויות, ספר לימוד, ליווי אישי ואירועי שיא.', badge: 'בר/בת מצווה', file: 'P/בר מצווה פלייר.jpg',
+    cats: ['ימי שיא', 'תוכניות לתלמידים'] },
+  { id: 5, title: 'הישיבה הקהילתית – בנים', desc: 'חוויית לימוד ישיבתית אותנטית בתוך בית הספר – לימוד עמוק, מפגש בין-גילאי וקהילה.', badge: 'לימוד מעמיק', file: 'P/הישיבה הקהילתית בנים פלייר.jpg',
+    cats: ['ימי שיא', 'תוכניות לתלמידים'] },
+  { id: 6, title: 'מסע זהות יהודית – הרב זקס', desc: 'מסלול דיגיטלי עשיר על פי משנתו של הרב יונתן זקס – מסע לזהות היהודית הייחודית ביותר.', badge: 'זהות יהודית', file: 'P/הרב זקס פלייר תשפו.jpg',
+    cats: ['תוכניות לתלמידים', 'הכשרת צוותים'] },
+  { id: 7, title: 'מושגי יסוד ביהדות', desc: 'יחידות ללימוד חווייתי ומעמיק של מושגי יסוד – שמע ישראל, מצוות, קידוש ועוד.', badge: 'יחידות לימוד', file: 'P/מושגי יסוד יהדות פלייר.jpg',
+    cats: ['תוכניות לתלמידים'] },
+  { id: 8, title: 'בבאסאלי', desc: 'תוכנית ייחודית שמחברת בין מסורת לחיים המודרניים – דרך עולם הגסטרונומיה היהודית.', badge: 'תרבות יהודית', file: 'P/פלייר בבאסאלי.jpg',
+    cats: ['תוכניות לתלמידים', 'הכשרת צוותים'] },
+  { id: 9, title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/פלייר תפילה תשפו.jpg',
+    cats: ['תוכניות לתלמידים', 'הכשרת צוותים'] },
 ];
+
+// Active filter categories (all active by default)
+let activeFilters = new Set(['ימי שיא', 'תוכניות לתלמידים', 'הכשרת צוותים']);
 
 // ═══ RENDER CARDS ═══
 function renderCards() {
   const grid = document.getElementById('programGrid');
-  grid.innerHTML = programs.map((p, i) => `
+  const filtered = programs.filter(p => p.cats.some(c => activeFilters.has(c)));
+  grid.innerHTML = filtered.map((p, i) => `
     <article class="program-card reveal" style="transition-delay:${i * 0.07}s"
       onclick="openModal(${p.id})" role="button" tabindex="0"
       aria-label="פרטים על ${p.title}"
@@ -40,6 +53,33 @@ function renderCards() {
     </article>
   `).join('');
   observeReveal();
+}
+
+// ═══ FILTER BAR ═══
+function initFilter() {
+  const btns = document.querySelectorAll('.filter-btn');
+  const ALL_CATS = ['ימי שיא', 'תוכניות לתלמידים', 'הכשרת צוותים'];
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      const isActive = activeFilters.has(cat);
+
+      // Don't allow deactivating if it would leave nothing active
+      if (isActive && activeFilters.size === 1) return;
+
+      if (isActive) {
+        activeFilters.delete(cat);
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      } else {
+        activeFilters.add(cat);
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+      }
+      renderCards();
+    });
+  });
 }
 
 // ═══ MODAL ═══
@@ -275,6 +315,7 @@ function initHeroBlurUp() {
 // ═══ INIT ═══
 document.addEventListener('DOMContentLoaded', () => {
   renderCards();
+  initFilter();
   observeReveal();
   initParallax();
   initAccessibility();
