@@ -94,17 +94,6 @@ function initFilter() {
   });
 }
 
-// ═══ HERO SLIDER ═══
-function initHeroSlider() {
-  const images = document.querySelectorAll('.hero-slider .hero-img');
-  if(images.length < 2) return;
-  let currentIndex = 0;
-  setInterval(() => {
-    images[currentIndex].classList.remove('active');
-    currentIndex = (currentIndex + 1) % images.length;
-    images[currentIndex].classList.add('active');
-  }, 4000); // switch every 4s
-}
 
 // ═══ MODAL ═══
 const backdrop = document.getElementById('modalBackdrop');
@@ -425,5 +414,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initPrivacyModal();
   initHeroBlurUp();
   initHandwriting();
-  initHeroSlider();
 });
