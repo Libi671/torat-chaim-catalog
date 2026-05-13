@@ -68,6 +68,7 @@
     <img src="torat-chaim-logo2.png" alt="לוגו תורת חיים באמית" class="navbar-logo navbar-logo-tc" />
     <div class="navbar-divider"></div>
     <img src="amit-logo.png" alt="לוגו רשת אמית" class="navbar-logo navbar-logo-amit" />
+    <div class="navbar-text hide-mobile">תורת חיים באמית תשפ"ז</div>
   </div>
   <button class="navbar-cta" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
     <span class="hide-mobile">לפרטים ו</span>הרשמה <span style="font-size: 1.1em; margin-right: 6px;">🎨</span>
@@ -83,13 +84,19 @@
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <div class="hero-pain">תורת חיים באמית תשפ"ז</div>
+    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px;">
+      <div class="hero-pain hide-mobile" style="margin-bottom: 0;">מגוון הכשרות ותוכניות</div>
+      <div class="hero-pain show-mobile" style="margin-bottom: 0; display: none;">תורת חיים באמית תשפ"ז</div>
+    </div>
     <h1 class="hero-title">
-      <span class="hero-title-main">מגוון הכשרות ותוכניות</span>
+      <span class="hero-title-main">מסעות זהות באמית</span>
     </h1>
     <a href="#catalog" class="hero-scroll-btn desktop-scroll-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
       לקטלוג התוכניות: גלו את הצבעים שלכם
+    </a>
+    <a href="#catalog" class="hero-scroll-btn show-mobile" style="display: none; padding: 12px 28px; font-size: 1rem;">
+      מגוון הכשרות ותוכניות
     </a>
   </div>
 </section>
@@ -110,7 +117,7 @@
 
   <div class="filter-bar" id="filterBar" role="group" aria-label="סינון לפי קטגוריה">
     <button class="filter-btn" data-cat="ימי שיא" aria-pressed="false"><span class="color-dot" style="background:var(--blue-light)"></span> ימי שיא</button>
-    <button class="filter-btn active" data-cat="תוכניות לתלמידים" aria-pressed="true"><span class="color-dot" style="background:var(--lime)"></span> תוכניות לתלמידים</button>
+    <button class="filter-btn active" data-cat="מסעות זהות לתלמידים" aria-pressed="true"><span class="color-dot" style="background:var(--lime)"></span> מסעות זהות לתלמידים</button>
     <button class="filter-btn" data-cat="הכשרת צוותים" aria-pressed="false"><span class="color-dot" style="background:var(--green)"></span> הכשרת צוותים</button>
     <button class="filter-btn" data-cat="בית מדרש" aria-pressed="false"><span class="color-dot" style="background:var(--blue-mid)"></span> בית מדרש</button>
   </div>

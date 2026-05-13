@@ -129,6 +129,15 @@ h1, h2, h3, h4, h5, h6,
   flex-shrink: 0;
 }
 
+.navbar-text {
+  color: var(--white);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-right: 14px;
+  letter-spacing: 0.2px;
+  opacity: 0.9;
+}
+
 /* ─── HERO ─── */
 .hero {
   position: relative;
@@ -1278,7 +1287,9 @@ body.a11y-no-animations *::after {
   .hero-title-main { font-size: 1.3rem; }
   .a11y-panel { left: 10px; right: 10px; width: auto; }
   
-  .hide-mobile { display: none; }
+  .hide-mobile { display: none !important; }
+  .show-mobile { display: inline-block !important; }
+  a.show-mobile { display: inline-flex !important; }
   .desktop-scroll-btn { display: none !important; }
   .mobile-scroll-btn {
     display: flex !important;
