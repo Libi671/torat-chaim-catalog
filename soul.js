@@ -1,8 +1,8 @@
 // ═══ PROGRAM DATA ═══
 const programs = [
-  { id: 1, title: 'אירועי תורת חיים תשפ"ו', desc: 'אירועים קהילתיים ורוחניים לכלל תלמידי הרשת – חוויות שמחברות ומחזקות זהות יהודית.', badge: 'אירועים', file: 'P/אירועי תורת חיים תשפו (1).jpeg',
+  { id: 1, title: 'אירועי תורת חיים תשפ"ו', desc: 'אירועים קהילתיים ורוחניים לכלל תלמידי הרשת – חוויות שמחברות ומחזקות זהות יהודית.', badge: 'אירועים', file: 'P/WhatsApp Image 2026-05-19 at 05.48.01.jpeg',
     cats: ['ימי שיא'] },
-  { id: 2, title: 'השתלמויות תשפ"ו', desc: 'לוח האירועים השנתי של תורת חיים – מפגשים, ימי עיון ואירועי שיא לאורך כל השנה.', badge: 'לוח שנה', file: 'P/אירועים שנתיים תשפו פלייר.jpg',
+  { id: 2, title: 'השתלמויות תשפ"ו', desc: 'רישום ועדכון ההכשרות לתשפז - יפורסם בקרוב...', badge: 'לוח שנה', file: 'P/אירועים שנתיים תשפו פלייר.jpg',
     cats: ['הכשרת צוותים'] },
   { id: 3, title: 'אמון ואמונה', desc: 'תוכנית חווייתית לפיתוח חוסן אמוני לתלמידים – דרך העמקה ב-8 עקרונות רוחניים.', badge: 'חוסן אמוני', file: 'P/אמון ואמונה פלייר תשפו.jpg',
     cats: ['מסעות זהות לתלמידים'] },
@@ -16,9 +16,11 @@ const programs = [
     cats: ['מסעות זהות לתלמידים'] },
   { id: 8, title: 'מסורת בית אבא', desc: 'תוכנית ייחודית שמחברת בין מסורת לחיים המודרניים – דרך עולם הגסטרונומיה היהודית.', badge: 'תרבות יהודית', file: 'P/פלייר בבאסאלי.jpg',
     cats: ['מסעות זהות לתלמידים'] },
-  { id: 9, title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/פלייר תפילה תשפו.jpg',
+  { id: 9, title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/WhatsApp Image 2026-05-26 at 20.48.18 (1).jpeg',
     cats: ['מסעות זהות לתלמידים'] },
   { id: 10, title: 'בית מדרש מורים', desc: 'תוכנית בית מדרש לצוותים חינוכיים ומורים – לימוד משותף וצמיחה רוחנית.', badge: 'בית מדרש', file: 'P/BMD_M.jpeg',
+    cats: ['בית מדרש'] },
+  { id: 11, title: 'בית מדרש- קהילת הבנות', desc: 'מדרשת נוטעות שמים לתלמידות קהילת הבנות', badge: 'שואפות גבוהה', file: 'P/WhatsApp Image 2026-05-25 at 23.56.44.jpeg',
     cats: ['בית מדרש'] },
 ];
 
@@ -159,19 +161,167 @@ function observeReveal() {
   els.forEach(el => obs.observe(el));
 }
 
-// ═══ PARALLAX HERO ═══
+// ═══ MULTI-LAYER 3D PARALLAX ═══
 function initParallax() {
-  const heroWrap = document.querySelector('.hero-parallax-wrap');
-  if (!heroWrap) return;
   const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const layers = hero.querySelectorAll('.hero-parallax-layer[data-depth]');
+  if (!layers.length) return;
+
+  // ── Robust iOS / iPhone Detection ──
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  // Apply fallback immediately on iOS to prevent any zoom/shift and display original image
+  if (isIOS) {
+    hero.classList.add('hero-use-fallback');
+  }
+
+  // ── State ──
+  let scrollY = 0;
+  let mouseX = 0, mouseY = 0;       // normalized -1..1
+  let gyroX = 0, gyroY = 0;         // normalized -1..1
+  let currentScroll = 0;
+  let currentMouseX = 0, currentMouseY = 0;
+  let currentGyroX = 0, currentGyroY = 0;
+  let ticking = false;
+
+  const LERP = 0.08;  // smoothing factor (lower = smoother / slower)
+  const SCROLL_MULTIPLIER = 80;    // max px shift for scroll
+  const MOUSE_MULTIPLIER  = 25;    // max px shift for mouse
+  const GYRO_MULTIPLIER   = 20;    // max px shift for gyroscope
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  // ── Check accessibility ──
+  function isReduced() {
+    return document.body.classList.contains('a11y-no-animations') ||
+           window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  // ── Scroll tracking ──
   window.addEventListener('scroll', () => {
+    if (isIOS) return; // Disable scroll tracking on iOS
     const rect = hero.getBoundingClientRect();
     const heroH = hero.offsetHeight;
     if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-    const scrolled = -rect.top;
-    const parallaxOffset = scrolled * 0.35;
-    heroWrap.style.transform = `translateY(${parallaxOffset}px)`;
+    scrollY = -rect.top / heroH;
+    scheduleUpdate();
   }, { passive: true });
+
+  // ── Mouse tracking (desktop only) ──
+  hero.addEventListener('mousemove', (e) => {
+    if (isIOS) return;
+    const rect = hero.getBoundingClientRect();
+    mouseX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;  // -1..1
+    mouseY = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;  // -1..1
+    scheduleUpdate();
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => {
+    if (isIOS) return;
+    mouseX = 0; mouseY = 0;
+    scheduleUpdate();
+  }, { passive: true });
+
+  // ── Gyroscope tracking (mobile/tablet) ──
+  function handleOrientation(e) {
+    if (isIOS) return;
+    const beta  = Math.max(-30, Math.min(30, e.beta  || 0));
+    const gamma = Math.max(-30, Math.min(30, e.gamma || 0));
+    gyroX = gamma / 30;  // -1..1
+    gyroY = beta  / 30;  // -1..1
+    scheduleUpdate();
+  }
+
+  function initGyroscope() {
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+      // iOS 13+ requires user gesture to grant permission (we skip on iOS anyway but keep as fallback)
+      hero.addEventListener('click', function reqGyro() {
+        DeviceOrientationEvent.requestPermission()
+          .then(state => {
+            if (state === 'granted') {
+              window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+            }
+          })
+          .catch(() => {});
+        hero.removeEventListener('click', reqGyro);
+      }, { once: true });
+    } else if ('DeviceOrientationEvent' in window) {
+      window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+    }
+  }
+
+  // Only init gyroscope on touch devices that are not iOS (no permission dialog needed)
+  if (!isIOS && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+    initGyroscope();
+  }
+
+  // ── Render loop ──
+  function scheduleUpdate() {
+    if (isIOS) return; // Do not schedule updates on iOS
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(updateLayers);
+    }
+  }
+
+  function updateLayers() {
+    const reduced = isReduced();
+    if (reduced) {
+      hero.classList.add('hero-use-fallback');
+      layers.forEach(layer => { layer.style.transform = 'translate3d(0,0,0)'; });
+      ticking = false;
+      return;
+    } else if (!isIOS) {
+      hero.classList.remove('hero-use-fallback');
+    }
+
+    // Smooth interpolation
+    currentScroll = lerp(currentScroll, scrollY, LERP * 2);
+    currentMouseX = lerp(currentMouseX, mouseX, LERP);
+    currentMouseY = lerp(currentMouseY, mouseY, LERP);
+    currentGyroX  = lerp(currentGyroX,  gyroX,  LERP);
+    currentGyroY  = lerp(currentGyroY,  gyroY,  LERP);
+
+    layers.forEach(layer => {
+      const depth = parseFloat(layer.dataset.depth) || 0;
+
+      const sY = currentScroll * SCROLL_MULTIPLIER * depth;
+      const mX = currentMouseX * MOUSE_MULTIPLIER * depth;
+      const mY = currentMouseY * MOUSE_MULTIPLIER * depth * 0.6;
+      const gX = currentGyroX  * GYRO_MULTIPLIER  * depth;
+      const gY = currentGyroY  * GYRO_MULTIPLIER  * depth * 0.6;
+
+      const totalX = mX + gX;
+      const totalY = sY + mY + gY;
+
+      layer.style.transform = `translate3d(${totalX.toFixed(2)}px, ${totalY.toFixed(2)}px, 0)`;
+    });
+
+    // Keep animating while values are interpolating (not settled)
+    const scrollDiff = Math.abs(scrollY - currentScroll);
+    const mouseDiffX = Math.abs(mouseX - currentMouseX);
+    const mouseDiffY = Math.abs(mouseY - currentMouseY);
+    const gyroDiffX  = Math.abs(gyroX - currentGyroX);
+    const gyroDiffY  = Math.abs(gyroY - currentGyroY);
+
+    if (scrollDiff > 0.001 || mouseDiffX > 0.001 || mouseDiffY > 0.001 ||
+        gyroDiffX > 0.001 || gyroDiffY > 0.001) {
+      requestAnimationFrame(updateLayers);
+    } else {
+      ticking = false;
+    }
+  }
+
+  // Initial render
+  if (!isIOS) {
+    scheduleUpdate();
+  } else {
+    // Reset transforms for iOS just in case
+    layers.forEach(layer => { layer.style.transform = 'translate3d(0,0,0)'; });
+  }
 }
 
 // ═══ HERO IMAGE FALLBACK ═══

@@ -77,27 +77,64 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero" id="home" role="banner">
-  <div class="hero-parallax-wrap">
+
+  <!-- L0: Deep background gradient (slowest layer) -->
+  <div class="hero-parallax-layer hero-layer-bg" data-depth="0.08" aria-hidden="true"></div>
+
+  <!-- L1: Main photo layers -->
+  
+  <!-- Fallback single image layer (visible on iOS or when parallax is disabled) -->
+  <div class="hero-parallax-layer hero-layer-fallback" data-depth="0.18">
     <div class="hero-blur-placeholder" id="heroBluePlaceholder"></div>
     <img src="hero-soul.png" alt="תלמידים ותלמידות מציירים" class="hero-img" id="heroImg" onerror="this.style.display='none'" />
   </div>
-  <div class="hero-overlay"></div>
 
-  <div class="hero-content">
-    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px;">
-      <div class="hero-pain hide-mobile" style="margin-bottom: 0;">מגוון הכשרות ותוכניות</div>
-      <div class="hero-pain show-mobile" style="margin-bottom: 0; display: none;">תורת חיים באמית תשפ"ז</div>
+  <!-- Sliced Background layer (moves slower) -->
+  <div class="hero-parallax-layer hero-layer-photo-bg" data-depth="0.05">
+    <img src="hero-bg.png" alt="" class="hero-img" />
+  </div>
+
+  <!-- Sliced People layer (closer to camera, moves faster) -->
+  <div class="hero-parallax-layer hero-layer-photo-people" data-depth="0.18">
+    <img src="hero-people.png" alt="תלמידים ותלמידות מציירים" class="hero-img" />
+  </div>
+
+  <!-- L2: Overlay (matches photo depth) -->
+  <div class="hero-parallax-layer hero-layer-overlay" data-depth="0.25"></div>
+
+  <!-- L3: Paint splatters (medium-fast layer) -->
+  <div class="hero-parallax-layer hero-layer-splatters" data-depth="0.45" aria-hidden="true">
+    <svg class="splatter splatter-1" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="60" rx="55" ry="48" fill="rgba(196,214,0,0.48)" transform="rotate(-15 60 60)"/><ellipse cx="75" cy="40" rx="20" ry="18" fill="rgba(196,214,0,0.38)"/></svg>
+    <svg class="splatter splatter-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="50" rx="45" ry="40" fill="rgba(0,174,239,0.42)" transform="rotate(20 50 50)"/><ellipse cx="30" cy="65" rx="18" ry="15" fill="rgba(0,174,239,0.32)"/></svg>
+    <svg class="splatter splatter-3" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg"><ellipse cx="45" cy="45" rx="40" ry="35" fill="rgba(126,177,58,0.45)" transform="rotate(10 45 45)"/><ellipse cx="60" cy="30" rx="15" ry="12" fill="rgba(126,177,58,0.35)"/></svg>
+    <svg class="splatter splatter-4" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="40" rx="35" ry="30" fill="rgba(196,214,0,0.40)" transform="rotate(-25 40 40)"/></svg>
+  </div>
+
+  <!-- L4: Floating bokeh / light particles (fastest layer) -->
+  <div class="hero-parallax-layer hero-layer-particles" data-depth="0.6" aria-hidden="true">
+    <span class="hero-particle p1"></span>
+    <span class="hero-particle p2"></span>
+    <span class="hero-particle p3"></span>
+    <span class="hero-particle p4"></span>
+    <span class="hero-particle p5"></span>
+    <span class="hero-particle p6"></span>
+    <span class="hero-particle p7"></span>
+    <span class="hero-particle p8"></span>
+    <span class="hero-particle p9"></span>
+    <span class="hero-particle p10"></span>
+    <span class="hero-particle p11"></span>
+    <span class="hero-particle p12"></span>
+    <span class="hero-particle p13"></span>
+    <span class="hero-particle p14"></span>
+  </div>
+
+  <!-- L5: Content (subtle parallax for depth) -->
+  <div class="hero-content hero-parallax-layer" data-depth="0.12">
+    <div class="hero-quote-container">
+      <h1 class="hero-quote-main">יצייר לו <br class="show-mobile" />מה שנשמתו מראה לו</h1>
+      <p class="hero-quote-sub">וניצוצות כאלה יאירו את כל העולם כולו מכבודו</p>
+      <div class="hero-quote-source">(אורות הקודש א, הרב קוק)</div>
     </div>
-    <h1 class="hero-title">
-      <span class="hero-title-main">מסעות זהות באמית</span>
-    </h1>
-    <a href="#catalog" class="hero-scroll-btn desktop-scroll-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-      לקטלוג התוכניות: גלו את הצבעים שלכם
-    </a>
-    <a href="#catalog" class="hero-scroll-btn show-mobile" style="display: none; padding: 12px 28px; font-size: 1rem;">
-      מגוון הכשרות ותוכניות
-    </a>
   </div>
 </section>
 
@@ -106,6 +143,104 @@
   <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,32 C360,56 1080,8 1440,32 L1440,0 L0,0 Z" fill="#002d56"/></svg>
 </div>
 
+<!-- ═══ INTRO RATIONALE ═══ -->
+<section class="intro-rationale" id="introRationale" aria-labelledby="intro-rationale-title">
+  <!-- Dynamic background canvas paint blots -->
+  <div class="rationale-paint-blob blob-blue"></div>
+  <div class="rationale-paint-blob blob-lime"></div>
+  
+  <div class="intro-rationale-inner">
+    
+    <!-- Premium Greeting Banner -->
+    <div class="intro-banner-container reveal">
+      <div class="intro-banner-stroke"></div>
+      <div class="intro-banner-card">
+        <h2 class="intro-greeting-title" id="intro-rationale-title">מוזמנים להצטרף ולצייר לכל שכבת גיל את התוכן הנוגע לנשמתם. אנו מציעים:</h2>
+      </div>
+    </div>
+
+    <!-- Timeline Heading -->
+    <div class="timeline-header reveal">
+      <div class="timeline-title-wrap">
+        <span class="timeline-icon">🌀</span>
+        <h3 class="timeline-title">מהלך ספירלי להעצמת חוסן אמוני:</h3>
+      </div>
+    </div>
+
+    <!-- The Interactive Pathway -->
+    <div class="pathway-container reveal">
+      <!-- Wavy connection line SVG for 2 items -->
+      <svg class="pathway-svg-line hide-mobile" viewBox="0 0 1000 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width: 600px; margin: 0 auto; left: 0; right: 0;">
+        <path d="M200 60 C 400 130, 600 -10, 800 60" stroke="url(#paint-gradient)" stroke-width="4" stroke-dasharray="10 8" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="paint-gradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#002d56"/>
+            <stop offset="100%" stop-color="#c4d600"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- Pathway Steps (Redesigned for 2 centered cards) -->
+      <div class="pathway-steps two-steps">
+        <!-- Step 1: Grade Z-H -->
+        <div class="pathway-step step-1">
+          <div class="step-card-wrapper">
+            <div class="step-card">
+              <div class="step-glow"></div>
+              <div class="step-badge-wrap">
+                <span class="step-badge">כיתה ז׳-ח׳</span>
+              </div>
+              <ul class="step-bullet-list">
+                <li><span class="bullet-dot"></span>שרשרת הדורות ושייכות</li>
+                <li><span class="bullet-dot"></span>למה להיות יהודי זה הדבר המרגש ביותר - לאור משנת הרב זקס</li>
+                <li><span class="bullet-dot"></span>מסע זהות לאור חכמי יהדות ספרד</li>
+                <li><span class="bullet-dot"></span>מסע זהות לאורך שנת בר המצווה</li>
+              </ul>
+              <div class="step-accent-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Grade T-Y -->
+        <div class="pathway-step step-3">
+          <div class="step-card-wrapper">
+            <div class="step-card">
+              <div class="step-glow"></div>
+              <div class="step-badge-wrap">
+                <span class="step-badge">כיתות ט׳-י׳</span>
+              </div>
+              <ul class="step-bullet-list">
+                <li><span class="bullet-dot"></span><strong>אחריות - אמון ואמונה:</strong> מסע זהות למנהיגות והתפתחות אישית מתוך אמונה</li>
+                <li><span class="bullet-dot"></span><strong>תפילה:</strong> התפילה ככלי לצמיחה אישית ותיקון עולם</li>
+              </ul>
+              <div class="step-accent-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Mini Panel -->
+    <div class="features-mini-container reveal">
+      <div class="features-mini-header">
+        <span class="features-mini-icon">🎨</span>
+        <h4 class="features-mini-title">התוכניות כוללות:</h4>
+      </div>
+      <div class="features-mini-tags">
+        <span class="mini-tag tag-blue">👥 עבודת חבורה</span>
+        <span class="mini-tag tag-green">🎨 למידה יצרתית</span>
+        <span class="mini-tag tag-lime">📐 מערכים מושקעים</span>
+        <span class="mini-tag tag-purple">📚 חוברות מעוצבות לתלמידים</span>
+        <span class="mini-tag tag-gold">🎬 סרטוניים ייחודים</span>
+        <span class="mini-tag tag-cyan">🤖 כלי Ai</span>
+        <span class="mini-tag tag-orange">🖼️ קאפות ענק</span>
+        <span class="mini-tag tag-pink">✨ ועוד...</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- ═══ CATALOG ═══ -->
 <section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
   <!-- Paint blobs for background -->
@@ -113,7 +248,7 @@
   <div class="paint-blob paint-blob-2"></div>
   <div class="paint-blob paint-blob-3"></div>
 
-  <div class="filter-label" style="text-align: center; font-size: 0.95rem; color: var(--blue-dark); font-weight: 700; margin-top: 10px; margin-bottom: 8px;">בחירה:</div>
+  <div class="filter-label" style="text-align: center; font-size: 0.95rem; color: var(--blue-dark); font-weight: 700; margin-top: 10px; margin-bottom: 8px;">מגוון הכשרות ותוכניות:</div>
 
   <div class="filter-bar" id="filterBar" role="group" aria-label="סינון לפי קטגוריה">
     <button class="filter-btn" data-cat="ימי שיא" aria-pressed="false"><span class="color-dot" style="background:var(--blue-light)"></span> ימי שיא</button>
@@ -264,6 +399,6 @@
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 
-<script src="soul.js"></script>
+<script src="soul.js?v=4"></script>
 </body>
 </html>
