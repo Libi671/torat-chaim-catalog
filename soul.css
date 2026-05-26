@@ -450,9 +450,10 @@ h1, h2, h3, h4, h5, h6,
   z-index: 10;
   text-align: center;
   padding: 0 24px;
+  padding-top: 76px; /* always below navbar, in neutral sky area */
   pointer-events: auto;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* always top-aligned — above the people */
   justify-content: center;
   inset: 0;
   width: 100%;
@@ -461,8 +462,7 @@ h1, h2, h3, h4, h5, h6,
 
 @media (min-width: 769px) {
   .hero-content {
-    align-items: flex-start;
-    padding-top: 20px; /* raised higher */
+    padding-top: 20px;
   }
 }
 
@@ -1637,8 +1637,7 @@ body.a11y-no-animations *::after {
 }
 @media (max-width: 480px) {
   .hero-content {
-    align-items: flex-start;
-    padding-top: 72px; /* below navbar, in neutral area above people */
+    padding-top: 62px; /* smaller navbar on small phones */
   }
   .hero-quote-container {
     padding: 14px 18px 12px;
