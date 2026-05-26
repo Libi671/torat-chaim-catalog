@@ -1634,41 +1634,68 @@ body.a11y-no-animations *::after {
   .a11y-statement-section { padding: 12px 16px; }
   .hero-logos { top: 10px; right: 14px; gap: 10px; }
   .hero-logo-img { height: 40px; }
-}
-@media (max-width: 480px) {
+  /* Mobile hero quote — smaller and higher */
   .hero-content {
-    padding-top: 62px; /* smaller navbar on small phones */
+    padding-top: 58px;
   }
   .hero-quote-container {
-    padding: 14px 18px 12px;
+    padding: 12px 16px 10px;
     border-radius: 14px;
-    margin: 0 16px;
-    max-width: 320px;
+    margin: 0 12px;
+    max-width: 280px;
   }
   .hero-quote-container::before {
-    font-size: 2.5rem;
-    right: 14px;
-    top: -6px;
+    font-size: 2rem;
+    right: 10px;
+    top: -4px;
   }
   .hero-quote-container::after {
-    font-size: 2.5rem;
-    left: 14px;
-    bottom: -10px;
-  }
-  .hero-quote-container .quote-accent-line {
-    right: 18px;
-    left: 18px;
+    font-size: 2rem;
+    left: 10px;
+    bottom: -8px;
   }
   .hero-quote-main {
-    font-size: 1.1rem;
-    margin-bottom: 3px;
+    font-size: 1rem;
+    margin-bottom: 2px;
   }
   .hero-quote-sub {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     margin-bottom: 2px;
   }
   .hero-quote-source {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
+  }
+}
+@media (max-width: 480px) {
+  .hero-content {
+    padding-top: 50px;
+  }
+  .hero-quote-container {
+    padding: 10px 14px 8px;
+    border-radius: 12px;
+    margin: 0 10px;
+    max-width: 240px;
+  }
+  .hero-quote-container::before {
+    font-size: 1.6rem;
+    right: 8px;
+    top: -3px;
+  }
+  .hero-quote-container::after {
+    font-size: 1.6rem;
+    left: 8px;
+    bottom: -6px;
+  }
+  .hero-quote-main {
+    font-size: 0.88rem;
+    margin-bottom: 1px;
+  }
+  .hero-quote-sub {
+    font-size: 0.66rem;
+    margin-bottom: 1px;
+  }
+  .hero-quote-source {
+    font-size: 0.55rem;
   }
   .program-grid { grid-template-columns: 1fr; }
   .modal-flyer-side { min-height: 400px; height: auto; aspect-ratio: 1 / 1.414; }
