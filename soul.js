@@ -182,9 +182,9 @@ function initParallax() {
   let ticking = false;
 
   const LERP = 0.08;  // smoothing factor (lower = smoother / slower)
-  const SCROLL_MULTIPLIER = isMobile ? 180 : 80;    // max px shift for scroll
+  const SCROLL_MULTIPLIER = isMobile ? 120 : 80;    // max px shift for scroll
   const MOUSE_MULTIPLIER  = 25;    // max px shift for mouse
-  const GYRO_MULTIPLIER   = isMobile ? 320 : 20;    // max px shift for gyroscope
+  const GYRO_MULTIPLIER   = isMobile ? 140 : 20;    // max px shift for gyroscope
 
   function lerp(a, b, t) { return a + (b - a) * t; }
 
