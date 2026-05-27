@@ -1631,6 +1631,13 @@ body.a11y-no-animations *::after {
   .navbar-logo-tc { height: 30px; }
   .navbar-logo-amit { height: 28px; }
   .hero { height: 45vh; min-height: 300px; }
+  .hero-layer-photo-bg,
+  .hero-layer-photo-people,
+  .hero-layer-overlay {
+    inset: -12% -12%;
+    width: 124%;
+    height: 124%;
+  }
   .catalog-section { padding: 36px 16px; }
   .catalog-intro { padding: 0 16px 24px; }
   .program-grid { grid-template-columns: 1fr 1fr; gap: 16px; }

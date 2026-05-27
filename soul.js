@@ -168,14 +168,9 @@ function initParallax() {
   const layers = hero.querySelectorAll('.hero-parallax-layer[data-depth]');
   if (!layers.length) return;
 
-  // ── Robust iOS / iPhone Detection ──
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-  // Apply fallback immediately on iOS to prevent any zoom/shift and display original image
-  if (isIOS) {
-    hero.classList.add('hero-use-fallback');
-  }
+  // ── Mobile / Touch Detection ──
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isMobile = isTouchDevice || window.innerWidth <= 768;
 
   // ── State ──
   let scrollY = 0;
@@ -187,9 +182,9 @@ function initParallax() {
   let ticking = false;
 
   const LERP = 0.08;  // smoothing factor (lower = smoother / slower)
-  const SCROLL_MULTIPLIER = 80;    // max px shift for scroll
+  const SCROLL_MULTIPLIER = isMobile ? 180 : 80;    // max px shift for scroll
   const MOUSE_MULTIPLIER  = 25;    // max px shift for mouse
-  const GYRO_MULTIPLIER   = 20;    // max px shift for gyroscope
+  const GYRO_MULTIPLIER   = isMobile ? 320 : 20;    // max px shift for gyroscope
 
   function lerp(a, b, t) { return a + (b - a) * t; }
 
@@ -201,7 +196,6 @@ function initParallax() {
 
   // ── Scroll tracking ──
   window.addEventListener('scroll', () => {
-    if (isIOS) return; // Disable scroll tracking on iOS
     const rect = hero.getBoundingClientRect();
     const heroH = hero.offsetHeight;
     if (rect.bottom < 0 || rect.top > window.innerHeight) return;
@@ -210,23 +204,22 @@ function initParallax() {
   }, { passive: true });
 
   // ── Mouse tracking (desktop only) ──
-  hero.addEventListener('mousemove', (e) => {
-    if (isIOS) return;
-    const rect = hero.getBoundingClientRect();
-    mouseX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;  // -1..1
-    mouseY = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;  // -1..1
-    scheduleUpdate();
-  }, { passive: true });
+  if (!isTouchDevice) {
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      mouseX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;  // -1..1
+      mouseY = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;  // -1..1
+      scheduleUpdate();
+    }, { passive: true });
 
-  hero.addEventListener('mouseleave', () => {
-    if (isIOS) return;
-    mouseX = 0; mouseY = 0;
-    scheduleUpdate();
-  }, { passive: true });
+    hero.addEventListener('mouseleave', () => {
+      mouseX = 0; mouseY = 0;
+      scheduleUpdate();
+    }, { passive: true });
+  }
 
   // ── Gyroscope tracking (mobile/tablet) ──
   function handleOrientation(e) {
-    if (isIOS) return;
     const beta  = Math.max(-30, Math.min(30, e.beta  || 0));
     const gamma = Math.max(-30, Math.min(30, e.gamma || 0));
     gyroX = gamma / 30;  // -1..1
@@ -237,7 +230,7 @@ function initParallax() {
   function initGyroscope() {
     if (typeof DeviceOrientationEvent !== 'undefined' &&
         typeof DeviceOrientationEvent.requestPermission === 'function') {
-      // iOS 13+ requires user gesture to grant permission (we skip on iOS anyway but keep as fallback)
+      // iOS 13+ requires user gesture to grant permission
       hero.addEventListener('click', function reqGyro() {
         DeviceOrientationEvent.requestPermission()
           .then(state => {
@@ -253,14 +246,13 @@ function initParallax() {
     }
   }
 
-  // Only init gyroscope on touch devices that are not iOS (no permission dialog needed)
-  if (!isIOS && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+  // Only init gyroscope on touch devices
+  if (isTouchDevice) {
     initGyroscope();
   }
 
   // ── Render loop ──
   function scheduleUpdate() {
-    if (isIOS) return; // Do not schedule updates on iOS
     if (!ticking) {
       ticking = true;
       requestAnimationFrame(updateLayers);
@@ -274,7 +266,7 @@ function initParallax() {
       layers.forEach(layer => { layer.style.transform = 'translate3d(0,0,0)'; });
       ticking = false;
       return;
-    } else if (!isIOS) {
+    } else {
       hero.classList.remove('hero-use-fallback');
     }
 
@@ -316,12 +308,7 @@ function initParallax() {
   }
 
   // Initial render
-  if (!isIOS) {
-    scheduleUpdate();
-  } else {
-    // Reset transforms for iOS just in case
-    layers.forEach(layer => { layer.style.transform = 'translate3d(0,0,0)'; });
-  }
+  scheduleUpdate();
 }
 
 // ═══ HERO IMAGE FALLBACK ═══
@@ -433,83 +420,6 @@ function initHeroBlurUp() {
   else { img.addEventListener('load', hide); }
 }
 
-// ═══ HANDWRITING ANIMATION ═══
-function initHandwriting() {
-  const quoteText = document.querySelector('.soul-quote-text');
-  if (!quoteText) return;
-  
-  const text = quoteText.innerText;
-  quoteText.innerHTML = '';
-  quoteText.style.position = 'relative';
-  
-  const hand = document.createElement('span');
-  hand.innerText = '✍️';
-  hand.style.position = 'absolute';
-  hand.style.fontSize = '1.8rem';
-  hand.style.opacity = '0';
-  hand.style.transition = 'top 0.1s linear, left 0.1s linear, opacity 0.3s';
-  hand.style.pointerEvents = 'none';
-  hand.style.zIndex = '10';
-  hand.style.transform = 'translate(-40%, -60%)'; 
-  
-  const words = text.split(' ');
-  const charsList = [];
-  
-  words.forEach((word, wIdx) => {
-    const wordSpan = document.createElement('span');
-    wordSpan.style.display = 'inline-block';
-    
-    for(let i=0; i<word.length; i++) {
-      const charSpan = document.createElement('span');
-      charSpan.textContent = word[i];
-      charSpan.style.opacity = '0';
-      wordSpan.appendChild(charSpan);
-      charsList.push(charSpan);
-    }
-    quoteText.appendChild(wordSpan);
-    
-    if (wIdx < words.length - 1) {
-      const spaceSpan = document.createElement('span');
-      spaceSpan.innerHTML = '&nbsp;';
-      quoteText.appendChild(spaceSpan);
-    }
-  });
-
-  quoteText.appendChild(hand);
-
-  let isAnimated = false;
-  const obs = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && !isAnimated) {
-      isAnimated = true;
-      hand.style.opacity = '1';
-      
-      let i = 0;
-      function typeChar() {
-        if (i < charsList.length) {
-          const charSpan = charsList[i];
-          charSpan.style.opacity = '1';
-          
-          const rect = charSpan.getBoundingClientRect();
-          const parentRect = quoteText.getBoundingClientRect();
-          
-          hand.style.top = (rect.top - parentRect.top) + 'px';
-          hand.style.left = (rect.left - parentRect.left - 5) + 'px';
-          
-          i++;
-          const speed = 25 + Math.random() * 30;
-          setTimeout(typeChar, speed);
-        } else {
-          hand.style.opacity = '0';
-        }
-      }
-      setTimeout(typeChar, 500); 
-      obs.disconnect();
-    }
-  }, { threshold: 0.6 });
-  
-  obs.observe(quoteText);
-}
-
 // ═══ INIT ═══
 document.addEventListener('DOMContentLoaded', () => {
   renderCards();
@@ -521,5 +431,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initBackToTop();
   initPrivacyModal();
   initHeroBlurUp();
-  initHandwriting();
 });

@@ -143,6 +143,25 @@
   <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,32 C360,56 1080,8 1440,32 L1440,0 L0,0 Z" fill="#002d56"/></svg>
 </div>
 
+<!-- ═══ CATALOG ═══ -->
+<section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
+  <!-- Paint blobs for background -->
+  <div class="paint-blob paint-blob-1"></div>
+  <div class="paint-blob paint-blob-2"></div>
+  <div class="paint-blob paint-blob-3"></div>
+
+  <div class="filter-label" style="text-align: center; font-size: 0.95rem; color: var(--blue-dark); font-weight: 700; margin-top: 10px; margin-bottom: 8px;">מגוון הכשרות ותוכניות:</div>
+
+  <div class="filter-bar" id="filterBar" role="group" aria-label="סינון לפי קטגוריה">
+    <button class="filter-btn" data-cat="ימי שיא" aria-pressed="false"><span class="color-dot" style="background:var(--blue-light)"></span> ימי שיא</button>
+    <button class="filter-btn active" data-cat="מסעות זהות לתלמידים" aria-pressed="true"><span class="color-dot" style="background:var(--lime)"></span> מסעות זהות לתלמידים</button>
+    <button class="filter-btn" data-cat="הכשרת צוותים" aria-pressed="false"><span class="color-dot" style="background:var(--green)"></span> הכשרת צוותים</button>
+    <button class="filter-btn" data-cat="בית מדרש" aria-pressed="false"><span class="color-dot" style="background:var(--blue-mid)"></span> בית מדרש</button>
+  </div>
+
+  <div class="program-grid" id="programGrid"></div>
+</section>
+
 <!-- ═══ INTRO RATIONALE ═══ -->
 <section class="intro-rationale" id="introRationale" aria-labelledby="intro-rationale-title">
   <!-- Dynamic background canvas paint blots -->
@@ -238,34 +257,6 @@
       </div>
     </div>
 
-  </div>
-</section>
-
-<!-- ═══ CATALOG ═══ -->
-<section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
-  <!-- Paint blobs for background -->
-  <div class="paint-blob paint-blob-1"></div>
-  <div class="paint-blob paint-blob-2"></div>
-  <div class="paint-blob paint-blob-3"></div>
-
-  <div class="filter-label" style="text-align: center; font-size: 0.95rem; color: var(--blue-dark); font-weight: 700; margin-top: 10px; margin-bottom: 8px;">מגוון הכשרות ותוכניות:</div>
-
-  <div class="filter-bar" id="filterBar" role="group" aria-label="סינון לפי קטגוריה">
-    <button class="filter-btn" data-cat="ימי שיא" aria-pressed="false"><span class="color-dot" style="background:var(--blue-light)"></span> ימי שיא</button>
-    <button class="filter-btn active" data-cat="מסעות זהות לתלמידים" aria-pressed="true"><span class="color-dot" style="background:var(--lime)"></span> מסעות זהות לתלמידים</button>
-    <button class="filter-btn" data-cat="הכשרת צוותים" aria-pressed="false"><span class="color-dot" style="background:var(--green)"></span> הכשרת צוותים</button>
-    <button class="filter-btn" data-cat="בית מדרש" aria-pressed="false"><span class="color-dot" style="background:var(--blue-mid)"></span> בית מדרש</button>
-  </div>
-
-  <div class="program-grid" id="programGrid"></div>
-</section>
-
-<!-- ═══ SOUL QUOTE STRIP ═══ -->
-<section class="soul-quote-section" aria-hidden="true">
-  <div class="soul-quote-inner reveal">
-    <span class="soul-quote-mark">"</span>
-    <p class="soul-quote-text">האמנות היא כלי לביטוי עצמי ולחשיפת נשמת התלמיד. כל תלמיד הוא יצירת מופת שעדיין מציירת את עצמה.</p>
-    <div class="soul-quote-source">מתוך חזון תורת חיים באמית</div>
   </div>
 </section>
 
