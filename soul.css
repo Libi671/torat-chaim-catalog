@@ -290,6 +290,12 @@ h1, h2, h3, h4, h5, h6,
   .splatter-4 {
     display: none;
   }
+  .splatter-1 {
+    top: 55%;
+    right: 10%;
+    width: 120px;
+    height: 120px;
+  }
 }
 
 /* L4: Floating bokeh particles */
