@@ -230,18 +230,11 @@ function initParallax() {
   function initGyroscope() {
     if (typeof DeviceOrientationEvent !== 'undefined' &&
         typeof DeviceOrientationEvent.requestPermission === 'function') {
-      // iOS 13+ requires user gesture to grant permission
-      hero.addEventListener('click', function reqGyro() {
-        DeviceOrientationEvent.requestPermission()
-          .then(state => {
-            if (state === 'granted') {
-              window.addEventListener('deviceorientation', handleOrientation, { passive: true });
-            }
-          })
-          .catch(() => {});
-        hero.removeEventListener('click', reqGyro);
-      }, { once: true });
+      // iOS 13+ requires user permission popup.
+      // To prevent showing an annoying permission popup to the user, we do not request gyroscope access on iOS.
+      // iOS users will still enjoy the scroll-based parallax effect which requires no permission.
     } else if ('DeviceOrientationEvent' in window) {
+      // Android does not require permission popups.
       window.addEventListener('deviceorientation', handleOrientation, { passive: true });
     }
   }
