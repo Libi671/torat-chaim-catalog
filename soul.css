@@ -284,6 +284,14 @@ h1, h2, h3, h4, h5, h6,
   75% { transform: translateY(-6px) rotate(1deg) scale(1.02); }
 }
 
+@media (max-width: 768px) {
+  .splatter-2,
+  .splatter-3,
+  .splatter-4 {
+    display: none;
+  }
+}
+
 /* L4: Floating bokeh particles */
 .hero-layer-particles {
   z-index: 5;
