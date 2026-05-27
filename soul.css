@@ -815,12 +815,15 @@ h1, h2, h3, h4, h5, h6,
 
 /* ─── PROGRAM GRID ─── */
 .program-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 28px;
+  justify-content: center;
 }
 
 .program-card {
+  flex: 0 1 340px;
+  width: 100%;
   background: var(--white);
   border-radius: 4px;
   border: 8px solid #d4b895;
@@ -1640,7 +1643,8 @@ body.a11y-no-animations *::after {
   }
   .catalog-section { padding: 36px 16px; }
   .catalog-intro { padding: 0 16px 24px; }
-  .program-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .program-grid { gap: 16px; }
+  .program-card { flex: 0 1 calc(50% - 8px); }
   .modal { grid-template-columns: 1fr; max-height: 95vh; }
   .modal-flyer-side { border-radius: 20px 20px 0 0; min-height: 320px; }
   .modal-form-side { padding: 24px 20px; }
@@ -1718,7 +1722,7 @@ body.a11y-no-animations *::after {
   .hero-quote-source {
     font-size: 0.55rem;
   }
-  .program-grid { grid-template-columns: 1fr; }
+  .program-card { flex: 0 1 100%; }
   .modal-flyer-side { min-height: 400px; height: auto; aspect-ratio: 1 / 1.414; }
   .hero { height: 55vh; min-height: 280px; }
   .hero-title-main { font-size: 1.7rem; }
