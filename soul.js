@@ -1,29 +1,3 @@
-// ═══ PROGRAM DATA ═══
-const programs = [
-  { id: 1, title: 'אירועי תורת חיים תשפ"ז', desc: 'אירועים קהילתיים ורוחניים לכלל תלמידי הרשת – חוויות שמחברות ומחזקות זהות יהודית.', badge: 'אירועים', file: 'P/WhatsApp Image 2026-05-19 at 05.48.01.jpeg',
-    cats: ['ימי שיא'] },
-  { id: 2, title: 'השתלמויות תשפ"ו', desc: 'רישום ועדכון ההכשרות לתשפז - יפורסם בקרוב...', badge: 'לוח שנה', file: 'P/אירועים שנתיים תשפו פלייר.jpg',
-    cats: ['הכשרת צוותים'] },
-  { id: 3, title: 'אמון ואמונה', desc: 'תוכנית חווייתית לפיתוח חוסן אמוני לתלמידים – דרך העמקה ב-8 עקרונות רוחניים.', badge: 'חוסן אמוני', file: 'P/אמון ואמונה פלייר תשפו.jpg',
-    cats: ['מסעות זהות לתלמידים'] },
-  { id: 4, title: 'תוכנית בר/בת מצווה', desc: 'מסלול מקיף ומרתק לקראת בר ובת מצווה – חוויות, ספר לימוד, ליווי אישי ואירועי שיא.', badge: 'בר/בת מצווה', file: 'P/בר מצווה פלייר.jpg',
-    cats: ['מסעות זהות לתלמידים'] },
-  { id: 5, title: 'הישיבה הקהילתית – בנים', desc: 'חוויית לימוד ישיבתית אותנטית בתוך בית הספר – לימוד עמוק, מפגש בין-גילאי וקהילה.', badge: 'לימוד מעמיק', file: 'P/הישיבה הקהילתית בנים פלייר.jpg',
-    cats: ['בית מדרש'] },
-  { id: 6, title: 'מסע זהות יהודית – הרב זקס', desc: 'מסלול דיגיטלי עשיר על פי משנתו של הרב יונתן זקס – מסע לזהות היהודית הייחודית ביותר.', badge: 'זהות יהודית', file: 'P/הרב זקס פלייר תשפו.jpg',
-    cats: ['מסעות זהות לתלמידים'] },
-  { id: 7, title: 'מושגי יסוד ביהדות', desc: 'יחידות ללימוד חווייתי ומעמיק של מושגי יסוד – שמע ישראל, מצוות, קידוש ועוד.', badge: 'יחידות לימוד', file: 'P/מושגי יסוד יהדות פלייר.jpg',
-    cats: ['מסעות זהות לתלמידים'] },
-  { id: 8, title: 'מסורת בית אבא', desc: 'תוכנית ייחודית שמחברת בין מסורת לחיים המודרניים – דרך עולם הגסטרונומיה היהודית.', badge: 'תרבות יהודית', file: 'P/פלייר בבאסאלי.jpg',
-    cats: ['מסעות זהות לתלמידים'] },
-  { id: 9, title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/WhatsApp Image 2026-05-26 at 20.48.18 (1).jpeg',
-    cats: ['מסעות זהות לתלמידים'] },
-  { id: 10, title: 'בית מדרש מורים', desc: 'תוכנית בית מדרש לצוותים חינוכיים ומורים – לימוד משותף וצמיחה רוחנית.', badge: 'בית מדרש', file: 'P/BMD_M.jpeg',
-    cats: ['בית מדרש'] },
-  { id: 11, title: 'בית מדרש- קהילת הבנות', desc: 'מדרשת נוטעות שמים לתלמידות קהילת הבנות', badge: 'שואפות גבוהה', file: 'P/WhatsApp Image 2026-05-25 at 23.56.44.jpeg',
-    cats: ['בית מדרש'] },
-];
-
 // Active filter categories (default to first)
 let activeFilters = new Set(['מסעות זהות לתלמידים']);
 
@@ -63,10 +37,26 @@ function renderCards() {
         <div class="card-footer">
           <button class="card-cta" tabindex="-1" onclick="event.stopPropagation();openModal(${p.id})">לפרטים נוספים והרשמה 🖌️</button>
         </div>
+        ${renderCardLinks(p)}
       </div>
     </article>
   `).join('');
   observeReveal();
+}
+
+// "לפירוט" / "לתוכן הנלווה" links under a flyer, only for what exists in the Drive folder
+function renderCardLinks(p) {
+  const links = [];
+  if (p.details) links.push(['details', 'לפירוט']);
+  if (p.materials) links.push(['materials', 'לתוכן הנלווה']);
+  if (!links.length) return '';
+  return `<div class="card-links">${links.map(([section, label]) => `
+    <a class="card-link" href="${programUrl(p, section)}"
+      onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">
+      ${label}
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </a>`).join('')}
+  </div>`;
 }
 
 // ═══ FILTER BAR ═══
@@ -315,93 +305,6 @@ function initParallax() {
     });
   }
 })();
-
-// ═══ ACCESSIBILITY ═══
-function initAccessibility() {
-  const toggle = document.getElementById('a11yToggle');
-  const panel = document.getElementById('a11yPanel');
-  const closeBtn = document.getElementById('a11yPanelClose');
-
-  toggle.addEventListener('click', () => {
-    const isOpen = panel.classList.toggle('open');
-    panel.setAttribute('aria-hidden', !isOpen);
-  });
-  closeBtn.addEventListener('click', () => {
-    panel.classList.remove('open');
-    panel.setAttribute('aria-hidden', 'true');
-  });
-
-  let fontScale = 0;
-  document.getElementById('a11yFontInc').addEventListener('click', () => {
-    fontScale = Math.min(fontScale + 1, 4);
-    document.documentElement.style.fontSize = (100 + fontScale * 10) + '%';
-  });
-  document.getElementById('a11yFontDec').addEventListener('click', () => {
-    fontScale = Math.max(fontScale - 1, -2);
-    document.documentElement.style.fontSize = (100 + fontScale * 10) + '%';
-  });
-
-  const toggleClass = (btnId, cls) => {
-    document.getElementById(btnId).addEventListener('click', function() {
-      document.body.classList.toggle(cls);
-      this.classList.toggle('active');
-    });
-  };
-  toggleClass('a11yContrast', 'a11y-high-contrast');
-  toggleClass('a11yLinks', 'a11y-highlight-links');
-  toggleClass('a11yReadable', 'a11y-readable-font');
-  toggleClass('a11yAnimations', 'a11y-no-animations');
-
-  document.getElementById('a11yReset').addEventListener('click', () => {
-    fontScale = 0;
-    document.documentElement.style.fontSize = '';
-    document.body.classList.remove('a11y-high-contrast', 'a11y-highlight-links', 'a11y-readable-font', 'a11y-no-animations');
-    panel.querySelectorAll('.a11y-option').forEach(b => b.classList.remove('active'));
-  });
-}
-
-// ═══ A11Y STATEMENT MODAL ═══
-function initA11yStatement() {
-  const backdrop = document.getElementById('a11yStatementBackdrop');
-  const openBtn = document.getElementById('a11yStatementBtn');
-  const closeBtn = document.getElementById('a11yStatementClose');
-  if (!backdrop || !openBtn) return;
-  const open = () => { backdrop.classList.add('open'); document.body.style.overflow = 'hidden'; };
-  const close = () => { backdrop.classList.remove('open'); document.body.style.overflow = ''; };
-  openBtn.addEventListener('click', open);
-  closeBtn.addEventListener('click', close);
-  backdrop.addEventListener('click', e => { if (e.target === backdrop) close(); });
-}
-
-// ═══ BACK TO TOP (feature 5) ═══
-function initBackToTop() {
-  const btn = document.getElementById('backToTop');
-  if (!btn) return;
-  window.addEventListener('scroll', () => {
-    btn.classList.toggle('visible', window.scrollY > 400);
-  }, { passive: true });
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-// ═══ PRIVACY MODAL (feature 15) ═══
-function initPrivacyModal() {
-  const backdrop = document.getElementById('privacyBackdrop');
-  const openBtn = document.getElementById('privacyBtn');
-  const closeBtn = document.getElementById('privacyClose');
-  if (!backdrop || !openBtn) return;
-  openBtn.addEventListener('click', () => {
-    backdrop.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  });
-  const closePrivacy = () => {
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
-  };
-  closeBtn.addEventListener('click', closePrivacy);
-  backdrop.addEventListener('click', e => { if (e.target === backdrop) closePrivacy(); });
-}
 
 // ═══ HERO BLUR-UP (feature 7) ═══
 function initHeroBlurUp() {
