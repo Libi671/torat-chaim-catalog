@@ -1,9 +1,8 @@
 // ═══ PROGRAM DATA ═══
-// Shared by the catalog (soul.js) and the program inner page (program.js).
 //   details   – "פירוט": text taken from the program's summary doc in the Drive folder,
 //               plus explanatory images that stay in Drive.
 //   materials – "תוכן נלווה": files that stay in Drive and are embedded with Drive's preview.
-//               tooLarge = Drive can't preview the file, so the page shows an open-in-Drive card.
+//               Files too big for Drive's preview get a compressed "(גרסה לאתר)" copy next to the original.
 // Source folder: https://drive.google.com/drive/folders/1j9-xWXyYmwrABB5XXKBGHcTsBw35-D9n
 const programs = [
   { id: 1, title: 'אירועי תורת חיים תשפ"ז', desc: 'אירועים קהילתיים ורוחניים לכלל תלמידי הרשת – חוויות שמחברות ומחזקות זהות יהודית.', badge: 'אירועים', file: 'P/WhatsApp Image 2026-05-19 at 05.48.01.jpeg',
@@ -22,7 +21,7 @@ const programs = [
     ],
     materials: [
       { title: 'כלים מלווים להוראה בכיתה', note: 'מצגת, ספר הדרכה למורה, סרטונים, פודקאסטים ובוט מלווה', type: 'doc', driveId: '1lyrEk-dAOhiiv4jmZCqfMr-XY0DzWm5PP2sFQD5qxwU' },
-      { title: 'מצגת למורים – אמון ואמונה', type: 'pdf', driveId: '1I015H0fZD3FDF2VVpyREPdMNfdzQpGCg', tooLarge: true },
+      { title: 'מצגת למורים – אמון ואמונה', type: 'pdf', driveId: '1e-rln-3xi79dfi1dElCiXaiVjtEgc-zl' },
     ] },
   { id: 4, title: 'תוכנית בר/בת מצווה', desc: 'מסלול מקיף ומרתק לקראת בר ובת מצווה – חוויות, ספר לימוד, ליווי אישי ואירועי שיא.', badge: 'בר/בת מצווה', file: 'P/בר מצווה פלייר.jpg',
     cats: ['מסעות זהות לתלמידים'] },
@@ -43,7 +42,7 @@ const programs = [
   { id: 8, slug: 'baba-sali', title: 'מסורת בית אבא', desc: 'תוכנית ייחודית שמחברת בין מסורת לחיים המודרניים – דרך עולם הגסטרונומיה היהודית.', badge: 'תרבות יהודית', file: 'P/פלייר בבאסאלי.jpg',
     cats: ['מסעות זהות לתלמידים'],
     materials: [
-      { title: 'חוברת לתלמידים – בבא סאלי', type: 'pdf', driveId: '1eoeyftt5PUKa687xhuf5oU5xF26KPGSm', tooLarge: true },
+      { title: 'חוברת לתלמידים – בבא סאלי', type: 'pdf', driveId: '10uG-h04LFrBhCjDGJlnin7ucVxSHUXSr' },
     ] },
   { id: 9, slug: 'tefila', title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/WhatsApp Image 2026-05-26 at 20.48.18 (1).jpeg',
     cats: ['מסעות זהות לתלמידים'],
@@ -66,7 +65,3 @@ const programs = [
   { id: 11, title: 'בית מדרש- קהילת הבנות', desc: 'מדרשת נוטעות שמים לתלמידות קהילת הבנות', badge: 'שואפות גבוהה', file: 'P/WhatsApp Image 2026-05-25 at 23.56.44.jpeg',
     cats: ['בית מדרש'] },
 ];
-
-function programUrl(p, section) {
-  return `program.html?p=${p.slug}#${section}`;
-}

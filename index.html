@@ -25,7 +25,7 @@
   <meta name="twitter:description" content="תוכניות שמחברות את הלב לשורשים – קטלוג תוכניות להעצמת חוסן אמוני ברשת אמית" />
   <meta name="twitter:image" content="og-image.png" />
 
-  <link rel="stylesheet" href="soul.css?v=5" />
+  <link rel="stylesheet" href="soul.css?v=6" />
 </head>
 <body>
 
@@ -360,9 +360,15 @@
     </div>
     <div class="modal-form-side">
       <div class="program-card-clamp form-clamp" style="top: -10px;"></div>
-      <div class="gform-container" style="flex: 1; width: 100%; display: flex; justify-content: center; margin-top: 0;">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSceVsqVnHOM4DCCqVCWMO4dzDYKdJBMC-AJ0QZ-Q9B3_xYdDQ/viewform?embedded=true" width="100%" height="563" frameborder="0" marginheight="0" marginwidth="0" style="border: none;">בטעינה…</iframe>
+      <!-- Selector: הרשמה / פירוט / חומר נלווה – filled by soul.js per program -->
+      <div class="modal-tabs" id="modalTabs" role="tablist" aria-label="תוכן התוכנית" hidden></div>
+      <div class="modal-panel" id="modalPanel-register" role="tabpanel">
+        <div class="gform-container" style="flex: 1; width: 100%; display: flex; justify-content: center; margin-top: 0;">
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSceVsqVnHOM4DCCqVCWMO4dzDYKdJBMC-AJ0QZ-Q9B3_xYdDQ/viewform?embedded=true" width="100%" height="563" frameborder="0" marginheight="0" marginwidth="0" style="border: none;">בטעינה…</iframe>
+        </div>
       </div>
+      <div class="modal-panel" id="modalPanel-details" role="tabpanel" hidden></div>
+      <div class="modal-panel" id="modalPanel-materials" role="tabpanel" hidden></div>
     </div>
   </div>
 </div>
@@ -390,8 +396,7 @@
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
 </button>
 
-<script src="programs.js?v=1"></script>
-<script src="common.js?v=1"></script>
-<script src="soul.js?v=5"></script>
+<script src="programs.js?v=2"></script>
+<script src="soul.js?v=6"></script>
 </body>
 </html>

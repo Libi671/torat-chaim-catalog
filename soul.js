@@ -51,7 +51,7 @@ function renderCardLinks(p) {
   if (p.materials) links.push(['materials', 'לתוכן הנלווה']);
   if (!links.length) return '';
   return `<div class="card-links">${links.map(([section, label]) => `
-    <a class="card-link" href="${programUrl(p, section)}"
+    <a class="card-link" href="#${p.slug}/${section}"
       onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">
       ${label}
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
@@ -90,29 +90,142 @@ function initFilter() {
 
 
 // ═══ MODAL ═══
+// Next to the flyer: a selector between registration (default), details and accompanying content.
+// Deep links: #<slug>/<tab>, e.g. #tefila/materials, open the modal on that tab.
 const backdrop = document.getElementById('modalBackdrop');
+const modalBox = document.getElementById('modalBox');
 const modalClose = document.getElementById('modalClose');
 const modalFlyerImg = document.getElementById('modalFlyerImg');
 const modalEnlargeBtn = document.getElementById('modalEnlargeBtn');
+const modalTabs = document.getElementById('modalTabs');
 
-function openModal(id) {
+const MODAL_TABS = {
+  register: 'הרשמה',
+  details: 'פירוט',
+  materials: 'חומר נלווה',
+};
+const TAB_HASH = /^#([\w-]+)\/(register|details|materials)$/;
+
+let modalProgram = null;
+
+function modalTabsFor(p) {
+  return Object.keys(MODAL_TABS).filter(t => t === 'register' || p[t]);
+}
+
+function openModal(id, tab = 'register') {
   const p = programs.find(x => x.id === id);
   if (!p) return;
-  modalFlyerImg.src = p.file;
-  modalFlyerImg.alt = p.title;
+  const tabs = modalTabsFor(p);
+  if (!tabs.includes(tab)) tab = 'register';
+
+  if (modalProgram !== p) {
+    modalProgram = p;
+    modalFlyerImg.src = p.file;
+    modalFlyerImg.alt = p.title;
+    modalTabs.hidden = tabs.length < 2;
+    modalTabs.innerHTML = tabs.map(t =>
+      `<button class="modal-tab" role="tab" id="modalTab-${t}" data-tab="${t}" aria-controls="modalPanel-${t}">${MODAL_TABS[t]}</button>`
+    ).join('');
+    document.getElementById('modalPanel-details').innerHTML = p.details ? renderDetails(p) : '';
+    document.getElementById('modalPanel-materials').innerHTML = p.materials ? renderMaterials(p) : '';
+  }
+
+  showModalTab(tab);
   backdrop.classList.add('open');
   document.body.style.overflow = 'hidden';
   backdrop.dataset.program = p.title;
+  // on narrow screens the flyer sits above the selector: bring the chosen tab into view
+  modalBox.scrollTop = tab === 'register' ? 0 : modalTabs.offsetTop - 12;
+}
+
+function showModalTab(tab) {
+  modalTabs.querySelectorAll('.modal-tab').forEach(b => {
+    const active = b.dataset.tab === tab;
+    b.setAttribute('aria-selected', active);
+    b.tabIndex = active ? 0 : -1;
+  });
+  Object.keys(MODAL_TABS).forEach(t => { document.getElementById(`modalPanel-${t}`).hidden = t !== tab; });
+  modalBox.classList.toggle('modal-long', tab !== 'register');
+  // Drive previews load only when their tab is opened
+  document.querySelectorAll(`#modalPanel-${tab} iframe[data-src]`).forEach(f => {
+    f.src = f.dataset.src;
+    f.removeAttribute('data-src');
+  });
+}
+
+modalTabs.addEventListener('click', e => {
+  const btn = e.target.closest('.modal-tab');
+  if (!btn) return;
+  showModalTab(btn.dataset.tab);
+  if (modalProgram.slug) history.replaceState(null, '', `#${modalProgram.slug}/${btn.dataset.tab}`);
+});
+
+function openModalFromHash() {
+  const m = location.hash.match(TAB_HASH);
+  const p = m && programs.find(x => x.slug === m[1]);
+  if (p) openModal(p.id, m[2]);
 }
 
 function closeModal() {
   backdrop.classList.remove('open');
   document.body.style.overflow = '';
+  // drop the deep link, so clicking the same link again reopens the modal
+  if (TAB_HASH.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);
 }
 
 modalClose.addEventListener('click', closeModal);
 backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeLightbox(); } });
+window.addEventListener('hashchange', openModalFromHash);
+
+// ═══ DETAILS & MATERIALS ═══
+// Content stays in Drive: files are embedded with Drive's preview, images with Drive's thumbnail service.
+const EXTERNAL_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
+
+function driveViewUrl(m) {
+  return m.type === 'doc'
+    ? `https://docs.google.com/document/d/${m.driveId}/edit`
+    : `https://drive.google.com/file/d/${m.driveId}/view`;
+}
+
+function drivePreviewUrl(m) {
+  return m.type === 'doc'
+    ? `https://docs.google.com/document/d/${m.driveId}/preview`
+    : `https://drive.google.com/file/d/${m.driveId}/preview`;
+}
+
+function renderDetails(p) {
+  return `<div class="details-card">${p.details.map(block => {
+    if (block.p) return `<p>${block.p}</p>`;
+    if (block.list) return `
+      <div class="details-list">
+        <h3>${block.listTitle}</h3>
+        <ul>${block.list.map(item => `<li>${item}</li>`).join('')}</ul>
+      </div>`;
+    if (block.image) return `
+      <figure class="details-figure">
+        <img src="https://drive.google.com/thumbnail?id=${block.image}&sz=w1600" alt="${block.alt}" loading="lazy" />
+      </figure>`;
+    return '';
+  }).join('')}</div>`;
+}
+
+function renderMaterials(p) {
+  return `<div class="materials-list">${p.materials.map(m => `
+    <article class="material-card">
+      <header class="material-head">
+        <span class="material-type ${m.type}">${m.type === 'doc' ? 'מסמך' : 'PDF'}</span>
+        <div class="material-title">
+          <h3>${m.title}</h3>
+          ${m.note ? `<p class="material-note">${m.note}</p>` : ''}
+        </div>
+        <a class="material-open" href="${driveViewUrl(m)}" target="_blank" rel="noopener noreferrer">פתיחה במסך מלא ${EXTERNAL_ICON}</a>
+      </header>
+      <div class="material-frame ${m.type}">
+        <iframe data-src="${drivePreviewUrl(m)}" title="${m.title}" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </article>`).join('')}</div>`;
+}
 
 // ═══ ENLARGE BUTTON → LIGHTBOX ═══
 modalEnlargeBtn.addEventListener('click', () => {
@@ -306,6 +419,93 @@ function initParallax() {
   }
 })();
 
+// ═══ ACCESSIBILITY ═══
+function initAccessibility() {
+  const toggle = document.getElementById('a11yToggle');
+  const panel = document.getElementById('a11yPanel');
+  const closeBtn = document.getElementById('a11yPanelClose');
+
+  toggle.addEventListener('click', () => {
+    const isOpen = panel.classList.toggle('open');
+    panel.setAttribute('aria-hidden', !isOpen);
+  });
+  closeBtn.addEventListener('click', () => {
+    panel.classList.remove('open');
+    panel.setAttribute('aria-hidden', 'true');
+  });
+
+  let fontScale = 0;
+  document.getElementById('a11yFontInc').addEventListener('click', () => {
+    fontScale = Math.min(fontScale + 1, 4);
+    document.documentElement.style.fontSize = (100 + fontScale * 10) + '%';
+  });
+  document.getElementById('a11yFontDec').addEventListener('click', () => {
+    fontScale = Math.max(fontScale - 1, -2);
+    document.documentElement.style.fontSize = (100 + fontScale * 10) + '%';
+  });
+
+  const toggleClass = (btnId, cls) => {
+    document.getElementById(btnId).addEventListener('click', function() {
+      document.body.classList.toggle(cls);
+      this.classList.toggle('active');
+    });
+  };
+  toggleClass('a11yContrast', 'a11y-high-contrast');
+  toggleClass('a11yLinks', 'a11y-highlight-links');
+  toggleClass('a11yReadable', 'a11y-readable-font');
+  toggleClass('a11yAnimations', 'a11y-no-animations');
+
+  document.getElementById('a11yReset').addEventListener('click', () => {
+    fontScale = 0;
+    document.documentElement.style.fontSize = '';
+    document.body.classList.remove('a11y-high-contrast', 'a11y-highlight-links', 'a11y-readable-font', 'a11y-no-animations');
+    panel.querySelectorAll('.a11y-option').forEach(b => b.classList.remove('active'));
+  });
+}
+
+// ═══ A11Y STATEMENT MODAL ═══
+function initA11yStatement() {
+  const backdrop = document.getElementById('a11yStatementBackdrop');
+  const openBtn = document.getElementById('a11yStatementBtn');
+  const closeBtn = document.getElementById('a11yStatementClose');
+  if (!backdrop || !openBtn) return;
+  const open = () => { backdrop.classList.add('open'); document.body.style.overflow = 'hidden'; };
+  const close = () => { backdrop.classList.remove('open'); document.body.style.overflow = ''; };
+  openBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) close(); });
+}
+
+// ═══ BACK TO TOP (feature 5) ═══
+function initBackToTop() {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ═══ PRIVACY MODAL (feature 15) ═══
+function initPrivacyModal() {
+  const backdrop = document.getElementById('privacyBackdrop');
+  const openBtn = document.getElementById('privacyBtn');
+  const closeBtn = document.getElementById('privacyClose');
+  if (!backdrop || !openBtn) return;
+  openBtn.addEventListener('click', () => {
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  const closePrivacy = () => {
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  closeBtn.addEventListener('click', closePrivacy);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closePrivacy(); });
+}
+
 // ═══ HERO BLUR-UP (feature 7) ═══
 function initHeroBlurUp() {
   const img = document.getElementById('heroImg');
@@ -327,4 +527,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initBackToTop();
   initPrivacyModal();
   initHeroBlurUp();
+  openModalFromHash();
 });

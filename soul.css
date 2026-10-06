@@ -2830,132 +2830,66 @@ body.a11y-no-animations *::after {
 .card-link svg { transition: transform 0.2s; }
 .card-link:hover svg { transform: translateX(-3px); }
 
-/* ─── PROGRAM INNER PAGE (program.html) ─── */
-a.navbar-brand { text-decoration: none; }
-a.navbar-cta { text-decoration: none; display: inline-block; }
-
-.program-main {
-  max-width: 1040px;
-  min-height: 70vh;
-  margin: 0 auto;
-  padding: 96px 20px 72px;
-}
-.program-page .card-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-}
-
-.program-crumbs {
+/* ─── MODAL SELECTOR: הרשמה / פירוט / חומר נלווה ─── */
+.modal-tabs {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-.program-crumbs a {
-  color: var(--blue-mid);
-  font-weight: 600;
-  text-decoration: none;
-}
-.program-crumbs a:hover { text-decoration: underline; }
-
-.program-hero {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  background: var(--white);
-  border-radius: var(--radius);
-  border-top: 4px solid var(--lime);
-  box-shadow: var(--shadow);
-  padding: 24px 28px;
-}
-.program-hero-text { flex: 1; min-width: 0; }
-.program-title {
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
-  font-weight: 900;
-  color: var(--blue-dark);
-  line-height: 1.25;
-  margin: 4px 0 8px;
-}
-.program-desc {
-  color: var(--text-muted);
-  line-height: 1.7;
-  margin-bottom: 16px;
-}
-.program-flyer {
-  flex: 0 0 150px;
-  display: block;
-  border: 6px solid #d4b895;
-  border-radius: 4px;
-  box-shadow: 2px 4px 12px rgba(0,0,0,0.15);
-  background: #f5f5f5;
-  transition: transform 0.25s;
-}
-.program-flyer:hover { transform: rotate(-1.5deg) scale(1.03); }
-.program-flyer img { display: block; width: 100%; height: auto; }
-
-.program-tabs {
-  display: flex;
-  gap: 6px;
-  width: fit-content;
-  margin: 32px 0 20px;
-  padding: 6px;
-  background: var(--white);
+  gap: 4px;
+  padding: 5px;
+  margin-bottom: 18px;
+  background: var(--gray-light);
   border-radius: 40px;
-  box-shadow: var(--shadow);
+  box-shadow: inset 0 1px 3px rgba(0,45,86,0.08);
 }
-.program-tab {
+.modal-tabs[hidden],
+.modal-panel[hidden] { display: none; }
+.modal-tab {
+  flex: 1;
   border: none;
   background: transparent;
   color: var(--blue-dark);
   font-family: 'Heebo', sans-serif;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  padding: 10px 28px;
+  padding: 9px 12px;
   border-radius: 30px;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
-.program-tab:hover { background: var(--gray-light); }
-.program-tab[aria-selected="true"] {
+.modal-tab:hover { background: rgba(255,255,255,0.85); }
+.modal-tab[aria-selected="true"] {
   background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
   color: var(--white);
+  box-shadow: 0 3px 10px rgba(0,45,86,0.25);
 }
-.program-section-title {
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: var(--blue-dark);
-  margin: 32px 0 18px;
+.modal-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Details (פירוט) */
 .details-card {
-  background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 32px 36px;
-  font-size: 1.05rem;
+  font-size: 1rem;
   line-height: 1.85;
+  color: var(--text-dark);
 }
-.details-card p { margin-bottom: 14px; }
+.details-card p { margin-bottom: 12px; }
 .details-list {
   background: var(--gray-light);
   border-right: 4px solid var(--lime);
   border-radius: var(--radius-sm);
-  padding: 14px 20px;
-  margin: 6px 0 18px;
+  padding: 12px 18px;
+  margin: 4px 0 16px;
 }
 .details-list h3 {
   font-family: 'Heebo', sans-serif;
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 800;
   color: var(--blue-dark);
   margin-bottom: 4px;
 }
 .details-list ul { padding-right: 20px; }
-.details-figure { margin: 28px 0 0; }
+.details-figure { margin: 20px 0 0; }
 .details-figure img {
   display: block;
   width: 100%;
@@ -2964,25 +2898,27 @@ a.navbar-cta { text-decoration: none; display: inline-block; }
   box-shadow: var(--shadow);
 }
 
-.materials-list { display: grid; gap: 24px; }
+/* Accompanying content (חומר נלווה): Drive files embedded in place */
+.materials-list { display: grid; gap: 18px; }
 .material-card {
   background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--gray-mid);
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 .material-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
+  gap: 6px 12px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--gray-mid);
 }
 .material-type {
   flex-shrink: 0;
   font-size: 0.72rem;
   font-weight: 800;
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 12px;
   background: rgba(0,174,239,0.12);
   color: var(--blue-mid);
@@ -2993,22 +2929,22 @@ a.navbar-cta { text-decoration: none; display: inline-block; }
 }
 .material-title { flex: 1; min-width: 0; }
 .material-title h3 {
-  font-size: 1.15rem;
+  font-family: 'Heebo', sans-serif;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--blue-dark);
   line-height: 1.35;
 }
 .material-note {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 .material-open {
-  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 5px;
   color: var(--blue-mid);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
   text-decoration: none;
 }
@@ -3017,54 +2953,23 @@ a.navbar-cta { text-decoration: none; display: inline-block; }
 .material-frame iframe {
   display: block;
   width: 100%;
-  height: 760px;
+  height: 70vh;
   border: 0;
 }
-.material-frame.doc iframe { height: 640px; background: var(--white); }
-.material-large {
-  padding: 28px 20px 30px;
-  text-align: center;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
-.material-large p { margin-bottom: 14px; }
+.material-frame.doc iframe { background: var(--white); }
 
-.program-missing {
-  text-align: center;
-  padding: 80px 20px;
+/* With long content the flyer stays in view while the content side scrolls */
+@media (min-width: 769px) {
+  .modal.modal-long .modal-flyer-side {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 92vh;
+  }
 }
-.program-missing .program-title { margin-bottom: 20px; }
 
 @media (max-width: 768px) {
-  .program-main { padding: 84px 14px 56px; }
-  .program-hero {
-    align-items: flex-start;
-    gap: 16px;
-    padding: 18px;
-  }
-  .program-flyer { flex-basis: 96px; border-width: 4px; }
-  .program-desc { font-size: 0.92rem; }
-  .program-tabs { width: 100%; margin-top: 24px; }
-  .program-tab { flex: 1; padding: 10px 12px; }
-  .details-card { padding: 22px 18px; font-size: 1rem; }
-  .material-head { flex-wrap: wrap; padding: 14px 16px; }
-  .material-open { width: 100%; }
-  .material-frame iframe,
-  .material-frame.doc iframe { height: 72vh; }
-}
-
-/* Narrow screens: flyer sits beside the badge + title, description and button take the full width */
-@media (max-width: 600px) {
-  .program-hero {
-    display: grid;
-    grid-template-columns: 1fr 88px;
-    column-gap: 14px;
-    align-items: start;
-  }
-  .program-hero-text { display: contents; }
-  .program-hero .card-badge { grid-column: 1; grid-row: 1; justify-self: start; }
-  .program-hero .program-title { grid-column: 1; grid-row: 2; font-size: 1.5rem; }
-  .program-flyer { grid-column: 2; grid-row: 1 / span 2; }
-  .program-desc { grid-column: 1 / -1; margin-top: 12px; }
-  .program-hero .card-cta { grid-column: 1 / -1; justify-self: start; }
+  .modal-tab { font-size: 0.88rem; padding: 9px 6px; }
+  .material-open { flex-basis: 100%; }
+  .material-frame iframe { height: 75vh; }
 }
