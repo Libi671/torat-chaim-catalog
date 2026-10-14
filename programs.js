@@ -8,10 +8,11 @@
 //                 (`pdf`, in content/) or the full file in Drive (`driveId`).
 //     videos    – YouTube videos (`items: [{ id, title }]`), each with a copy-link button.
 //     audio     – Drive audio files played in place (`items: [{ driveId, title }]`).
+//     units     – Drive PDFs picked from a list and shown in one preview (`items: [{ driveId, title }]`).
 //     canva     – a Canva design embedded with its public view link.
 //     image     – a single image (`src`), with the source file in Drive (`driveId`).
 //     link      – a button to an external page (`url`, `label`).
-//     order     – an order form that sends the details to Elad on WhatsApp.
+//     order     – an order form that sends the details to Elad by email.
 // Source folder: https://drive.google.com/drive/folders/1j9-xWXyYmwrABB5XXKBGHcTsBw35-D9n
 const programs = [
   { id: 1, title: 'אירועי תורת חיים תשפ"ז', desc: 'אירועים קהילתיים ורוחניים לכלל תלמידי הרשת – חוויות שמחברות ומחזקות זהות יהודית.', badge: 'אירועים', file: 'P/WhatsApp Image 2026-05-19 at 05.48.01.jpeg',
@@ -62,8 +63,8 @@ const programs = [
     cats: ['מסעות זהות לתלמידים'],
     materials: [
       { title: 'עמודי דוגמה מתוך ספר בר המצווה', note: 'לצפייה והתרשמות בלבד. הספר המלא נרכש דרך "בשביל הנשמה"', type: 'pdf', driveId: '1-M9899AxBOWR8oemwR19dzYeLEpT9A58' },
-      { title: 'הזמנת ספרים לבית הספר', note: 'ממלאים את הפרטים, וההזמנה נשלחת לאלעד בר שלום שיחזור אליכם', type: 'order',
-        item: 'ספר בר המצווה', phone: '972507953162', email: 'eladbrs@gmail.com' },
+      { title: 'הזמנת ספרים לבית הספר', note: 'ממלאים את הפרטים, וההזמנה נשלחת במייל לאלעד בר שלום שיחזור אליכם', type: 'order',
+        item: 'ספר בר המצווה', email: 'eladbrs@gmail.com' },
     ] },
   { id: 5, title: 'הישיבה הקהילתית – בנים', desc: 'חוויית לימוד ישיבתית אותנטית בתוך בית הספר – לימוד עמוק, מפגש בין-גילאי וקהילה.', badge: 'לימוד מעמיק', file: 'P/הישיבה הקהילתית בנים פלייר.jpg',
     cats: ['בית מדרש'] },
@@ -81,6 +82,27 @@ const programs = [
     details: [
       { p: 'יחידות הלימוד להכרות עם מושגי יסוד ביהדות נועדה ליצור הכרות בסיסית עם מושגי היסוד היהודיים, כל זאת כדי לפתח את הזהות היהודית.' },
       { p: 'היחידות פותחו בשילוב מורים ממקיף אמית ב.ש. והמרכז הטכנולוגי של אמית בירושלים.' },
+    ],
+    // The unit PDFs from Yehuda Rotenberg's folder (1Kav0mQiY2WZth-rxCQQAIBZty7wqdrzm). The folder itself is
+    // not linked: it also holds exams and drafts.
+    materials: [
+      { title: 'יחידות הלימוד', note: 'בוחרים יחידה מהרשימה והיא נפתחת כאן', type: 'units', items: [
+        { driveId: '1aVbK3Po7Pb8i54saXdmAg5t13kJfR0rD', title: 'קובץ למורה' },
+        { driveId: '1mrB9toEqjj39NSwWqFX-n46EHrDhoWcl', title: 'שמע ישראל' },
+        { driveId: '1a3nOgI0fDU0I8C-jwuTmSgkxnSPah-rm', title: 'מצוות מזוזה' },
+        { driveId: '1Mozom-apw78ZA4xYbAU1rTswonk4evj-', title: 'מצוות הדלקת נרות' },
+        { driveId: '1J06ifbFVk_105cSqdKzAAtwFOR9AoEQA', title: 'קידוש' },
+        { driveId: '1bxG-TO6LUImTWyl4563R38zv44xz3-I3', title: 'לחם משנה' },
+        { driveId: '1ftRqARs6aNlPicdD-6Tn7J6bP89HSMuX', title: 'מצוות הבדלה' },
+        { driveId: '1zYY4pUx3lRZHElOy-a-AZ3FbhlKT2e2d', title: 'הפרדה בין בשר לחלב' },
+        { driveId: '1iMb7q3efoD019XwKG4kAjFgEEtKyfrd6', title: 'ברכת אשר יצר' },
+        { driveId: '1Yss8wvrWyZx_EE1oWGqRmGmy4kvHpZ7b', title: 'מצוות ביקור חולים' },
+        { driveId: '17ONjsL8lUbtk2sTNG9AZO4UZc0uNc-X1', title: 'מצוות הכנסת אורחים' },
+        { driveId: '1eiZuaRfJnJlDeKvBSjOmd462MVbTUyys', title: 'לוח השנה העברי' },
+        { driveId: '1FfnP5Q-CEaltRMcd6WkgJvpR0JoUX13I', title: 'חוברת חגים' },
+        { driveId: '1z1UpG74J4BMKWYnfdrc67INlM98spJeS', title: 'הכותל המערבי' },
+        { driveId: '1zZ5drUSF4hrd3TBA6h3SfNsRUceMUgOr', title: 'רבי עקיבא' },
+      ] },
     ] },
   { id: 8, slug: 'baba-sali', title: 'מסורת בית אבא', desc: 'תוכנית ייחודית שמחברת בין מסורת לחיים המודרניים – דרך עולם הגסטרונומיה היהודית.', badge: 'תרבות יהודית', file: 'P/פלייר בבאסאלי.jpg',
     cats: ['מסעות זהות לתלמידים'],

@@ -191,7 +191,7 @@ function renderDetails(p) {
 
 const MATERIAL_LABELS = {
   pdf: 'PDF', doc: 'מסמך', pages: 'חוברת', videos: 'סרטונים', audio: 'פודקאסט',
-  canva: 'מצגת', image: 'להדפסה', link: 'קישור', order: 'הזמנה',
+  canva: 'מצגת', units: 'יחידות', image: 'להדפסה', link: 'קישור', order: 'הזמנה',
 };
 const DOWNLOAD_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
 const PLAY_ICON = '<svg viewBox="0 0 68 48" aria-hidden="true"><path d="M66.5 7.7c-.8-2.9-2.5-5.4-5.4-6.2C55.8.1 34 0 34 0S12.2.1 6.9 1.6C4 2.4 2.3 4.8 1.5 7.7.1 13 0 24 0 24s.1 11 1.5 16.3c.8 2.9 2.5 5.4 5.4 6.2C12.2 47.9 34 48 34 48s21.8-.1 27.1-1.6c2.9-.8 4.6-3.2 5.4-6.2C67.9 35 68 24 68 24s-.1-11-1.5-16.3z" fill="#e00"/><path d="M45 24 27 14v20" fill="#fff"/></svg>';
@@ -261,6 +261,17 @@ const MATERIAL_RENDERERS = {
         </ol>
       </div>`,
 
+  // Unit list; the chosen unit opens in Drive's preview below it
+  units: m => materialHead(m, openLink(driveFileUrl(m.items[0].driveId), 'פתיחה במסך מלא')) + `
+      <div class="unit-viewer">
+        <ol class="audio-list unit-list">${m.items.map((u, i) => `
+          <li><button type="button" data-unit="${u.driveId}"${i === 0 ? ' aria-current="true"' : ''}>${u.title}</button></li>`).join('')}
+        </ol>
+        <div class="material-frame">
+          <iframe data-src="${drivePreviewUrl({ driveId: m.items[0].driveId })}" title="${m.title}" allow="autoplay" allowfullscreen></iframe>
+        </div>
+      </div>`,
+
   image: m => materialHead(m, openLink(driveFileUrl(m.driveId), 'קובץ להדפסה', DOWNLOAD_ICON)) + `
       <div class="material-image"><img src="${m.src}" alt="${m.title}" loading="lazy" style="aspect-ratio: 1 / ${m.ratio}" /></div>`,
 
@@ -271,7 +282,7 @@ const MATERIAL_RENDERERS = {
       </div>`,
 
   order: m => materialHead(m) + `
-      <form class="order-form" data-item="${m.item}" data-phone="${m.phone}" data-email="${m.email}">
+      <form class="order-form" data-item="${m.item}" data-email="${m.email}">
         <label>שם מלא<input name="name" required autocomplete="name" /></label>
         <label>בית ספר<input name="school" required /></label>
         <label>תפקיד<input name="role" /></label>
@@ -279,8 +290,8 @@ const MATERIAL_RENDERERS = {
         <label>מספר ספרים<input name="qty" type="number" min="1" required /></label>
         <label class="wide">הערות<textarea name="notes" rows="2"></textarea></label>
         <div class="order-actions wide">
-          <button type="submit" class="order-submit">שליחת ההזמנה בוואטסאפ</button>
-          <button type="button" class="order-mail">או במייל</button>
+          <button type="submit" class="order-submit">שליחת ההזמנה במייל</button>
+          <span class="order-fallback">תוכנת המייל תיפתח עם ההזמנה מוכנה. אפשר גם לכתוב ישירות ל-<a href="mailto:${m.email}">${m.email}</a></span>
         </div>
       </form>`,
 };
@@ -309,18 +320,15 @@ materialsPanel.addEventListener('click', e => {
     });
     return;
   }
-  const episode = e.target.closest('[data-audio]');
-  if (episode) {
-    const player = episode.closest('.audio-player');
-    player.querySelector('iframe').src = drivePreviewUrl({ driveId: episode.dataset.audio });
-    player.querySelectorAll('[data-audio]').forEach(b => b.toggleAttribute('aria-current', b === episode));
-    return;
-  }
-  const mail = e.target.closest('.order-mail');
-  if (mail) {
-    const form = mail.closest('form');
-    if (!form.reportValidity()) return;
-    location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent('הזמנת ' + form.dataset.item)}&body=${encodeURIComponent(orderText(form))}`;
+  // a podcast episode or a unit: load it into the block's single player
+  const choice = e.target.closest('[data-audio], [data-unit]');
+  if (choice) {
+    const block = choice.closest('.material-card');
+    const id = choice.dataset.audio || choice.dataset.unit;
+    block.querySelector('iframe').src = drivePreviewUrl({ driveId: id });
+    const open = block.querySelector('.material-head .material-open');
+    if (open) open.href = driveFileUrl(id);
+    block.querySelectorAll('[data-audio], [data-unit]').forEach(b => b.toggleAttribute('aria-current', b === choice));
   }
 });
 
@@ -328,7 +336,7 @@ materialsPanel.addEventListener('submit', e => {
   const form = e.target.closest('.order-form');
   if (!form) return;
   e.preventDefault();
-  window.open(`https://wa.me/${form.dataset.phone}?text=${encodeURIComponent(orderText(form))}`, '_blank', 'noopener');
+  location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent('הזמנת ' + form.dataset.item)}&body=${encodeURIComponent(orderText(form))}`;
 });
 
 function orderText(form) {
