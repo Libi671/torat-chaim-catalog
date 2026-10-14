@@ -47,14 +47,14 @@ const programs = [
         url: 'https://gemini.google.com/gem/0c754808d9b3' },
       // One audio file from each principle's folder. The podcasts folder itself also holds an event's
       // registration form and its responses, so it is not linked.
-      { title: 'פודקאסטים לכל עיקרון', type: 'audio', items: [
-        { driveId: '1C6IsLlNDon6DGif2_vIV5QL5UJoWr60Y', title: 'עיקרון ראשון' },
+      { title: 'פודקאסטים לכל עיקרון', note: 'לוחצים על כפתור הניגון ליד הפרק', type: 'audio', items: [
+        { driveId: '1C6IsLlNDon6DGif2_vIV5QL5UJoWr60Y', title: 'עיקרון ראשון – הכרה במציאות הרוחנית' },
         { driveId: '1195MluGwHbaBIgZZgKsKvTWyMibP46FS', title: 'עיקרון שני – נשמה ונפש ארצית' },
         { driveId: '1pc0CW-LMW-jm8h9f_2F9pPqUEey5U13f', title: 'עיקרון שלישי – השגחה פרטית' },
-        { driveId: '1aMNZwZVgWzPI_0ouZUetedMQxCr7freJ', title: 'עיקרון רביעי' },
-        { driveId: '1LqQiw8kjI6svjcrhEu-kYa_vR1HFRB9-', title: 'עיקרון חמישי' },
-        { driveId: '1A8Fvdim9nLUaRM6m1VF_6z4c4ZV9KFkV', title: 'עיקרון שישי' },
-        { driveId: '1iM6D3PTAITNR6Ez5tLASCt6xspg5CgLb', title: 'עיקרון שביעי' },
+        { driveId: '1aMNZwZVgWzPI_0ouZUetedMQxCr7freJ', title: 'עיקרון רביעי – קבלה עצמית' },
+        { driveId: '1LqQiw8kjI6svjcrhEu-kYa_vR1HFRB9-', title: 'עיקרון חמישי – הכרת הטוב' },
+        { driveId: '1A8Fvdim9nLUaRM6m1VF_6z4c4ZV9KFkV', title: 'עיקרון שישי – מקורבן למנהיג' },
+        { driveId: '1iM6D3PTAITNR6Ez5tLASCt6xspg5CgLb', title: 'עיקרון שביעי – מרכז החיים' },
         { driveId: '11LjeyroK86rEnm8hE-_tGad-C4wxGfVi', title: 'עיקרון שמיני' },
         { driveId: '1qN79F2QkO5ceRXHs-DJJODy8Scv3RT2D', title: 'עיקרון תשיעי' },
       ] },
@@ -62,7 +62,7 @@ const programs = [
   { id: 4, slug: 'bar-mitzva', title: 'תוכנית בר/בת מצווה', desc: 'מסלול מקיף ומרתק לקראת בר ובת מצווה – חוויות, ספר לימוד, ליווי אישי ואירועי שיא.', badge: 'בר/בת מצווה', file: 'P/בר מצווה פלייר.jpg',
     cats: ['מסעות זהות לתלמידים'],
     materials: [
-      { title: 'עמודי דוגמה מתוך ספר בר המצווה', note: 'לצפייה והתרשמות בלבד. הספר המלא נרכש דרך "בשביל הנשמה"', type: 'pdf', driveId: '1-M9899AxBOWR8oemwR19dzYeLEpT9A58' },
+      { title: 'עמודי דוגמה מתוך ספר בר המצווה', note: 'לצפייה והתרשמות בלבד. רכישת הספר מתבצעת בטופס ההזמנה בסוף העמוד', jump: { to: 'order', label: 'לטופס ההזמנה' }, type: 'pdf', driveId: '1-M9899AxBOWR8oemwR19dzYeLEpT9A58' },
       { title: 'הזמנת ספרים לבית הספר', note: 'ממלאים את הפרטים, וההזמנה נשלחת במייל לאלעד בר שלום שיחזור אליכם', type: 'order',
         item: 'ספר בר המצווה', email: 'eladbrs@gmail.com' },
     ] },

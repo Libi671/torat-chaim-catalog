@@ -98,6 +98,7 @@ function openModal(id, tab) {
   if (!tabs.includes(tab)) tab = tabs[0];
 
   if (modalProgram !== p) {
+    stopPodcasts();
     modalProgram = p;
     modalFlyerImg.src = p.file;
     modalFlyerImg.alt = p.title;
@@ -147,6 +148,7 @@ function openModalFromHash() {
 
 function closeModal() {
   backdrop.classList.remove('open');
+  stopPodcasts();
   document.body.style.overflow = '';
   // drop the deep link, so clicking the same link again reopens the modal
   if (TAB_HASH.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);
@@ -208,6 +210,7 @@ function materialHead(m, actions = '') {
         <div class="material-title">
           <h3>${m.title}</h3>
           ${m.note ? `<p class="material-note">${m.note}</p>` : ''}
+          ${m.jump ? `<button class="jump-link" type="button" data-jump="${m.jump.to}">${m.jump.label} ↓</button>` : ''}
         </div>
         ${actions}
       </header>`;
@@ -252,13 +255,26 @@ const MATERIAL_RENDERERS = {
         </figure>`).join('')}
       </div>`,
 
-  // Episodes list; the chosen one plays in Drive's audio player
+  // Podcast: one row per episode with its own play button; a single <audio> streams the file from Drive
   audio: m => materialHead(m) + `
-      <div class="audio-player">
-        <iframe data-src="${drivePreviewUrl({ driveId: m.items[0].driveId })}" title="${m.title}" allow="autoplay"></iframe>
-        <ol class="audio-list">${m.items.map((a, i) => `
-          <li><button type="button" data-audio="${a.driveId}"${i === 0 ? ' aria-current="true"' : ''}>${a.title}</button></li>`).join('')}
+      <div class="podcast">
+        <ol class="episodes">${m.items.map((a, i) => `
+          <li class="episode" data-episode="${a.driveId}">
+            <button class="ep-play" type="button" aria-label="ניגון: ${a.title}">
+              <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+              <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+            </button>
+            <div class="ep-body">
+              <span class="ep-num">פרק ${i + 1}</span>
+              <span class="ep-title">${a.title}</span>
+              <div class="ep-progress">
+                <input class="ep-seek" type="range" min="0" max="1000" value="0" aria-label="מיקום בפרק" />
+                <span class="ep-time">0:00</span>
+              </div>
+            </div>
+          </li>`).join('')}
         </ol>
+        <audio preload="none"></audio>
       </div>`,
 
   // Unit list; the chosen unit opens in Drive's preview below it
@@ -299,7 +315,7 @@ MATERIAL_RENDERERS.doc = MATERIAL_RENDERERS.pdf;
 
 function renderMaterials(p) {
   return `<div class="materials-list">${p.materials.map(m =>
-    `<article class="material-card material-${m.type}">${MATERIAL_RENDERERS[m.type](m)}</article>`
+    `<article class="material-card material-${m.type}" data-anchor="${m.type}">${MATERIAL_RENDERERS[m.type](m)}</article>`
   ).join('')}</div>`;
 }
 
@@ -320,17 +336,79 @@ materialsPanel.addEventListener('click', e => {
     });
     return;
   }
-  // a podcast episode or a unit: load it into the block's single player
-  const choice = e.target.closest('[data-audio], [data-unit]');
+  const jump = e.target.closest('[data-jump]');
+  if (jump) {
+    materialsPanel.querySelector(`[data-anchor="${jump.dataset.jump}"]`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  const play = e.target.closest('.ep-play');
+  if (play) {
+    togglePodcast(play.closest('.episode'));
+    return;
+  }
+  // a unit: load it into the block's single preview
+  const choice = e.target.closest('[data-unit]');
   if (choice) {
     const block = choice.closest('.material-card');
-    const id = choice.dataset.audio || choice.dataset.unit;
+    const id = choice.dataset.unit;
     block.querySelector('iframe').src = drivePreviewUrl({ driveId: id });
     const open = block.querySelector('.material-head .material-open');
     if (open) open.href = driveFileUrl(id);
-    block.querySelectorAll('[data-audio], [data-unit]').forEach(b => b.toggleAttribute('aria-current', b === choice));
+    block.querySelectorAll('[data-unit]').forEach(b => b.toggleAttribute('aria-current', b === choice));
   }
 });
+
+// ═══ PODCAST PLAYER ═══
+function stopPodcasts() {
+  document.querySelectorAll('#modalPanel-materials audio').forEach(a => a.pause());
+}
+
+const driveAudioUrl = id => `https://drive.usercontent.google.com/download?id=${id}&export=download`;
+const mmss = t => isFinite(t) ? `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}` : '0:00';
+
+function togglePodcast(ep) {
+  const podcast = ep.closest('.podcast');
+  const audio = podcast.querySelector('audio');
+  if (!audio.dataset.wired) wirePodcast(podcast, audio);
+  if (ep.classList.contains('is-current')) {
+    audio.paused ? audio.play() : audio.pause();
+    return;
+  }
+  podcast.querySelectorAll('.episode').forEach(li => li.classList.toggle('is-current', li === ep));
+  audio.src = driveAudioUrl(ep.dataset.episode);
+  ep.classList.add('is-loading');
+  audio.play();
+}
+
+function wirePodcast(podcast, audio) {
+  audio.dataset.wired = '1';
+  const current = () => podcast.querySelector('.episode.is-current');
+  const sync = () => {
+    const ep = current();
+    if (!ep) return;
+    ep.querySelector('.ep-seek').value = audio.duration ? Math.round(audio.currentTime / audio.duration * 1000) : 0;
+    ep.querySelector('.ep-time').textContent = `${mmss(audio.currentTime)} / ${mmss(audio.duration)}`;
+  };
+  audio.addEventListener('timeupdate', sync);
+  audio.addEventListener('loadedmetadata', sync);
+  audio.addEventListener('playing', () => { current()?.classList.remove('is-loading'); podcast.classList.add('is-playing'); });
+  audio.addEventListener('pause', () => podcast.classList.remove('is-playing'));
+  // if the browser cannot stream the file, offer it in Drive instead
+  audio.addEventListener('error', () => {
+    const ep = current();
+    if (!ep) return;
+    ep.classList.remove('is-loading');
+    ep.querySelector('.ep-progress').innerHTML =
+      `<a class="ep-fallback" href="${driveFileUrl(ep.dataset.episode)}" target="_blank" rel="noopener noreferrer">להאזנה בדרייב ${EXTERNAL_ICON}</a>`;
+  });
+  audio.addEventListener('ended', () => {
+    const next = current()?.nextElementSibling;
+    if (next) togglePodcast(next);
+  });
+  podcast.addEventListener('input', e => {
+    if (e.target.matches('.ep-seek') && audio.duration) audio.currentTime = e.target.value / 1000 * audio.duration;
+  });
+}
 
 materialsPanel.addEventListener('submit', e => {
   const form = e.target.closest('.order-form');
