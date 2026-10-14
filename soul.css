@@ -2549,12 +2549,15 @@ body.a11y-no-animations *::after {
 .road-base,
 .road-dash { fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .road-base { stroke: #dccfb8; stroke-width: 30; }
-/* static on purpose: an endlessly animated stroke made phones repaint the whole section and the cards painted late */
 .road-dash {
   stroke: #fff;
   stroke-width: 3;
   stroke-dasharray: 14 12;
+  animation: roadMove 1.6s linear infinite;
 }
+@keyframes roadMove { to { stroke-dashoffset: -26; } }
+.a11y-no-animations .road-dash { animation: none; }
+@media (prefers-reduced-motion: reduce) { .road-dash { animation: none; } }
 
 .journey-station {
   position: relative;
@@ -2573,8 +2576,16 @@ body.a11y-no-animations *::after {
   flex-direction: column;
   align-items: center;
   margin-bottom: 6px;
+  animation: pinBounce 2.4s ease-in-out infinite;
 }
-.station-pin svg { width: 34px; height: 45px; }
+.station-2 .station-pin { animation-delay: -1.2s; }
+.station-pin svg { width: 34px; height: 45px; filter: drop-shadow(0 4px 6px rgba(0,45,86,0.3)); }
+@keyframes pinBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.a11y-no-animations .station-pin { animation: none; }
+@media (prefers-reduced-motion: reduce) { .station-pin { animation: none; } }
 .station-1 .station-pin svg path { fill: var(--blue-dark); }
 .station-2 .station-pin svg path { fill: var(--green); }
 .station-pin span {
