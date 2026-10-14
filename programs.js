@@ -5,10 +5,11 @@
 //     pdf / doc – a Drive file embedded with Drive's preview. Files too big for the preview
 //                 get a compressed "(גרסה לאתר)" copy next to the original.
 //     pages     – page images of a booklet in content/<dir>/001.webp…, with the PDF for download
-//                 (`pdf`, in content/) or the full file in Drive (`driveId`).
+//                 (`pdf`, in content/) or the original in Drive (`driveId`; `excerpt` when only the first pages are shown).
+//                 Drive PDFs are shown this way rather than in Drive's preview, which is slow for large files.
 //     videos    – YouTube videos (`items: [{ id, title }]`), each with a copy-link button.
 //     audio     – podcast episodes played in place (`items: [{ src, driveId, title }]`, the Drive file as fallback).
-//     units     – Drive PDFs picked from a list and shown in one preview (`items: [{ driveId, title }]`).
+//     units     – unit buttons; each opens its page images in a popup (`items: [{ dir, count, driveId, title }]`).
 //     canva     – a Canva design embedded with its public view link.
 //     image     – a single image (`src`), with the source file in Drive (`driveId`).
 //     link      – a button to an external page (`url`, `label`).
@@ -34,7 +35,7 @@ const programs = [
       { title: 'מצגת על הנושאים הראשונים', note: 'המצגת מתעדכנת', type: 'canva',
         url: 'https://www.canva.com/design/DAG9ZDzME0I/4Wg3i_MeKXWvIGJuKYevdg/view' },
       { title: 'ספר הדרכה למורה', note: 'עם הצעות למערכים, שיושב על הספרון לתלמיד. אפשר לקבל גם בעותק קשיח. כאן מוצגים העמודים הראשונים',
-        type: 'pages', dir: 'emun-guide', count: 24, ratio: 1.387, driveId: '1MknNAouw48Qc75HGP9iGLUzaiyY5Cv5h', fullLabel: 'לספר המלא' },
+        type: 'pages', dir: 'emun-guide', count: 24, ratio: 1.387, driveId: '1MknNAouw48Qc75HGP9iGLUzaiyY5Cv5h', excerpt: true, fullLabel: 'לספר המלא' },
       { title: 'סרטונים מקוריים שנבנו לתוכנית', type: 'videos', items: [
         { id: 'm7D0aynRyXw', title: 'הכרה במציאות הרוחנית (עיקרון 1)' },
         { id: '8K4m5WmYvPU', title: 'נפש ארצית – נשמה אלוקית (עיקרון 2)' },
@@ -63,7 +64,8 @@ const programs = [
   { id: 4, slug: 'bar-mitzva', title: 'תוכנית בר/בת מצווה', desc: 'מסלול מקיף ומרתק לקראת בר ובת מצווה – חוויות, ספר לימוד, ליווי אישי ואירועי שיא.', badge: 'בר/בת מצווה', file: 'P/בר מצווה פלייר.jpg',
     cats: ['מסעות זהות לתלמידים'],
     materials: [
-      { title: 'עמודי דוגמה מתוך ספר בר המצווה', note: 'לצפייה והתרשמות בלבד. רכישת הספר מתבצעת בטופס ההזמנה בסוף העמוד', jump: { to: 'order', label: 'לטופס ההזמנה' }, type: 'pdf', driveId: '1-M9899AxBOWR8oemwR19dzYeLEpT9A58' },
+      { title: 'עמודי דוגמה מתוך ספר בר המצווה', note: 'לצפייה והתרשמות בלבד. רכישת הספר מתבצעת בטופס ההזמנה בסוף העמוד', jump: { to: 'order', label: 'לטופס ההזמנה' },
+        type: 'pages', dir: 'bar-mitzva-sample', count: 24, ratio: 0.686, driveId: '1-M9899AxBOWR8oemwR19dzYeLEpT9A58' },
       { title: 'הזמנת ספרים לבית הספר', note: 'ממלאים את הפרטים, וההזמנה נשלחת במייל לאלעד בר שלום שיחזור אליכם', type: 'order',
         item: 'ספר בר המצווה', email: 'eladbrs@gmail.com' },
     ] },
@@ -88,27 +90,27 @@ const programs = [
     // not linked: it also holds exams and drafts.
     materials: [
       { title: 'יחידות הלימוד', note: 'לוחצים על יחידה והיא נפתחת', type: 'units', items: [
-        { driveId: '1aVbK3Po7Pb8i54saXdmAg5t13kJfR0rD', title: 'קובץ למורה' },
-        { driveId: '1mrB9toEqjj39NSwWqFX-n46EHrDhoWcl', title: 'שמע ישראל' },
-        { driveId: '1a3nOgI0fDU0I8C-jwuTmSgkxnSPah-rm', title: 'מצוות מזוזה' },
-        { driveId: '1Mozom-apw78ZA4xYbAU1rTswonk4evj-', title: 'מצוות הדלקת נרות' },
-        { driveId: '1J06ifbFVk_105cSqdKzAAtwFOR9AoEQA', title: 'קידוש' },
-        { driveId: '1bxG-TO6LUImTWyl4563R38zv44xz3-I3', title: 'לחם משנה' },
-        { driveId: '1ftRqARs6aNlPicdD-6Tn7J6bP89HSMuX', title: 'מצוות הבדלה' },
-        { driveId: '1zYY4pUx3lRZHElOy-a-AZ3FbhlKT2e2d', title: 'הפרדה בין בשר לחלב' },
-        { driveId: '1iMb7q3efoD019XwKG4kAjFgEEtKyfrd6', title: 'ברכת אשר יצר' },
-        { driveId: '1Yss8wvrWyZx_EE1oWGqRmGmy4kvHpZ7b', title: 'מצוות ביקור חולים' },
-        { driveId: '17ONjsL8lUbtk2sTNG9AZO4UZc0uNc-X1', title: 'מצוות הכנסת אורחים' },
-        { driveId: '1eiZuaRfJnJlDeKvBSjOmd462MVbTUyys', title: 'לוח השנה העברי' },
-        { driveId: '1FfnP5Q-CEaltRMcd6WkgJvpR0JoUX13I', title: 'חוברת חגים' },
-        { driveId: '1z1UpG74J4BMKWYnfdrc67INlM98spJeS', title: 'הכותל המערבי' },
-        { driveId: '1zZ5drUSF4hrd3TBA6h3SfNsRUceMUgOr', title: 'רבי עקיבא' },
+        { dir: 'unit-teacher', count: 4, driveId: '1aVbK3Po7Pb8i54saXdmAg5t13kJfR0rD', title: 'קובץ למורה' },
+        { dir: 'unit-shema', count: 16, driveId: '1mrB9toEqjj39NSwWqFX-n46EHrDhoWcl', title: 'שמע ישראל' },
+        { dir: 'unit-mezuza', count: 8, driveId: '1a3nOgI0fDU0I8C-jwuTmSgkxnSPah-rm', title: 'מצוות מזוזה' },
+        { dir: 'unit-nerot', count: 15, driveId: '1Mozom-apw78ZA4xYbAU1rTswonk4evj-', title: 'מצוות הדלקת נרות' },
+        { dir: 'unit-kidush', count: 23, driveId: '1J06ifbFVk_105cSqdKzAAtwFOR9AoEQA', title: 'קידוש' },
+        { dir: 'unit-lechem-mishne', count: 11, driveId: '1bxG-TO6LUImTWyl4563R38zv44xz3-I3', title: 'לחם משנה' },
+        { dir: 'unit-havdala', count: 11, driveId: '1ftRqARs6aNlPicdD-6Tn7J6bP89HSMuX', title: 'מצוות הבדלה' },
+        { dir: 'unit-basar-chalav', count: 14, driveId: '1zYY4pUx3lRZHElOy-a-AZ3FbhlKT2e2d', title: 'הפרדה בין בשר לחלב' },
+        { dir: 'unit-asher-yatzar', count: 10, driveId: '1iMb7q3efoD019XwKG4kAjFgEEtKyfrd6', title: 'ברכת אשר יצר' },
+        { dir: 'unit-bikur-cholim', count: 9, driveId: '1Yss8wvrWyZx_EE1oWGqRmGmy4kvHpZ7b', title: 'מצוות ביקור חולים' },
+        { dir: 'unit-hachnasat-orchim', count: 7, driveId: '17ONjsL8lUbtk2sTNG9AZO4UZc0uNc-X1', title: 'מצוות הכנסת אורחים' },
+        { dir: 'unit-luach', count: 8, driveId: '1eiZuaRfJnJlDeKvBSjOmd462MVbTUyys', title: 'לוח השנה העברי' },
+        { dir: 'unit-chagim', count: 68, driveId: '1FfnP5Q-CEaltRMcd6WkgJvpR0JoUX13I', title: 'חוברת חגים' },
+        { dir: 'unit-kotel', count: 12, driveId: '1z1UpG74J4BMKWYnfdrc67INlM98spJeS', title: 'הכותל המערבי' },
+        { dir: 'unit-rabbi-akiva', count: 10, driveId: '1zZ5drUSF4hrd3TBA6h3SfNsRUceMUgOr', title: 'רבי עקיבא' },
       ] },
     ] },
   { id: 8, slug: 'baba-sali', title: 'מסורת בית אבא', desc: 'תוכנית ייחודית שמחברת בין מסורת לחיים המודרניים – דרך עולם הגסטרונומיה היהודית.', badge: 'תרבות יהודית', file: 'P/פלייר בבאסאלי.jpg',
     cats: ['מסעות זהות לתלמידים'],
     materials: [
-      { title: 'חוברת מלווה לתלמידים – מסע זהות לאור חכמי ספרד', type: 'pdf', driveId: '10uG-h04LFrBhCjDGJlnin7ucVxSHUXSr' },
+      { title: 'חוברת מלווה לתלמידים – מסע זהות לאור חכמי ספרד', type: 'pages', dir: 'baba-sali', count: 65, ratio: 1.414, driveId: '10uG-h04LFrBhCjDGJlnin7ucVxSHUXSr' },
     ] },
   { id: 9, slug: 'tefila', title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/tefila-flyer-5787.jpg',
     cats: ['מסעות זהות לתלמידים'],
@@ -124,7 +126,7 @@ const programs = [
     ],
     // Order requested by Elad: fan, booklet, sticky notes; then the videos
     materials: [
-      { title: 'מניפת ההדרכות היומיות – כרטיסיות', type: 'pdf', driveId: '1iouHSU2hXzRempNZewsmDcUNAij5eJ4N' },
+      { title: 'מניפת ההדרכות היומיות – כרטיסיות', type: 'pages', dir: 'tefila-fan', count: 50, ratio: 2.371, driveId: '1iouHSU2hXzRempNZewsmDcUNAij5eJ4N' },
       { title: 'חוברת מערכי שיעור – מסע בסידור התפילה דרך תחנות', note: 'חוברת מעודכנת', type: 'pages', dir: 'tefila-booklet', count: 96, ratio: 1.381, pdf: 'tefila-booklet.pdf' },
       { title: 'פתקיות סטיקינוט להדפסה לכתיבת הערות בסידור', note: 'גודל 45×60', type: 'image', src: 'content/tefila-sticky.webp', ratio: 1.381, driveId: '1gbXcTe6c-bTBXmu1TwKle4RY12sAdlft' },
       { title: 'סרטונים לתלמידים', type: 'videos', items: [

@@ -207,6 +207,14 @@ const driveFileUrl = id => `https://drive.google.com/file/d/${id}/view`;
 const openLink = (url, label, icon = EXTERNAL_ICON) =>
   `<a class="material-open" href="${url}" target="_blank" rel="noopener noreferrer">${label} ${icon}</a>`;
 
+// content/<dir>/001.webp … ; the ratio only reserves space until each page loads
+function pageImages({ dir, count, ratio = 1.414, title }) {
+  return Array.from({ length: count }, (_, i) => {
+    const n = String(i + 1).padStart(3, '0');
+    return `<img src="content/${dir}/${n}.webp" alt="${title} – עמוד ${i + 1}" loading="lazy" style="aspect-ratio: auto 1 / ${ratio}" />`;
+  }).join('');
+}
+
 function materialHead(m, actions = '') {
   return `
       <header class="material-head">
@@ -235,13 +243,9 @@ const MATERIAL_RENDERERS = {
   pages: m => {
     const actions = m.pdf
       ? `<a class="material-open" href="content/${m.pdf}" download>הורדת PDF להדפסה ${DOWNLOAD_ICON}</a>`
-      : openLink(driveFileUrl(m.driveId), m.fullLabel || 'לקובץ המלא');
-    const pages = Array.from({ length: m.count }, (_, i) => {
-      const n = String(i + 1).padStart(3, '0');
-      return `<img src="content/${m.dir}/${n}.webp" alt="${m.title} – עמוד ${i + 1}" loading="lazy" style="aspect-ratio: 1 / ${m.ratio}" />`;
-    }).join('');
-    const more = m.pdf ? '' : `<div class="pages-more">${openLink(driveFileUrl(m.driveId), 'להמשך הספר בקובץ המלא')}</div>`;
-    return materialHead(m, actions) + `<div class="material-pages" tabindex="0" aria-label="${m.title}">${pages}${more}</div>`;
+      : openLink(driveFileUrl(m.driveId), m.fullLabel || 'פתיחה בדרייב');
+    const more = m.excerpt ? `<div class="pages-more">${openLink(driveFileUrl(m.driveId), 'להמשך הספר בקובץ המלא')}</div>` : '';
+    return materialHead(m, actions) + `<div class="material-pages" tabindex="0" aria-label="${m.title}">${pageImages(m)}${more}</div>`;
   },
 
   // Lite YouTube embed: a thumbnail that turns into the player when clicked
@@ -284,7 +288,7 @@ const MATERIAL_RENDERERS = {
   // Unit buttons; a click opens the unit right away in the document popup
   units: m => materialHead(m) + `
       <div class="unit-grid">${m.items.map(u => `
-        <button class="unit-btn" type="button" data-doc="${u.driveId}" data-doc-title="${u.title}">
+        <button class="unit-btn" type="button" data-doc="${u.driveId}" data-doc-dir="${u.dir}" data-doc-count="${u.count}" data-doc-title="${u.title}">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
           <span>${u.title}</span>
         </button>`).join('')}
@@ -349,26 +353,26 @@ materialsPanel.addEventListener('click', e => {
     return;
   }
   const doc = e.target.closest('[data-doc]');
-  if (doc) openDocViewer(doc.dataset.doc, doc.dataset.docTitle);
+  if (doc) openDocViewer({ driveId: doc.dataset.doc, dir: doc.dataset.docDir, count: +doc.dataset.docCount, title: doc.dataset.docTitle });
 });
 
 // ═══ DOCUMENT POPUP ═══
-// A Drive file shown over the modal, with a link to open it in Drive.
+// A unit's page images shown over the modal, with a link to the original in Drive.
 const docViewer = document.getElementById('docViewer');
-const docFrame = document.getElementById('docViewerFrame');
+const docPages = document.getElementById('docViewerPages');
 
-function openDocViewer(driveId, title) {
-  document.getElementById('docViewerTitle').textContent = title;
-  document.getElementById('docViewerOpen').href = driveFileUrl(driveId);
-  docFrame.src = drivePreviewUrl({ driveId });
-  docFrame.title = title;
+function openDocViewer(doc) {
+  document.getElementById('docViewerTitle').textContent = doc.title;
+  document.getElementById('docViewerOpen').href = driveFileUrl(doc.driveId);
+  docPages.innerHTML = pageImages(doc);
+  docPages.scrollTop = 0;
   docViewer.classList.add('open');
   document.getElementById('docViewerClose').focus();
 }
 
 function closeDocViewer() {
   docViewer.classList.remove('open');
-  docFrame.src = 'about:blank';
+  docPages.innerHTML = '';
 }
 
 document.getElementById('docViewerClose').addEventListener('click', closeDocViewer);

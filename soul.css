@@ -1316,25 +1316,25 @@ body.a11y-no-animations *::after {
 }
 
 /* Background artistic paint splatters */
+/* soft color spots drawn as gradients: a blur filter on large shapes made phones paint this section slowly */
 .rationale-paint-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
   opacity: 0.15;
   pointer-events: none;
   z-index: 0;
 }
 .blob-blue {
-  width: 300px;
-  height: 300px;
-  background: var(--blue-light);
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, var(--blue-light) 0%, transparent 70%);
   top: 10%;
   right: -100px;
 }
 .blob-lime {
-  width: 250px;
-  height: 250px;
-  background: var(--lime);
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, var(--lime) 0%, transparent 70%);
   bottom: 10%;
   left: -80px;
 }
@@ -1366,7 +1366,6 @@ body.a11y-no-animations *::after {
 .intro-banner-card {
   position: relative;
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 18px;
   padding: 24px 36px;
@@ -1631,8 +1630,7 @@ body.a11y-no-animations *::after {
 
 /* Features Mini Container */
 .features-mini-container {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
   padding: 16px 20px;
@@ -2551,15 +2549,12 @@ body.a11y-no-animations *::after {
 .road-base,
 .road-dash { fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .road-base { stroke: #dccfb8; stroke-width: 30; }
+/* static on purpose: an endlessly animated stroke made phones repaint the whole section and the cards painted late */
 .road-dash {
   stroke: #fff;
   stroke-width: 3;
   stroke-dasharray: 14 12;
-  animation: roadMove 1.6s linear infinite;
 }
-@keyframes roadMove { to { stroke-dashoffset: -26; } }
-.a11y-no-animations .road-dash { animation: none; }
-@media (prefers-reduced-motion: reduce) { .road-dash { animation: none; } }
 
 .journey-station {
   position: relative;
@@ -2578,10 +2573,8 @@ body.a11y-no-animations *::after {
   flex-direction: column;
   align-items: center;
   margin-bottom: 6px;
-  animation: pinBounce 2.4s ease-in-out infinite;
 }
-.station-2 .station-pin { animation-delay: -1.2s; }
-.station-pin svg { width: 34px; height: 45px; filter: drop-shadow(0 4px 6px rgba(0,45,86,0.3)); }
+.station-pin svg { width: 34px; height: 45px; }
 .station-1 .station-pin svg path { fill: var(--blue-dark); }
 .station-2 .station-pin svg path { fill: var(--green); }
 .station-pin span {
@@ -2593,12 +2586,6 @@ body.a11y-no-animations *::after {
   padding: 1px 10px;
   border-radius: 10px;
 }
-@keyframes pinBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-.a11y-no-animations .station-pin { animation: none; }
-@media (prefers-reduced-motion: reduce) { .station-pin { animation: none; } }
 
 .station-card {
   width: 100%;
@@ -2947,7 +2934,24 @@ body.a11y-no-animations *::after {
   font-size: 1.1rem;
   cursor: pointer;
 }
-.doc-viewer iframe { flex: 1; width: 100%; border: 0; background: #eef1f5; }
+.doc-viewer-pages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  background: #eef1f5;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+.doc-viewer-pages img {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  height: auto;
+  margin: 0 auto;
+  background: var(--white);
+  box-shadow: 0 2px 8px rgba(0,45,86,0.12);
+}
 @media (max-width: 768px) {
   .doc-viewer { padding: 0; }
   .doc-viewer-box { height: 100%; max-width: none; border-radius: 0; }
