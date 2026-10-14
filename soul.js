@@ -15,17 +15,11 @@ function renderCards() {
   grid.innerHTML = filtered.map((p, i) => `
     <article class="program-card reveal" style="transition-delay:${i * 0.07}s"
       onclick="openModal(${p.id})" role="button" tabindex="0"
-      aria-label="פרטים על ${p.title}"
+      aria-label="כניסה לתוכנית ${p.title}"
       onkeydown="if(event.key==='Enter')openModal(${p.id})">
       <div class="program-card-clamp"></div>
       <div class="card-img-wrap">
         <img src="${p.file}" alt="${p.title}" class="card-img" loading="lazy" />
-        <div class="card-overlay">
-          <button class="card-overlay-btn" tabindex="-1">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            פרטים נוספים
-          </button>
-        </div>
       </div>
       <div class="card-body">
         <span class="card-badge">
@@ -35,28 +29,12 @@ function renderCards() {
         <h3 class="card-title">${p.title}</h3>
         <p class="card-desc">${p.desc}</p>
         <div class="card-footer">
-          <button class="card-cta" tabindex="-1" onclick="event.stopPropagation();openModal(${p.id})">לפרטים נוספים והרשמה 🖌️</button>
+          <button class="card-cta" tabindex="-1" onclick="event.stopPropagation();openModal(${p.id})">לכניסה ←</button>
         </div>
-        ${renderCardLinks(p)}
       </div>
     </article>
   `).join('');
   observeReveal();
-}
-
-// "לפירוט" / "לתוכן הנלווה" links under a flyer, only for what exists in the Drive folder
-function renderCardLinks(p) {
-  const links = [];
-  if (p.details) links.push(['details', 'לפירוט']);
-  if (p.materials) links.push(['materials', 'לתוכן הנלווה']);
-  if (!links.length) return '';
-  return `<div class="card-links">${links.map(([section, label]) => `
-    <a class="card-link" href="#${p.slug}/${section}"
-      onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">
-      ${label}
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-    </a>`).join('')}
-  </div>`;
 }
 
 // ═══ FILTER BAR ═══
@@ -90,7 +68,8 @@ function initFilter() {
 
 
 // ═══ MODAL ═══
-// Next to the flyer: a selector between registration (default), details and accompanying content.
+// Next to the flyer: a selector between the program's contents, summary and registration.
+// It opens on the first tab the program has (contents, else summary, else registration).
 // Deep links: #<slug>/<tab>, e.g. #tefila/materials, open the modal on that tab.
 const backdrop = document.getElementById('modalBackdrop');
 const modalBox = document.getElementById('modalBox');
@@ -100,9 +79,9 @@ const modalEnlargeBtn = document.getElementById('modalEnlargeBtn');
 const modalTabs = document.getElementById('modalTabs');
 
 const MODAL_TABS = {
+  materials: 'תכנים',
+  details: 'תקציר',
   register: 'הרשמה',
-  details: 'פירוט',
-  materials: 'חומר נלווה',
 };
 const TAB_HASH = /^#([\w-]+)\/(register|details|materials)$/;
 
@@ -112,11 +91,11 @@ function modalTabsFor(p) {
   return Object.keys(MODAL_TABS).filter(t => t === 'register' || p[t]);
 }
 
-function openModal(id, tab = 'register') {
+function openModal(id, tab) {
   const p = programs.find(x => x.id === id);
   if (!p) return;
   const tabs = modalTabsFor(p);
-  if (!tabs.includes(tab)) tab = 'register';
+  if (!tabs.includes(tab)) tab = tabs[0];
 
   if (modalProgram !== p) {
     modalProgram = p;
@@ -210,21 +189,159 @@ function renderDetails(p) {
   }).join('')}</div>`;
 }
 
-function renderMaterials(p) {
-  return `<div class="materials-list">${p.materials.map(m => `
-    <article class="material-card">
+const MATERIAL_LABELS = {
+  pdf: 'PDF', doc: 'מסמך', pages: 'חוברת', videos: 'סרטונים', audio: 'פודקאסט',
+  canva: 'מצגת', image: 'להדפסה', link: 'קישור', order: 'הזמנה',
+};
+const DOWNLOAD_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
+const PLAY_ICON = '<svg viewBox="0 0 68 48" aria-hidden="true"><path d="M66.5 7.7c-.8-2.9-2.5-5.4-5.4-6.2C55.8.1 34 0 34 0S12.2.1 6.9 1.6C4 2.4 2.3 4.8 1.5 7.7.1 13 0 24 0 24s.1 11 1.5 16.3c.8 2.9 2.5 5.4 5.4 6.2C12.2 47.9 34 48 34 48s21.8-.1 27.1-1.6c2.9-.8 4.6-3.2 5.4-6.2C67.9 35 68 24 68 24s-.1-11-1.5-16.3z" fill="#e00"/><path d="M45 24 27 14v20" fill="#fff"/></svg>';
+
+const youtubeUrl = id => `https://youtu.be/${id}`;
+const driveFileUrl = id => `https://drive.google.com/file/d/${id}/view`;
+const openLink = (url, label, icon = EXTERNAL_ICON) =>
+  `<a class="material-open" href="${url}" target="_blank" rel="noopener noreferrer">${label} ${icon}</a>`;
+
+function materialHead(m, actions = '') {
+  return `
       <header class="material-head">
-        <span class="material-type ${m.type}">${m.type === 'doc' ? 'מסמך' : 'PDF'}</span>
+        <span class="material-type ${m.type}">${MATERIAL_LABELS[m.type]}</span>
         <div class="material-title">
           <h3>${m.title}</h3>
           ${m.note ? `<p class="material-note">${m.note}</p>` : ''}
         </div>
-        <a class="material-open" href="${driveViewUrl(m)}" target="_blank" rel="noopener noreferrer">פתיחה במסך מלא ${EXTERNAL_ICON}</a>
-      </header>
+        ${actions}
+      </header>`;
+}
+
+const MATERIAL_RENDERERS = {
+  pdf: m => materialHead(m, openLink(driveViewUrl(m), 'פתיחה במסך מלא')) + `
       <div class="material-frame ${m.type}">
         <iframe data-src="${drivePreviewUrl(m)}" title="${m.title}" allow="autoplay" allowfullscreen></iframe>
-      </div>
-    </article>`).join('')}</div>`;
+      </div>`,
+
+  canva: m => materialHead(m, openLink(m.url, 'פתיחה בקנבה')) + `
+      <div class="material-frame canva">
+        <iframe data-src="${m.url}?embed" title="${m.title}" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+      </div>`,
+
+  // Booklet page images; the scroll box keeps a long booklet from taking over the panel
+  pages: m => {
+    const actions = m.pdf
+      ? `<a class="material-open" href="content/${m.pdf}" download>הורדת PDF להדפסה ${DOWNLOAD_ICON}</a>`
+      : openLink(driveFileUrl(m.driveId), m.fullLabel || 'לקובץ המלא');
+    const pages = Array.from({ length: m.count }, (_, i) => {
+      const n = String(i + 1).padStart(3, '0');
+      return `<img src="content/${m.dir}/${n}.webp" alt="${m.title} – עמוד ${i + 1}" loading="lazy" style="aspect-ratio: 1 / ${m.ratio}" />`;
+    }).join('');
+    const more = m.pdf ? '' : `<div class="pages-more">${openLink(driveFileUrl(m.driveId), 'להמשך הספר בקובץ המלא')}</div>`;
+    return materialHead(m, actions) + `<div class="material-pages" tabindex="0" aria-label="${m.title}">${pages}${more}</div>`;
+  },
+
+  // Lite YouTube embed: a thumbnail that turns into the player when clicked
+  videos: m => materialHead(m) + `
+      <div class="video-grid${m.items.length === 1 ? ' single' : ''}">${m.items.map(v => `
+        <figure class="video-item">
+          <button class="video-thumb" type="button" data-video="${v.id}" aria-label="ניגון: ${v.title}">
+            <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" />
+            <span class="video-play">${PLAY_ICON}</span>
+          </button>
+          <figcaption>
+            <span class="video-title">${v.title}</span>
+            <button class="copy-link" type="button" data-copy="${youtubeUrl(v.id)}">העתקת קישור</button>
+          </figcaption>
+        </figure>`).join('')}
+      </div>`,
+
+  // Episodes list; the chosen one plays in Drive's audio player
+  audio: m => materialHead(m) + `
+      <div class="audio-player">
+        <iframe data-src="${drivePreviewUrl({ driveId: m.items[0].driveId })}" title="${m.title}" allow="autoplay"></iframe>
+        <ol class="audio-list">${m.items.map((a, i) => `
+          <li><button type="button" data-audio="${a.driveId}"${i === 0 ? ' aria-current="true"' : ''}>${a.title}</button></li>`).join('')}
+        </ol>
+      </div>`,
+
+  image: m => materialHead(m, openLink(driveFileUrl(m.driveId), 'קובץ להדפסה', DOWNLOAD_ICON)) + `
+      <div class="material-image"><img src="${m.src}" alt="${m.title}" loading="lazy" style="aspect-ratio: 1 / ${m.ratio}" /></div>`,
+
+  link: m => materialHead(m) + `
+      <div class="material-link">
+        <a class="material-link-btn" href="${m.url}" target="_blank" rel="noopener noreferrer">${m.label} ${EXTERNAL_ICON}</a>
+        <button class="copy-link" type="button" data-copy="${m.url}">העתקת קישור</button>
+      </div>`,
+
+  order: m => materialHead(m) + `
+      <form class="order-form" data-item="${m.item}" data-phone="${m.phone}" data-email="${m.email}">
+        <label>שם מלא<input name="name" required autocomplete="name" /></label>
+        <label>בית ספר<input name="school" required /></label>
+        <label>תפקיד<input name="role" /></label>
+        <label>טלפון<input name="phone" type="tel" required autocomplete="tel" /></label>
+        <label>מספר ספרים<input name="qty" type="number" min="1" required /></label>
+        <label class="wide">הערות<textarea name="notes" rows="2"></textarea></label>
+        <div class="order-actions wide">
+          <button type="submit" class="order-submit">שליחת ההזמנה בוואטסאפ</button>
+          <button type="button" class="order-mail">או במייל</button>
+        </div>
+      </form>`,
+};
+MATERIAL_RENDERERS.doc = MATERIAL_RENDERERS.pdf;
+
+function renderMaterials(p) {
+  return `<div class="materials-list">${p.materials.map(m =>
+    `<article class="material-card material-${m.type}">${MATERIAL_RENDERERS[m.type](m)}</article>`
+  ).join('')}</div>`;
+}
+
+// ═══ MATERIALS: players, copy buttons, order form ═══
+const materialsPanel = document.getElementById('modalPanel-materials');
+
+materialsPanel.addEventListener('click', e => {
+  const thumb = e.target.closest('.video-thumb');
+  if (thumb) {
+    thumb.outerHTML = `<iframe class="video-frame" src="https://www.youtube-nocookie.com/embed/${thumb.dataset.video}?autoplay=1&rel=0" title="${thumb.getAttribute('aria-label')}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    return;
+  }
+  const copy = e.target.closest('.copy-link');
+  if (copy) {
+    navigator.clipboard.writeText(copy.dataset.copy).then(() => {
+      copy.textContent = 'הקישור הועתק ✓';
+      setTimeout(() => { copy.textContent = 'העתקת קישור'; }, 2000);
+    });
+    return;
+  }
+  const episode = e.target.closest('[data-audio]');
+  if (episode) {
+    const player = episode.closest('.audio-player');
+    player.querySelector('iframe').src = drivePreviewUrl({ driveId: episode.dataset.audio });
+    player.querySelectorAll('[data-audio]').forEach(b => b.toggleAttribute('aria-current', b === episode));
+    return;
+  }
+  const mail = e.target.closest('.order-mail');
+  if (mail) {
+    const form = mail.closest('form');
+    if (!form.reportValidity()) return;
+    location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent('הזמנת ' + form.dataset.item)}&body=${encodeURIComponent(orderText(form))}`;
+  }
+});
+
+materialsPanel.addEventListener('submit', e => {
+  const form = e.target.closest('.order-form');
+  if (!form) return;
+  e.preventDefault();
+  window.open(`https://wa.me/${form.dataset.phone}?text=${encodeURIComponent(orderText(form))}`, '_blank', 'noopener');
+});
+
+function orderText(form) {
+  const f = new FormData(form);
+  return [
+    `שלום אלעד, אני רוצה להזמין את ${form.dataset.item}.`,
+    `שם: ${f.get('name')}`,
+    `בית ספר: ${f.get('school')}`,
+    f.get('role') && `תפקיד: ${f.get('role')}`,
+    `טלפון: ${f.get('phone')}`,
+    `מספר ספרים: ${f.get('qty')}`,
+    f.get('notes') && `הערות: ${f.get('notes')}`,
+  ].filter(Boolean).join('\n');
 }
 
 // ═══ ENLARGE BUTTON → LIGHTBOX ═══
@@ -263,161 +380,6 @@ function observeReveal() {
   }, { threshold: 0.12 });
   els.forEach(el => obs.observe(el));
 }
-
-// ═══ MULTI-LAYER 3D PARALLAX ═══
-function initParallax() {
-  const hero = document.querySelector('.hero');
-  if (!hero) return;
-  const layers = hero.querySelectorAll('.hero-parallax-layer[data-depth]');
-  if (!layers.length) return;
-
-  // ── Mobile / Touch Detection ──
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  const isMobile = isTouchDevice || window.innerWidth <= 768;
-
-  // ── State ──
-  let scrollY = 0;
-  let mouseX = 0, mouseY = 0;       // normalized -1..1
-  let gyroX = 0, gyroY = 0;         // normalized -1..1
-  let currentScroll = 0;
-  let currentMouseX = 0, currentMouseY = 0;
-  let currentGyroX = 0, currentGyroY = 0;
-  let ticking = false;
-
-  const LERP = 0.08;  // smoothing factor (lower = smoother / slower)
-  const SCROLL_MULTIPLIER = isMobile ? 120 : 80;    // max px shift for scroll
-  const MOUSE_MULTIPLIER  = 25;    // max px shift for mouse
-  const GYRO_MULTIPLIER   = isMobile ? 140 : 20;    // max px shift for gyroscope
-
-  function lerp(a, b, t) { return a + (b - a) * t; }
-
-  // ── Check accessibility ──
-  function isReduced() {
-    return document.body.classList.contains('a11y-no-animations') ||
-           window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
-
-  // ── Scroll tracking ──
-  window.addEventListener('scroll', () => {
-    const rect = hero.getBoundingClientRect();
-    const heroH = hero.offsetHeight;
-    if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-    scrollY = -rect.top / heroH;
-    scheduleUpdate();
-  }, { passive: true });
-
-  // ── Mouse tracking (desktop only) ──
-  if (!isTouchDevice) {
-    hero.addEventListener('mousemove', (e) => {
-      const rect = hero.getBoundingClientRect();
-      mouseX = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;  // -1..1
-      mouseY = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;  // -1..1
-      scheduleUpdate();
-    }, { passive: true });
-
-    hero.addEventListener('mouseleave', () => {
-      mouseX = 0; mouseY = 0;
-      scheduleUpdate();
-    }, { passive: true });
-  }
-
-  // ── Gyroscope tracking (mobile/tablet) ──
-  function handleOrientation(e) {
-    const beta  = Math.max(-30, Math.min(30, e.beta  || 0));
-    const gamma = Math.max(-30, Math.min(30, e.gamma || 0));
-    gyroX = gamma / 30;  // -1..1
-    gyroY = beta  / 30;  // -1..1
-    scheduleUpdate();
-  }
-
-  function initGyroscope() {
-    if (typeof DeviceOrientationEvent !== 'undefined' &&
-        typeof DeviceOrientationEvent.requestPermission === 'function') {
-      // iOS 13+ requires user permission popup.
-      // To prevent showing an annoying permission popup to the user, we do not request gyroscope access on iOS.
-      // iOS users will still enjoy the scroll-based parallax effect which requires no permission.
-    } else if ('DeviceOrientationEvent' in window) {
-      // Android does not require permission popups.
-      window.addEventListener('deviceorientation', handleOrientation, { passive: true });
-    }
-  }
-
-  // Only init gyroscope on touch devices
-  if (isTouchDevice) {
-    initGyroscope();
-  }
-
-  // ── Render loop ──
-  function scheduleUpdate() {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(updateLayers);
-    }
-  }
-
-  function updateLayers() {
-    const reduced = isReduced();
-    if (reduced) {
-      hero.classList.add('hero-use-fallback');
-      layers.forEach(layer => { layer.style.transform = 'translate3d(0,0,0)'; });
-      ticking = false;
-      return;
-    } else {
-      hero.classList.remove('hero-use-fallback');
-    }
-
-    // Smooth interpolation
-    currentScroll = lerp(currentScroll, scrollY, LERP * 2);
-    currentMouseX = lerp(currentMouseX, mouseX, LERP);
-    currentMouseY = lerp(currentMouseY, mouseY, LERP);
-    currentGyroX  = lerp(currentGyroX,  gyroX,  LERP);
-    currentGyroY  = lerp(currentGyroY,  gyroY,  LERP);
-
-    layers.forEach(layer => {
-      const depth = parseFloat(layer.dataset.depth) || 0;
-
-      const sY = currentScroll * SCROLL_MULTIPLIER * depth;
-      const mX = currentMouseX * MOUSE_MULTIPLIER * depth;
-      const mY = currentMouseY * MOUSE_MULTIPLIER * depth * 0.6;
-      const gX = currentGyroX  * GYRO_MULTIPLIER  * depth;
-      const gY = currentGyroY  * GYRO_MULTIPLIER  * depth * 0.6;
-
-      const totalX = mX + gX;
-      const totalY = sY + mY + gY;
-
-      layer.style.transform = `translate3d(${totalX.toFixed(2)}px, ${totalY.toFixed(2)}px, 0)`;
-    });
-
-    // Keep animating while values are interpolating (not settled)
-    const scrollDiff = Math.abs(scrollY - currentScroll);
-    const mouseDiffX = Math.abs(mouseX - currentMouseX);
-    const mouseDiffY = Math.abs(mouseY - currentMouseY);
-    const gyroDiffX  = Math.abs(gyroX - currentGyroX);
-    const gyroDiffY  = Math.abs(gyroY - currentGyroY);
-
-    if (scrollDiff > 0.001 || mouseDiffX > 0.001 || mouseDiffY > 0.001 ||
-        gyroDiffX > 0.001 || gyroDiffY > 0.001) {
-      requestAnimationFrame(updateLayers);
-    } else {
-      ticking = false;
-    }
-  }
-
-  // Initial render
-  scheduleUpdate();
-}
-
-// ═══ HERO IMAGE FALLBACK ═══
-(function() {
-  const heroImg = document.querySelector('.hero-img');
-  if (heroImg) {
-    heroImg.addEventListener('error', function() {
-      this.style.display = 'none';
-      document.querySelector('.hero').style.background =
-        'linear-gradient(135deg, #002d56 0%, #1a6fab 50%, #00aeef 100%)';
-    });
-  }
-})();
 
 // ═══ ACCESSIBILITY ═══
 function initAccessibility() {
@@ -506,26 +468,14 @@ function initPrivacyModal() {
   backdrop.addEventListener('click', e => { if (e.target === backdrop) closePrivacy(); });
 }
 
-// ═══ HERO BLUR-UP (feature 7) ═══
-function initHeroBlurUp() {
-  const img = document.getElementById('heroImg');
-  const placeholder = document.getElementById('heroBluePlaceholder');
-  if (!img || !placeholder) return;
-  const hide = () => placeholder.classList.add('loaded');
-  if (img.complete && img.naturalWidth > 0) { hide(); }
-  else { img.addEventListener('load', hide); }
-}
-
 // ═══ INIT ═══
 document.addEventListener('DOMContentLoaded', () => {
   renderCards();
   initFilter();
   observeReveal();
-  initParallax();
   initAccessibility();
   initA11yStatement();
   initBackToTop();
   initPrivacyModal();
-  initHeroBlurUp();
   openModalFromHash();
 });
