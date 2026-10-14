@@ -7,7 +7,7 @@
 //     pages     – page images of a booklet in content/<dir>/001.webp…, with the PDF for download
 //                 (`pdf`, in content/) or the full file in Drive (`driveId`).
 //     videos    – YouTube videos (`items: [{ id, title }]`), each with a copy-link button.
-//     audio     – Drive audio files played in place (`items: [{ driveId, title }]`).
+//     audio     – podcast episodes played in place (`items: [{ src, driveId, title }]`, the Drive file as fallback).
 //     units     – Drive PDFs picked from a list and shown in one preview (`items: [{ driveId, title }]`).
 //     canva     – a Canva design embedded with its public view link.
 //     image     – a single image (`src`), with the source file in Drive (`driveId`).
@@ -45,18 +45,19 @@ const programs = [
         url: 'https://drive.google.com/drive/folders/1vARkpvZoNl3ItmOHoEZtZ6X6ZLK9hTuG' },
       { title: 'בוט מלווה לתלמיד בלימוד התוכנית', note: 'בוט Gemini שמכיר את חומרי התוכנית. נפתח בחלון חדש', type: 'link', label: 'לשיחה עם הבוט',
         url: 'https://gemini.google.com/gem/0c754808d9b3' },
-      // One audio file from each principle's folder. The podcasts folder itself also holds an event's
+      // One audio file from each principle's Drive folder, re-encoded small (48k mono) and served from content/podcasts,
+      // since Drive does not stream reliably to <audio>. The podcasts folder itself also holds an event's
       // registration form and its responses, so it is not linked.
       { title: 'פודקאסטים לכל עיקרון', note: 'לוחצים על כפתור הניגון ליד הפרק', type: 'audio', items: [
-        { driveId: '1C6IsLlNDon6DGif2_vIV5QL5UJoWr60Y', title: 'עיקרון ראשון – הכרה במציאות הרוחנית' },
-        { driveId: '1195MluGwHbaBIgZZgKsKvTWyMibP46FS', title: 'עיקרון שני – נשמה ונפש ארצית' },
-        { driveId: '1pc0CW-LMW-jm8h9f_2F9pPqUEey5U13f', title: 'עיקרון שלישי – השגחה פרטית' },
-        { driveId: '1aMNZwZVgWzPI_0ouZUetedMQxCr7freJ', title: 'עיקרון רביעי – קבלה עצמית' },
-        { driveId: '1LqQiw8kjI6svjcrhEu-kYa_vR1HFRB9-', title: 'עיקרון חמישי – הכרת הטוב' },
-        { driveId: '1A8Fvdim9nLUaRM6m1VF_6z4c4ZV9KFkV', title: 'עיקרון שישי – מקורבן למנהיג' },
-        { driveId: '1iM6D3PTAITNR6Ez5tLASCt6xspg5CgLb', title: 'עיקרון שביעי – מרכז החיים' },
-        { driveId: '11LjeyroK86rEnm8hE-_tGad-C4wxGfVi', title: 'עיקרון שמיני' },
-        { driveId: '1qN79F2QkO5ceRXHs-DJJODy8Scv3RT2D', title: 'עיקרון תשיעי' },
+        { src: 'content/podcasts/principle-1.m4a', driveId: '1C6IsLlNDon6DGif2_vIV5QL5UJoWr60Y', title: 'עיקרון ראשון – הכרה במציאות הרוחנית' },
+        { src: 'content/podcasts/principle-2.m4a', driveId: '1195MluGwHbaBIgZZgKsKvTWyMibP46FS', title: 'עיקרון שני – נשמה ונפש ארצית' },
+        { src: 'content/podcasts/principle-3.m4a', driveId: '1pc0CW-LMW-jm8h9f_2F9pPqUEey5U13f', title: 'עיקרון שלישי – השגחה פרטית' },
+        { src: 'content/podcasts/principle-4.m4a', driveId: '1aMNZwZVgWzPI_0ouZUetedMQxCr7freJ', title: 'עיקרון רביעי – קבלה עצמית' },
+        { src: 'content/podcasts/principle-5.m4a', driveId: '1LqQiw8kjI6svjcrhEu-kYa_vR1HFRB9-', title: 'עיקרון חמישי – הכרת הטוב' },
+        { src: 'content/podcasts/principle-6.m4a', driveId: '1A8Fvdim9nLUaRM6m1VF_6z4c4ZV9KFkV', title: 'עיקרון שישי – מקורבן למנהיג' },
+        { src: 'content/podcasts/principle-7.m4a', driveId: '1iM6D3PTAITNR6Ez5tLASCt6xspg5CgLb', title: 'עיקרון שביעי – מרכז החיים' },
+        { src: 'content/podcasts/principle-8.m4a', driveId: '11LjeyroK86rEnm8hE-_tGad-C4wxGfVi', title: 'עיקרון שמיני' },
+        { src: 'content/podcasts/principle-9.m4a', driveId: '1qN79F2QkO5ceRXHs-DJJODy8Scv3RT2D', title: 'עיקרון תשיעי' },
       ] },
     ] },
   { id: 4, slug: 'bar-mitzva', title: 'תוכנית בר/בת מצווה', desc: 'מסלול מקיף ומרתק לקראת בר ובת מצווה – חוויות, ספר לימוד, ליווי אישי ואירועי שיא.', badge: 'בר/בת מצווה', file: 'P/בר מצווה פלייר.jpg',
@@ -86,7 +87,7 @@ const programs = [
     // The unit PDFs from Yehuda Rotenberg's folder (1Kav0mQiY2WZth-rxCQQAIBZty7wqdrzm). The folder itself is
     // not linked: it also holds exams and drafts.
     materials: [
-      { title: 'יחידות הלימוד', note: 'בוחרים יחידה מהרשימה והיא נפתחת כאן', type: 'units', items: [
+      { title: 'יחידות הלימוד', note: 'לוחצים על יחידה והיא נפתחת', type: 'units', items: [
         { driveId: '1aVbK3Po7Pb8i54saXdmAg5t13kJfR0rD', title: 'קובץ למורה' },
         { driveId: '1mrB9toEqjj39NSwWqFX-n46EHrDhoWcl', title: 'שמע ישראל' },
         { driveId: '1a3nOgI0fDU0I8C-jwuTmSgkxnSPah-rm', title: 'מצוות מזוזה' },

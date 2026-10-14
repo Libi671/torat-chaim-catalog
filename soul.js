@@ -156,7 +156,11 @@ function closeModal() {
 
 modalClose.addEventListener('click', closeModal);
 backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeLightbox(); } });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (docViewer.classList.contains('open')) return closeDocViewer();
+  closeModal(); closeLightbox();
+});
 window.addEventListener('hashchange', openModalFromHash);
 
 // ═══ DETAILS & MATERIALS ═══
@@ -255,11 +259,11 @@ const MATERIAL_RENDERERS = {
         </figure>`).join('')}
       </div>`,
 
-  // Podcast: one row per episode with its own play button; a single <audio> streams the file from Drive
+  // Podcast: one row per episode with its own play button; a single <audio> plays the hosted file
   audio: m => materialHead(m) + `
       <div class="podcast">
         <ol class="episodes">${m.items.map((a, i) => `
-          <li class="episode" data-episode="${a.driveId}">
+          <li class="episode" data-src="${a.src}" data-episode="${a.driveId}">
             <button class="ep-play" type="button" aria-label="ניגון: ${a.title}">
               <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
               <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
@@ -277,15 +281,13 @@ const MATERIAL_RENDERERS = {
         <audio preload="none"></audio>
       </div>`,
 
-  // Unit list; the chosen unit opens in Drive's preview below it
-  units: m => materialHead(m, openLink(driveFileUrl(m.items[0].driveId), 'פתיחה במסך מלא')) + `
-      <div class="unit-viewer">
-        <ol class="audio-list unit-list">${m.items.map((u, i) => `
-          <li><button type="button" data-unit="${u.driveId}"${i === 0 ? ' aria-current="true"' : ''}>${u.title}</button></li>`).join('')}
-        </ol>
-        <div class="material-frame">
-          <iframe data-src="${drivePreviewUrl({ driveId: m.items[0].driveId })}" title="${m.title}" allow="autoplay" allowfullscreen></iframe>
-        </div>
+  // Unit buttons; a click opens the unit right away in the document popup
+  units: m => materialHead(m) + `
+      <div class="unit-grid">${m.items.map(u => `
+        <button class="unit-btn" type="button" data-doc="${u.driveId}" data-doc-title="${u.title}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+          <span>${u.title}</span>
+        </button>`).join('')}
       </div>`,
 
   image: m => materialHead(m, openLink(driveFileUrl(m.driveId), 'קובץ להדפסה', DOWNLOAD_ICON)) + `
@@ -346,24 +348,37 @@ materialsPanel.addEventListener('click', e => {
     togglePodcast(play.closest('.episode'));
     return;
   }
-  // a unit: load it into the block's single preview
-  const choice = e.target.closest('[data-unit]');
-  if (choice) {
-    const block = choice.closest('.material-card');
-    const id = choice.dataset.unit;
-    block.querySelector('iframe').src = drivePreviewUrl({ driveId: id });
-    const open = block.querySelector('.material-head .material-open');
-    if (open) open.href = driveFileUrl(id);
-    block.querySelectorAll('[data-unit]').forEach(b => b.toggleAttribute('aria-current', b === choice));
-  }
+  const doc = e.target.closest('[data-doc]');
+  if (doc) openDocViewer(doc.dataset.doc, doc.dataset.docTitle);
 });
+
+// ═══ DOCUMENT POPUP ═══
+// A Drive file shown over the modal, with a link to open it in Drive.
+const docViewer = document.getElementById('docViewer');
+const docFrame = document.getElementById('docViewerFrame');
+
+function openDocViewer(driveId, title) {
+  document.getElementById('docViewerTitle').textContent = title;
+  document.getElementById('docViewerOpen').href = driveFileUrl(driveId);
+  docFrame.src = drivePreviewUrl({ driveId });
+  docFrame.title = title;
+  docViewer.classList.add('open');
+  document.getElementById('docViewerClose').focus();
+}
+
+function closeDocViewer() {
+  docViewer.classList.remove('open');
+  docFrame.src = 'about:blank';
+}
+
+document.getElementById('docViewerClose').addEventListener('click', closeDocViewer);
+docViewer.addEventListener('click', e => { if (e.target === docViewer) closeDocViewer(); });
 
 // ═══ PODCAST PLAYER ═══
 function stopPodcasts() {
   document.querySelectorAll('#modalPanel-materials audio').forEach(a => a.pause());
 }
 
-const driveAudioUrl = id => `https://drive.usercontent.google.com/download?id=${id}&export=download`;
 const mmss = t => isFinite(t) ? `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}` : '0:00';
 
 function togglePodcast(ep) {
@@ -375,7 +390,7 @@ function togglePodcast(ep) {
     return;
   }
   podcast.querySelectorAll('.episode').forEach(li => li.classList.toggle('is-current', li === ep));
-  audio.src = driveAudioUrl(ep.dataset.episode);
+  audio.src = ep.dataset.src;
   ep.classList.add('is-loading');
   audio.play();
 }
