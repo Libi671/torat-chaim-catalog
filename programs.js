@@ -69,8 +69,13 @@ const programs = [
       { title: 'הזמנת ספרים לבית הספר', note: 'ממלאים את הפרטים, וההזמנה נשלחת במייל לאלעד בר שלום שיחזור אליכם', type: 'order',
         item: 'ספר בר המצווה', email: 'eladbrs@gmail.com' },
     ] },
-  { id: 5, title: 'הישיבה הקהילתית – בנים', desc: 'חוויית לימוד ישיבתית אותנטית בתוך בית הספר – לימוד עמוק, מפגש בין-גילאי וקהילה.', badge: 'לימוד מעמיק', file: 'P/הישיבה הקהילתית בנים פלייר.jpg',
-    cats: ['בית מדרש'] },
+  { id: 5, slug: 'yeshiva-kehilatit', title: 'הישיבה הקהילתית – בנים', desc: 'חוויית לימוד ישיבתית אותנטית בתוך בית הספר – לימוד עמוק, מפגש בין-גילאי וקהילה.', badge: 'לימוד מעמיק', file: 'P/הישיבה הקהילתית בנים פלייר.jpg',
+    cats: ['בית מדרש'],
+    // "סיירת הקודש – גרסה 1": the yeshiva version (Community Yeshiva logo, includes highlight days)
+    materials: [
+      { title: 'סיירת הקודש – מסע זהות רוחני-ערכי', note: 'תחנות המסע, תוכנית הצמיחה, מערכי שיעור ושפת החבורה למנחה',
+        type: 'pages', dir: 'sayeret-yeshiva', count: 98, ratio: 1.414, pdf: 'sayeret-yeshiva.pdf' },
+    ] },
   { id: 6, slug: 'rabbi-sacks', title: 'מסע זהות יהודית – הרב זקס', desc: 'מסלול דיגיטלי עשיר על פי משנתו של הרב יונתן זקס – מסע לזהות היהודית הייחודית ביותר.', badge: 'זהות יהודית', file: 'P/הרב זקס פלייר תשפו.jpg',
     cats: ['מסעות זהות לתלמידים'],
     materials: [
@@ -139,6 +144,11 @@ const programs = [
     ] },
   { id: 10, title: 'בית מדרש מורים', desc: 'תוכנית בית מדרש לצוותים חינוכיים ומורים – לימוד משותף וצמיחה רוחנית.', badge: 'בית מדרש', file: 'P/BMD_M.jpeg',
     cats: ['בית מדרש'] },
-  { id: 11, title: 'בית מדרש- קהילת הבנות', desc: 'מדרשת נוטעות שמים לתלמידות קהילת הבנות', badge: 'שואפות גבוהה', file: 'P/WhatsApp Image 2026-05-25 at 23.56.44.jpeg',
-    cats: ['בית מדרש'] },
+  { id: 11, slug: 'kehilat-habanot', title: 'בית מדרש- קהילת הבנות', desc: 'מדרשת נוטעות שמים לתלמידות קהילת הבנות', badge: 'שואפות גבוהה', file: 'P/WhatsApp Image 2026-05-25 at 23.56.44.jpeg',
+    cats: ['בית מדרש'],
+    // "סיירת הקודש – גרסה 2": the women's version, for the girls' community and the comprehensive schools
+    materials: [
+      { title: 'סיירת הקודש – מסע נשי ללמידה בית מדרשית תשפ"ז', note: 'תחנות המסע, תוכנית הצמיחה, מערכי שיעור ושפת החבורה למנחה',
+        type: 'pages', dir: 'sayeret-banot', count: 98, ratio: 1.414, pdf: 'sayeret-banot.pdf' },
+    ] },
 ];
