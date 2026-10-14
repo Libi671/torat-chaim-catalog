@@ -385,14 +385,36 @@ function togglePodcast(ep) {
   const podcast = ep.closest('.podcast');
   const audio = podcast.querySelector('audio');
   if (!audio.dataset.wired) wirePodcast(podcast, audio);
-  if (ep.classList.contains('is-current')) {
-    audio.paused ? audio.play() : audio.pause();
+  if (ep.classList.contains('is-current') && !ep.classList.contains('has-error')) {
+    audio.paused ? playEpisode(ep, audio) : audio.pause();
     return;
   }
   podcast.querySelectorAll('.episode').forEach(li => li.classList.toggle('is-current', li === ep));
+  if (ep.classList.contains('has-error')) {
+    ep.classList.remove('has-error');
+    ep.querySelector('.ep-progress').innerHTML = EP_PROGRESS;
+  }
   audio.src = ep.dataset.src;
+  audio.load();
+  playEpisode(ep, audio);
+}
+
+const EP_PROGRESS = '<input class="ep-seek" type="range" min="0" max="1000" value="0" aria-label="מיקום בפרק" /><span class="ep-time">0:00</span>';
+
+// Plays, and if nothing starts within 10 seconds (or the browser refuses), offers the file directly
+function playEpisode(ep, audio) {
   ep.classList.add('is-loading');
-  audio.play();
+  clearTimeout(audio._stallTimer);
+  audio._stallTimer = setTimeout(() => { if (audio.currentTime === 0) episodeFallback(ep); }, 10000);
+  audio.play().catch(err => { if (err.name !== 'AbortError') episodeFallback(ep); });
+}
+
+function episodeFallback(ep) {
+  if (!ep.classList.contains('is-current')) return;
+  ep.classList.remove('is-loading');
+  ep.classList.add('has-error');
+  ep.querySelector('.ep-progress').innerHTML =
+    `<a class="ep-fallback" href="${ep.dataset.src}" target="_blank" rel="noopener">להאזנה ישירה לקובץ ${EXTERNAL_ICON}</a>`;
 }
 
 function wirePodcast(podcast, audio) {
@@ -400,22 +422,19 @@ function wirePodcast(podcast, audio) {
   const current = () => podcast.querySelector('.episode.is-current');
   const sync = () => {
     const ep = current();
-    if (!ep) return;
+    if (!ep || ep.classList.contains('has-error')) return;
     ep.querySelector('.ep-seek').value = audio.duration ? Math.round(audio.currentTime / audio.duration * 1000) : 0;
     ep.querySelector('.ep-time').textContent = `${mmss(audio.currentTime)} / ${mmss(audio.duration)}`;
   };
   audio.addEventListener('timeupdate', sync);
   audio.addEventListener('loadedmetadata', sync);
-  audio.addEventListener('playing', () => { current()?.classList.remove('is-loading'); podcast.classList.add('is-playing'); });
-  audio.addEventListener('pause', () => podcast.classList.remove('is-playing'));
-  // if the browser cannot stream the file, offer it in Drive instead
-  audio.addEventListener('error', () => {
-    const ep = current();
-    if (!ep) return;
-    ep.classList.remove('is-loading');
-    ep.querySelector('.ep-progress').innerHTML =
-      `<a class="ep-fallback" href="${driveFileUrl(ep.dataset.episode)}" target="_blank" rel="noopener noreferrer">להאזנה בדרייב ${EXTERNAL_ICON}</a>`;
+  audio.addEventListener('playing', () => {
+    clearTimeout(audio._stallTimer);
+    current()?.classList.remove('is-loading');
+    podcast.classList.add('is-playing');
   });
+  audio.addEventListener('pause', () => podcast.classList.remove('is-playing'));
+  audio.addEventListener('error', () => { const ep = current(); if (ep) episodeFallback(ep); });
   audio.addEventListener('ended', () => {
     const next = current()?.nextElementSibling;
     if (next) togglePodcast(next);
