@@ -117,7 +117,7 @@ const programs = [
     materials: [
       { title: 'חוברת מלווה לתלמידים – מסע זהות לאור חכמי ספרד', type: 'pages', dir: 'baba-sali', count: 65, ratio: 1.414, driveId: '10uG-h04LFrBhCjDGJlnin7ucVxSHUXSr' },
     ] },
-  { id: 9, slug: 'tefila', title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/tefila-flyer-5787.jpg',
+  { id: 9, slug: 'tefila', title: 'תפילה – תשפ"ו', desc: 'תוכנית לפיתוח קשר אותנטי לתפילה – כלים מעשיים למורים ולתלמידים לתפילה חיה ומשמעותית.', badge: 'תפילה', file: 'P/tefila-flyer-5787-v2.jpg',
     cats: ['מסעות זהות לתלמידים'],
     details: [
       { p: 'תוכנית התפילה באמית מציעה מהלך הוליסטי לקדם את חיבור התלמידים לתפילה' },
@@ -129,8 +129,10 @@ const programs = [
       { image: '1gu05lcJ-isHERw2dpelukPc2oIRV6WZD', alt: 'תוכנית הוליסטית לקידום התפילה' },
       { image: '1u8bx0MQujAmCkb3BUg_XzfoRm7yx8PVr', alt: 'יום שיא בנושא התפילה בשילוב משקפי VR' },
     ],
-    // Order requested by Elad: fan, booklet, sticky notes; then the videos
+    // The siddur first (sent by Elad later), then the order he asked for: fan, booklet, sticky notes; then the videos
     materials: [
+      { title: 'סידור נה"ר הלב – עמודי דוגמה', note: 'הסידור שכל תלמיד מקבל בתוכנית, נוסח עדות המזרח. כריכה ועמודים לדוגמה',
+        type: 'pages', dir: 'tefila-siddur', count: 5, ratio: 0.77 },
       { title: 'מניפת ההדרכות היומיות – כרטיסיות', type: 'pages', dir: 'tefila-fan', count: 50, ratio: 2.371, driveId: '1iouHSU2hXzRempNZewsmDcUNAij5eJ4N' },
       { title: 'חוברת מערכי שיעור – מסע בסידור התפילה דרך תחנות', note: 'חוברת מעודכנת', type: 'pages', dir: 'tefila-booklet', count: 96, ratio: 1.381, pdf: 'tefila-booklet.pdf' },
       { title: 'פתקיות סטיקינוט להדפסה לכתיבת הערות בסידור', note: 'גודל 45×60', type: 'image', src: 'content/tefila-sticky.webp', ratio: 1.381, driveId: '1gbXcTe6c-bTBXmu1TwKle4RY12sAdlft' },

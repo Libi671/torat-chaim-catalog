@@ -243,7 +243,7 @@ const MATERIAL_RENDERERS = {
   pages: m => {
     const actions = m.pdf
       ? `<a class="material-open" href="content/${m.pdf}" download>הורדת PDF להדפסה ${DOWNLOAD_ICON}</a>`
-      : openLink(driveFileUrl(m.driveId), m.fullLabel || 'פתיחה בדרייב');
+      : m.driveId ? openLink(driveFileUrl(m.driveId), m.fullLabel || 'פתיחה בדרייב') : '';
     const more = m.excerpt ? `<div class="pages-more">${openLink(driveFileUrl(m.driveId), 'להמשך הספר בקובץ המלא')}</div>` : '';
     return materialHead(m, actions) + `<div class="material-pages" tabindex="0" aria-label="${m.title}">${pageImages(m)}${more}</div>`;
   },
