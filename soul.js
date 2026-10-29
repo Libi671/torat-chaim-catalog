@@ -88,7 +88,7 @@ const MODAL_TABS = {
 const TAB_HASH = /^#([\w-]+)\/(register|details|materials|syllabus|bot)$/;
 
 // The educator bot Elad built (a Gemini gem), offered as its own tab in every program
-const EDUCATOR_BOT = 'https://gemini.google.com/gem/0c754808d9b3';
+const EDUCATOR_BOT = 'https://gemini.google.com/gem/d31decfa6f30?usp=sharing';
 
 let modalProgram = null;
 
@@ -190,10 +190,12 @@ function renderBotPanel() {
   return `<article class="material-card bot-card">
       <div class="bot-card-icon" aria-hidden="true">🤖</div>
       <h3>בוט מסייע למחנך</h3>
-      <p>בוט Gemini שבנה אלעד בר שלום. מעתיקים אליו שיעור או חלק ממנו, הבוט שואל אתכם על הכיתה שלכם ומציע מערך שמותאם לה.</p>
+      <p>הבוט המצורף יסייע לכם להתאים את התכנים באתר לצרכים שלכם.</p>
+      <p>הוא יברר אתכם את הצרכים היחודיים של כיתתכם, ויחד אתכם תבנו את המערך המדויק ביותר לצרכים שלכם.</p>
+      <p>אפשר להוריד את הקובץ של השיעור, או להעתיק אותו לכאן.</p>
+      <p class="bot-card-wish">בהצלחה רבה!</p>
       <div class="material-link">
         <a class="material-link-btn" href="${EDUCATOR_BOT}" target="_blank" rel="noopener noreferrer">לשיחה עם הבוט ${EXTERNAL_ICON}</a>
-        <button class="copy-link" type="button" data-copy="${EDUCATOR_BOT}">העתקת קישור</button>
       </div>
     </article>`;
 }
@@ -355,12 +357,7 @@ function copyLink(btn) {
 }
 
 // the bot tab is the same for every program
-const botPanel = document.getElementById('modalPanel-bot');
-botPanel.innerHTML = renderBotPanel();
-botPanel.addEventListener('click', e => {
-  const copy = e.target.closest('.copy-link');
-  if (copy) copyLink(copy);
-});
+document.getElementById('modalPanel-bot').innerHTML = renderBotPanel();
 
 materialsPanel.addEventListener('click', e => {
   const thumb = e.target.closest('.video-thumb');

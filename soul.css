@@ -3011,3 +3011,5 @@ body.a11y-no-animations *::after {
   .modal-tabs { gap: 2px; padding: 4px; }
   .modal-tab { font-size: 0.8rem; padding: 8px 4px; }
 }
+.bot-card p + p { margin-top: 2px; }
+.bot-card-wish { font-weight: 800; color: var(--blue-dark) !important; margin-top: 8px !important; }
