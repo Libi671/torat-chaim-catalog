@@ -81,14 +81,20 @@ const modalTabs = document.getElementById('modalTabs');
 const MODAL_TABS = {
   materials: 'תכנים',
   details: 'תקציר',
+  syllabus: 'סילבוס',
+  bot: 'בוט',
   register: 'הרשמה',
 };
-const TAB_HASH = /^#([\w-]+)\/(register|details|materials)$/;
+const TAB_HASH = /^#([\w-]+)\/(register|details|materials|syllabus|bot)$/;
+
+// The educator bot Elad built (a Gemini gem), offered as its own tab in every program
+const EDUCATOR_BOT = 'https://gemini.google.com/gem/0c754808d9b3';
 
 let modalProgram = null;
 
 function modalTabsFor(p) {
-  return Object.keys(MODAL_TABS).filter(t => t === 'register' || p[t]);
+  const has = { materials: !!p.materials, details: !!p.details, syllabus: !!syllabi[p.slug], bot: true, register: true };
+  return Object.keys(MODAL_TABS).filter(t => has[t]);
 }
 
 function openModal(id, tab) {
@@ -108,6 +114,7 @@ function openModal(id, tab) {
     ).join('');
     document.getElementById('modalPanel-details').innerHTML = p.details ? renderDetails(p) : '';
     document.getElementById('modalPanel-materials').innerHTML = p.materials ? renderMaterials(p) : '';
+    document.getElementById('modalPanel-syllabus').innerHTML = syllabi[p.slug] ? `<div class="syllabus-card">${syllabi[p.slug]}</div>` : '';
   }
 
   showModalTab(tab);
@@ -177,6 +184,18 @@ function drivePreviewUrl(m) {
   return m.type === 'doc'
     ? `https://docs.google.com/document/d/${m.driveId}/preview`
     : `https://drive.google.com/file/d/${m.driveId}/preview`;
+}
+
+function renderBotPanel() {
+  return `<article class="material-card bot-card">
+      <div class="bot-card-icon" aria-hidden="true">🤖</div>
+      <h3>בוט מסייע למחנך</h3>
+      <p>בוט Gemini שבנה אלעד בר שלום. מעתיקים אליו שיעור או חלק ממנו, הבוט שואל אתכם על הכיתה שלכם ומציע מערך שמותאם לה.</p>
+      <div class="material-link">
+        <a class="material-link-btn" href="${EDUCATOR_BOT}" target="_blank" rel="noopener noreferrer">לשיחה עם הבוט ${EXTERNAL_ICON}</a>
+        <button class="copy-link" type="button" data-copy="${EDUCATOR_BOT}">העתקת קישור</button>
+      </div>
+    </article>`;
 }
 
 function renderDetails(p) {
@@ -328,6 +347,21 @@ function renderMaterials(p) {
 // ═══ MATERIALS: players, copy buttons, order form ═══
 const materialsPanel = document.getElementById('modalPanel-materials');
 
+function copyLink(btn) {
+  navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+    btn.textContent = 'הקישור הועתק ✓';
+    setTimeout(() => { btn.textContent = 'העתקת קישור'; }, 2000);
+  });
+}
+
+// the bot tab is the same for every program
+const botPanel = document.getElementById('modalPanel-bot');
+botPanel.innerHTML = renderBotPanel();
+botPanel.addEventListener('click', e => {
+  const copy = e.target.closest('.copy-link');
+  if (copy) copyLink(copy);
+});
+
 materialsPanel.addEventListener('click', e => {
   const thumb = e.target.closest('.video-thumb');
   if (thumb) {
@@ -335,13 +369,7 @@ materialsPanel.addEventListener('click', e => {
     return;
   }
   const copy = e.target.closest('.copy-link');
-  if (copy) {
-    navigator.clipboard.writeText(copy.dataset.copy).then(() => {
-      copy.textContent = 'הקישור הועתק ✓';
-      setTimeout(() => { copy.textContent = 'העתקת קישור'; }, 2000);
-    });
-    return;
-  }
+  if (copy) return copyLink(copy);
   const jump = e.target.closest('[data-jump]');
   if (jump) {
     materialsPanel.querySelector(`[data-anchor="${jump.dataset.jump}"]`).scrollIntoView({ behavior: 'smooth', block: 'start' });

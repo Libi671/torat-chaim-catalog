@@ -2967,3 +2967,47 @@ body.a11y-no-animations *::after {
   .doc-viewer { padding: 0; }
   .doc-viewer-box { height: 100%; max-width: none; border-radius: 0; }
 }
+
+/* ─── SYLLABUS TAB ─── */
+.syllabus-card {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--text-dark);
+}
+.syllabus-card h2,
+.syllabus-card h3,
+.syllabus-card h4 {
+  font-family: 'Heebo', sans-serif;
+  color: var(--blue-dark);
+  line-height: 1.35;
+}
+.syllabus-card h2 { font-size: 1.2rem; font-weight: 900; margin: 4px 0 12px; }
+.syllabus-card h3 { font-size: 1.05rem; font-weight: 800; margin: 18px 0 6px; }
+.syllabus-card h4 {
+  font-size: 0.98rem;
+  font-weight: 800;
+  margin: 18px 0 6px;
+  padding-right: 10px;
+  border-right: 4px solid var(--lime);
+}
+.syllabus-card p { margin-bottom: 8px; }
+.syllabus-card ul,
+.syllabus-card ol { padding-right: 22px; margin-bottom: 8px; }
+.syllabus-card li { margin-bottom: 4px; }
+.syllabus-card li > ul,
+.syllabus-card li > ol { margin-top: 4px; }
+.syllabus-card hr { border: none; border-top: 2px dashed var(--gray-mid); margin: 22px 0; }
+
+/* ─── BOT TAB ─── */
+.bot-card { padding: 22px 20px; text-align: center; }
+.bot-card-icon { font-size: 2.4rem; margin-bottom: 6px; }
+.bot-card h3 { font-family: 'Heebo', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue-dark); margin-bottom: 8px; }
+.bot-card p { font-size: 0.95rem; line-height: 1.7; color: var(--text-muted); max-width: 440px; margin: 0 auto 6px; }
+.bot-card .material-link { justify-content: center; }
+
+/* five tabs: let them share the row and shrink on narrow screens */
+.modal-tab { flex: 1 1 auto; white-space: nowrap; }
+@media (max-width: 768px) {
+  .modal-tabs { gap: 2px; padding: 4px; }
+  .modal-tab { font-size: 0.8rem; padding: 8px 4px; }
+}

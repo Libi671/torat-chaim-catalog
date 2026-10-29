@@ -44,8 +44,6 @@ const programs = [
       ] },
       { title: 'תיקיית סרטונים מלווים ממקורות שונים', type: 'link', label: 'לתיקיית הסרטונים',
         url: 'https://drive.google.com/drive/folders/1vARkpvZoNl3ItmOHoEZtZ6X6ZLK9hTuG' },
-      { title: 'בוט מלווה לתלמיד בלימוד התוכנית', note: 'בוט Gemini שמכיר את חומרי התוכנית. נפתח בחלון חדש', type: 'link', label: 'לשיחה עם הבוט',
-        url: 'https://gemini.google.com/gem/0c754808d9b3' },
       // One audio file from each principle's Drive folder, re-encoded small (48k mono) and served from content/podcasts,
       // since Drive does not stream reliably to <audio>. The podcasts folder itself also holds an event's
       // registration form and its responses, so it is not linked.
