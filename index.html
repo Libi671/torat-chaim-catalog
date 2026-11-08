@@ -77,16 +77,14 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero" id="home" role="banner">
+  <!-- On desktop the title and logos are part of the image. On phones they would be too small, so the
+       image is cropped below them and the title is text (the logos are already in the navbar). -->
+  <h1 class="hero-heading">מרחב התוכן של תורת חיים באמית</h1>
   <picture>
-    <source media="(max-width: 768px)" srcset="hero-mobile.webp?v=2" width="1100" height="1366" />
-    <img src="hero-desktop.webp?v=2" width="2400" height="1018" class="hero-photo" fetchpriority="high"
-      alt="תורת חיים, רשת אמית – המרחב שלכם ליצירה, העמקה וחינוך. תלמידות ותלמידים לומדים בכיתה עם מורה ומורה" />
+    <source media="(max-width: 768px)" srcset="hero-v3-mobile.webp" width="1600" height="643" />
+    <img src="hero-v3.webp" width="1600" height="893" class="hero-photo" fetchpriority="high"
+      alt="תלמידים ותלמידות לומדים, מנגנים ומציירים לצד נחל" />
   </picture>
-  <div class="hero-logos">
-    <img src="amit-logo.png" alt="לוגו רשת אמית" class="hero-logo-img" />
-    <div class="hero-logo-divider" aria-hidden="true"></div>
-    <img src="torat-chaim-logo2.png" alt="לוגו תורת חיים באמית" class="hero-logo-img" />
-  </div>
 </section>
 
 <!-- ═══ CATALOG ═══ -->
