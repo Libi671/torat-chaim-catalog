@@ -151,7 +151,42 @@ h1, h2, h3, h4, h5, h6,
   display: block;
   width: 100%;
   height: auto;
+  /* on tall-and-wide screens the image would fill the whole screen: cap it, trimming mostly the bottom */
+  max-height: 75vh;
+  object-fit: cover;
+  object-position: 50% 15%;
 }
+
+/* A hint that the catalog is below the hero */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-left: -26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.88);
+  color: var(--blue-dark);
+  box-shadow: 0 4px 18px rgba(0,45,86,0.22);
+  animation: heroHintBounce 2.2s ease-in-out infinite;
+  transition: background 0.2s;
+}
+.hero-scroll-hint:hover { background: #fff; }
+.hero-scroll-hint svg { width: 26px; height: 26px; }
+@keyframes heroHintBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(9px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-hint { animation: none; }
+}
+/* scrolling to the catalog stops below the fixed navbar */
+#catalog { scroll-margin-top: 68px; }
 
 .hero-logos {
   position: absolute;
@@ -206,11 +241,17 @@ h1, h2, h3, h4, h5, h6,
     color: #1d3a5f;
     background: linear-gradient(180deg, #eef3ec 0%, #f6f8f4 100%);
   }
-  /* soften the cropped top edge into the title band */
+  /* taller than the crop's own 2.5:1, so the people are bigger (the sides are trimmed);
+     the top edge is softened into the title band */
   .hero-photo {
+    aspect-ratio: 1.75;
+    max-height: none;
+    object-position: 50% 50%;
     -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%);
     mask-image: linear-gradient(180deg, transparent 0, #000 14%);
   }
+  /* the hero is short on phones and the catalog already shows below it */
+  .hero-scroll-hint { display: none; }
 }
 
 
