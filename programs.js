@@ -19,7 +19,15 @@ const programs = [
   { id: 1, title: 'אירועי תורת חיים תשפ"ז', desc: 'אירועים קהילתיים ורוחניים לכלל תלמידי הרשת – חוויות שמחברות ומחזקות זהות יהודית.', badge: 'אירועים', file: 'P/WhatsApp Image 2026-05-19 at 05.48.01.jpeg',
     cats: ['ימי שיא'] },
   { id: 2, title: 'השתלמויות תשפ"ו', desc: 'רישום ועדכון ההכשרות לתשפז - יפורסם בקרוב...', badge: 'לוח שנה', file: 'P/אירועים שנתיים תשפו פלייר.jpg',
-    cats: ['הכשרת צוותים'] },
+    cats: ['מובילי תורת חיים'] },
+  { id: 12, slug: 'movil-torat-chaim', title: 'כלים להובלת תהליך הוליסטי בתחום הקודש בקח"ל', desc: 'מבט-על על תורת חיים בבית הספר וכלי עבודה למוביל/ת תורת חיים לתכנון התהליך השנתי – תלמידים, צוות, פדגוגיה ואירועי שיא.', badge: 'מוביל תורת חיים', file: 'P/holistic-view-flyer.jpg',
+    cats: ['מובילי תורת חיים'],
+    materials: [
+      { title: 'מבט-על: תורת חיים בקח"ל', note: 'שלושת עמודי התווך של מוביל תורת חיים: צמיחה אמונית ופיתוח השקפה, תפילה, ומקצועות הקודש',
+        type: 'pages', dir: 'holistic-view', count: 1, ratio: 0.707, pdf: 'holistic-view.pdf' },
+      { title: 'כלי לניהול תחום תורת חיים – תשפ"ז', note: 'טבלת תכנון שנתית למוביל/ה: תלמידים, פיתוח צוות, פדגוגיה בקודש ואירועי שיא',
+        type: 'pages', dir: 'torat-chaim-tools', count: 1, ratio: 0.707, pdf: 'torat-chaim-tools.pdf' },
+    ] },
   { id: 3, slug: 'emun-veemuna', title: 'אמון ואמונה', desc: 'תוכנית חווייתית לפיתוח חוסן אמוני לתלמידים – דרך העמקה ב-9 עקרונות רוחניים.', badge: 'חוסן אמוני', file: 'P/אמון ואמונה פלייר תשפו.jpg',
     cats: ['מסעות זהות לתלמידים'],
     details: [
@@ -134,6 +142,8 @@ const programs = [
       { title: 'מניפת ההדרכות היומיות – כרטיסיות', type: 'pages', dir: 'tefila-fan', count: 50, ratio: 2.371, driveId: '1iouHSU2hXzRempNZewsmDcUNAij5eJ4N' },
       { title: 'חוברת מערכי שיעור – מסע בסידור התפילה דרך תחנות', note: 'חוברת מעודכנת', type: 'pages', dir: 'tefila-booklet', count: 96, ratio: 1.381, pdf: 'tefila-booklet.pdf' },
       { title: 'פתקיות סטיקינוט להדפסה לכתיבת הערות בסידור', note: 'גודל 45×60', type: 'image', src: 'content/tefila-sticky.webp', ratio: 1.381, driveId: '1gbXcTe6c-bTBXmu1TwKle4RY12sAdlft' },
+      { title: 'תכנים ליום שיא בנושא תפילה', note: 'כרטיסי משימה לתחנות: כתב חידה, וואטסאפ עם ה׳, ציר זמן של תפילות בהיסטוריה, כוסות ותפילות ועוד. להדפסה',
+        type: 'pages', dir: 'tefila-peak-day', count: 12, ratio: 1.414, pdf: 'tefila-peak-day.pdf' },
       { title: 'סרטונים לתלמידים', type: 'videos', items: [
         { id: 'elpQoEiXrFY', title: 'התפילה כטיסה' },
         { id: 'rC9IeoWmgUs', title: 'יסודות התפילה – כוח הנשמה' },

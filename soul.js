@@ -5,7 +5,7 @@ let activeFilters = new Set(['מסעות זהות לתלמידים']);
 function getColorForCategory(cat) {
   if (cat.includes('שיא')) return 'var(--blue-light)';
   if (cat.includes('תלמידים')) return 'var(--lime)';
-  if (cat.includes('צוותים')) return 'var(--green)';
+  if (cat.includes('מובילי')) return 'var(--green)';
   return 'var(--blue-mid)';
 }
 
@@ -40,7 +40,7 @@ function renderCards() {
 // ═══ FILTER BAR ═══
 function initFilter() {
   const btns = document.querySelectorAll('.filter-btn');
-  const ALL_CATS = ['ימי שיא', 'מסעות זהות לתלמידים', 'הכשרת צוותים'];
+  const ALL_CATS = ['ימי שיא', 'מסעות זהות לתלמידים', 'מובילי תורת חיים'];
 
   btns.forEach(btn => {
     btn.addEventListener('click', () => {
